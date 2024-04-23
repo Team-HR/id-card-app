@@ -8,7 +8,7 @@
       width: 8.1cm;
       font-size: 7pt;
       position: relative;
-      background-image: url('/public/images/lgu_id_front.jpg');
+      background-image: url('/images/lgu_id_front.jpg');
       background-position: center;
       background-size: contain;
     "

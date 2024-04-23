@@ -12,7 +12,7 @@
       width: 8.1cm;
       font-size: 7pt;
       position: relative;
-      background-image: url('/public/images/lgu_id_back.jpg');
+      background-image: url('/images/lgu_id_back.jpg');
       background-position: center;
       background-size: contain;
       font-family: sans-serif;
@@ -54,14 +54,14 @@
       {{ details.address }}
     </div>
 
-    <div style="position: relative; top: 211px; left: 60px">
+    <div style="position: relative; top: 237px; left: 60px">
       {{ details.emergency_name }}
     </div>
 
-    <div style="position: relative; top: 211px; left: 82px">
+    <div style="position: relative; top: 237px; left: 82px">
       {{ details.emergency_address }}
     </div>
-    <div style="position: relative; top: 211px; left: 139px">
+    <div style="position: relative; top: 236px; left: 139px">
       {{ details.emergency_number }}
     </div>
 
@@ -71,7 +71,7 @@
         width: 100%;
         height: 20px;
         position: absolute;
-        top: 359px;
+        top: 268px;
         text-align: center;
       "
       id="signatureDiv"
@@ -80,38 +80,71 @@
       <img
         id="signatureImage"
         src="#"
-        style="
-          width: 200px;
-          background-color: aqua;
-          height: 20px;
-          /* background-color: red; */
-        "
+        style="width: 233px; height: 182px; /* background-color: red; */"
       />
     </div>
 
     <!-- signature container end -->
     <div
-      style="position: relative; top: 246px; width: 100%; text-align: center"
+      style="position: relative; top: 273px; width: 100%; text-align: center"
     >
       <b>{{ details.name }}</b>
     </div>
   </div>
-  <!-- 
-  <q-dialog v-model="dialog" backdrop-filter="sepia(90%)">
+
+  <q-dialog v-model="Dialog" backdrop-filter="sepia(90%)" persistent>
     <q-card>
       <q-card-section class="row items-center q-pb-none text-h6">
-        Dialog
+        Signature
       </q-card-section>
 
       <q-card-section>
-        This dialog has a backdrop filter of sepia(90%).
+        <!-- This dialog has a backdrop filter of sepia(90%). -->
+        <div id="sigPreviewContainer" style="position: relative"></div>
+
+        <!-- ok btn -->
+        <div
+          style="
+            width: 107px;
+            height: 29px;
+            /* background-color: green; */
+            position: absolute;
+            bottom: 16px;
+            left: 16px;
+          "
+          @click="btnOk_Click()"
+        ></div>
+        <!-- clear btn -->
+        <div
+          style="
+            width: 107px;
+            height: 29px;
+            /* background-color: grey; */
+            position: absolute;
+            bottom: 16px;
+            left: 125px;
+          "
+          @click="btnClear_Click"
+        ></div>
+        <!-- cancel btn -->
+        <div
+          style="
+            width: 107px;
+            height: 29px;
+            /* background-color: red; */
+            position: absolute;
+            bottom: 16px;
+            right: 12px;
+          "
+          @click="btnCancel_Click"
+        ></div>
       </q-card-section>
 
-      <q-card-actions align="right">
+      <!-- <q-card-actions align="right">
         <q-btn flat label="Close" color="primary" v-close-popup />
-      </q-card-actions>
+      </q-card-actions> -->
     </q-card>
-  </q-dialog> -->
+  </q-dialog>
 </template>
 
 <style>
@@ -123,7 +156,7 @@
 <script setup>
 import "assets/libs/q.js";
 import WacomGSS from "assets/libs/wgssStuSdk.js";
-// import { ref } from "vue";
+import { ref } from "vue";
 
 defineOptions({
   name: "IdCardBack",
@@ -136,13 +169,7 @@ const props = defineProps({
   },
 });
 
-// const data = function data() {
-//   return {
-//     dialog: true,
-//   };
-// };
-
-// const dialog = ref(false);
+var Dialog = ref(false);
 
 var BTN_TEXT_CANCEL = "Cancel";
 var BTN_TEXT_CLEAR = "Clear";
@@ -232,33 +259,48 @@ function Point(x, y) {
 }
 
 function createModalWindow(width, height) {
-  //  Creates the modal window on the PC monitor
-  modalBackground = document.createElement("div");
-  modalBackground.id = "modal-background";
-  modalBackground.className = "active";
-  modalBackground.style.width = window.innerWidth;
-  modalBackground.style.height = window.innerHeight;
-  document.getElementsByTagName("body")[0].appendChild(modalBackground);
+  // Creates the modal window on the PC monitor
+  // sigPreviewContainer
+  // modalBackground = document.createElement("div");
+  // modalBackground.id = "modal-background";
+  // modalBackground.className = "active";
+  // modalBackground.style.position = "relative";
+  // modalBackground.style.width = window.innerWidth;
+  // modalBackground.style.height = window.innerHeight;
+
+  // // document.getElementsByTagName("body")[0].appendChild(modalBackground);
+  // document.getElementById("sigPreviewContainer").appendChild(modalBackground);
+
   formDiv = document.createElement("div");
   formDiv.id = "signatureWindow";
   formDiv.className = "active";
-  formDiv.style.top = window.innerHeight / 2 - height / 2 + "px";
-  formDiv.style.left = window.innerWidth / 2 - width / 2 + "px";
+  formDiv.style.position = "relative";
+  formDiv.style.top = 0 + "px";
+  formDiv.style.left = 0 + "px";
   formDiv.style.width = width + "px";
   formDiv.style.height = height + "px";
-  document.getElementsByTagName("body")[0].appendChild(formDiv);
+
+  // document.getElementsByTagName("body")[0].appendChild(formDiv);
+  document.getElementById("sigPreviewContainer").appendChild(formDiv);
+  // document.getElementById("sigPreviewContainer")[0].appendChild(formDiv);
   canvas = document.createElement("canvas");
   canvas.id = "myCanvas";
   canvas.height = formDiv.offsetHeight;
   canvas.width = formDiv.offsetWidth;
+  // z-index:999
+  canvas.style.zIndex = 999;
   formDiv.appendChild(canvas);
   ctx = canvas.getContext("2d");
+  console.log("canvas.addEventListener:", canvas.addEventListener);
   if (canvas.addEventListener) {
     canvas.addEventListener("click", onCanvasClick, false);
+    console.log("onCanvasClick 0");
   } else if (canvas.attachEvent) {
     canvas.attachEvent("onClick", onCanvasClick);
+    console.log("onCanvasClick 1");
   } else {
     canvas["onClick"] = onCanvasClick;
+    console.log("onCanvasClick 2");
   }
 }
 
@@ -320,7 +362,8 @@ function DCANotReady() {}
 DCANotReady.prototype = new Error();
 
 function promptSigDialog() {
-  // this.dialog = true;
+  Dialog.value = true;
+  // console.log("setup.dialog: ", setup.dialog);
   var p = new WacomGSS.STU.Protocol();
   var intf;
   var m_encH;
@@ -638,6 +681,7 @@ function clearScreen() {
 
 function btnOk_Click() {
   // You probably want to add additional processing here.
+  // console.log("this.dialog: ", this.dialog);
   generateImage();
   setTimeout(close, 0);
 }
@@ -660,7 +704,15 @@ function distance(a, b) {
 function clearCanvas(in_canvas, in_ctx) {
   in_ctx.save();
   in_ctx.setTransform(1, 0, 0, 1, 0, 0);
-  in_ctx.fillStyle = "white";
+  in_ctx.fillStyle = "white"; // "#ffffff00";
+  in_ctx.fillRect(0, 0, in_canvas.width, in_canvas.height);
+  in_ctx.restore();
+}
+
+function clearCanvasOut(in_canvas, in_ctx) {
+  in_ctx.save();
+  in_ctx.setTransform(1, 0, 0, 1, 0, 0);
+  in_ctx.fillStyle = "#ffffff00"; // "#ffffff00";
   in_ctx.fillRect(0, 0, in_canvas.width, in_canvas.height);
   in_ctx.restore();
 }
@@ -728,15 +780,16 @@ function processPoint(point, in_canvas, in_ctx) {
 }
 
 function generateImage() {
-  // console.log(generateImage);
   var signatureImage = document.getElementById("signatureImage");
   var signatureCanvas = document.createElement("canvas");
   signatureCanvas.id = "signatureCanvas";
   signatureCanvas.height = signatureImage.height;
+  console.log("signatureImage.height: ", signatureImage.height);
   signatureCanvas.width = signatureImage.width;
   var signatureCtx = signatureCanvas.getContext("2d");
 
-  clearCanvas(signatureCanvas, signatureCtx);
+  clearCanvasOut(signatureCanvas, signatureCtx);
+
   signatureCtx.lineWidth = 1;
   signatureCtx.strokeStyle = "black";
   lastPoint = { x: 0, y: 0 };
@@ -749,11 +802,14 @@ function generateImage() {
 
 function close() {
   // Clear handler for Device Control App timeout
+  // console.log("this.dialog close(): ", this.dialog);
+  Dialog.value = false;
   WacomGSS.STU.onDCAtimeout = null;
-
   disconnect();
-  document.getElementsByTagName("body")[0].removeChild(modalBackground);
-  document.getElementsByTagName("body")[0].removeChild(formDiv);
+  // document.getElementsByTagName("body")[0].removeChild(modalBackground);
+  // document.getElementsByTagName("body")[0].removeChild(formDiv);
+  // document.getElementById("sigPreviewContainer").removeChild(modalBackground);
+  document.getElementById("sigPreviewContainer").removeChild(formDiv);
 }
 
 function onCanvasClick(event) {
