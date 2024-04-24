@@ -69,9 +69,10 @@
                 lazy-rules
                 :rules="[
                   (val) =>
-                    (val && val.length > 0) || 'Please check the ID number',
+                    (val && val.length > 0) || 'Please enter the ID number',
                 ]"
               />
+
               <q-input
                 filled
                 v-model="selected_employee_data.lastName"
@@ -98,16 +99,32 @@
                 ]"
               />
 
+              <div class="row">
+                <div class="col">
+                  <q-input
+                    filled
+                    v-model="selected_employee_data.middleName"
+                    label="M.I."
+                    hint=""
+                  />
+                </div>
+                <div class="col q-ml-sm">
+                  <q-input
+                    filled
+                    v-model="selected_employee_data.extName"
+                    label="Name Extension"
+                  />
+                </div>
+              </div>
+
               <q-input
                 filled
-                v-model="selected_employee_data.middleName"
-                label="Middle Name"
+                label="Address"
                 hint=""
                 lazy-rules
                 :rules="[
                   (val) =>
-                    (val && val.length > 0) ||
-                    '* First Name should not be empty!',
+                    (val && val.length > 0) || '* Address should not be empty!',
                 ]"
               />
 
@@ -167,12 +184,12 @@ defineOptions({
     onReset() {},
     getEmployeeData() {
       this.$api
-        .post("http://192.168.50.51:8081/test.php", {
+        .post("http://localhost:8081/test.php", {
           getEmployeeData: true,
           employeeId: this.selected_employee.value,
         })
         .then(({ data }) => {
-          console.log(data);
+          console.log("EMPLOYEE DATA: ", data);
           this.selected_employee_data = data;
         })
         .catch((err) => {
@@ -208,7 +225,7 @@ defineOptions({
 
   created() {
     this.$api
-      .post("http://192.168.50.51:8081/test.php", {
+      .post("http://localhost:8081/test.php", {
         getEmployeeList: "true",
       })
       .then(({ data }) => {

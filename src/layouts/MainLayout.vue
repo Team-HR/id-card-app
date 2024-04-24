@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
-      <q-toolbar>
+      <!-- <q-toolbar>
         <q-btn
           flat
           dense
@@ -11,10 +11,10 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title> ID Card App </q-toolbar-title>
+        <q-toolbar-title> EMPLOYEE ID APP</q-toolbar-title>
 
-        <!-- <div>ver {{ $q.version }}</div> -->
-      </q-toolbar>
+        <div>ver {{ `4.24.24` }}</div>
+      </q-toolbar> -->
     </q-header>
     <!-- 
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>

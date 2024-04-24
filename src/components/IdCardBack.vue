@@ -1,77 +1,130 @@
-<!-- <script src="assets/libs/q.js" charset="UTF-8"></script> -->
-<!-- <script src="assets/libs/wgssStuSdk.js" charset="UTF-8"></script> -->
-
 <template>
-  <!-- 3.375 x 2.125 -->
   <div
     class="q-ma-sm"
     style="
-      border: 1px solid gray;
-      background-color: aqua;
+      /* border: 1px solid gray; */
+      /* background-color: aqua; */
       height: 12.75cm;
       width: 8.1cm;
       font-size: 7pt;
       position: relative;
-      background-image: url('/images/lgu_id_back.jpg');
+      background-image: url('/images/lgu_id_back.png');
       background-position: center;
       background-size: contain;
       font-family: sans-serif;
     "
   >
-    <img
+    <!-- QR start -->
+    <!-- <img
       src="~/assets/images/qr_sample.png"
+      style="position: absolute; right: 4px; top: 109px; width: 134px"
+    /> -->
+    <!-- QR end -->
+
+    <div
+      class="detail"
       style="
         position: absolute;
-        right: 20px;
-        top: 59px;
-        width: 122px;
-        /* border: 1px solid rgb(231, 231, 231);
-        border-radius: 10px; */
+        top: 79px;
+        left: 10px;
+        /* background-color: red; */
+        overflow: hidden;
+        width: 265px;
+        height: 35px;
+        font-size: 11pt;
+        line-height: 13pt;
       "
-    />
-
-    <div class="detail" style="position: relative; top: 75px; left: 14px">
-      {{ details.date_issued }}
-    </div>
-
-    <div class="detail" style="position: relative; top: 92px; left: 14px">
-      {{ details.date_issued }}
-    </div>
-
-    <div class="detail" style="position: relative; top: 111px; left: 14px">
-      {{ details.date_of_birth }}
-    </div>
-
-    <div class="detail" style="position: relative; top: 129px; left: 14px">
-      {{ details.gender }}
-    </div>
-
-    <div class="detail" style="position: relative; top: 147px; left: 14px">
-      {{ details.blood_type }}
-    </div>
-
-    <div class="detail" style="position: relative; top: 166px; left: 14px">
+    >
       {{ details.address }}
     </div>
 
-    <div style="position: relative; top: 237px; left: 60px">
+    <div
+      class="detail"
+      style="position: absolute; top: 133px; left: 14px; font-size: 11pt"
+    >
+      {{ details.gender }}
+    </div>
+
+    <div
+      class="detail"
+      style="position: absolute; top: 171px; left: 14px; font-size: 11pt"
+    >
+      {{ details.date_of_birth }}
+    </div>
+
+    <div
+      class="detail"
+      style="position: absolute; top: 209px; left: 14px; font-size: 11pt"
+    >
+      {{ details.blood_type }}
+    </div>
+
+    <div
+      class="detail"
+      style="position: absolute; top: 245px; left: 14px; font-size: 11pt"
+    >
+      {{ details.contact_number }}
+    </div>
+
+    <div
+      style="
+        width: 100%;
+        text-align: center;
+        position: absolute;
+        left: 0px;
+        bottom: 182px;
+        font-weight: 600;
+      "
+    >
       {{ details.emergency_name }}
     </div>
 
-    <div style="position: relative; top: 237px; left: 82px">
+    <div
+      style="
+        width: 100%;
+        text-align: center;
+        position: absolute;
+        left: 0px;
+        top: 295px;
+        font-weight: 600;
+      "
+    >
       {{ details.emergency_address }}
     </div>
-    <div style="position: relative; top: 236px; left: 139px">
+    <div
+      style="
+        width: 100%;
+        text-align: center;
+        position: absolute;
+        left: 0px;
+        top: 305px;
+        font-weight: 600;
+      "
+    >
       {{ details.emergency_number }}
+    </div>
+
+    <div
+      class="detail"
+      style="position: absolute; top: 318px; left: 91px; font-size: 9pt"
+    >
+      {{ details.date_issued }}
+    </div>
+
+    <div
+      class="detail"
+      style="position: absolute; top: 333px; left: 91px; font-size: 9pt"
+    >
+      {{ details.date_issued }}
     </div>
 
     <!-- signature container start -->
     <div
       style="
         width: 100%;
-        height: 20px;
+        /* height: 20px; */
         position: absolute;
-        top: 268px;
+        top: 354px;
         text-align: center;
       "
       id="signatureDiv"
@@ -79,14 +132,25 @@
     >
       <img
         id="signatureImage"
-        src="#"
-        style="width: 233px; height: 182px; /* background-color: red; */"
+        src="~/assets/images/get_sig.png"
+        style="
+          max-width: 233px;
+          max-height: 182px;
+          vertical-align: bottom;
+          /* background-color: red; */
+        "
       />
     </div>
 
     <!-- signature container end -->
     <div
-      style="position: relative; top: 273px; width: 100%; text-align: center"
+      style="
+        position: absolute;
+        bottom: 74px;
+        width: 100%;
+        text-align: center;
+        font-size: 8pt;
+      "
     >
       <b>{{ details.name }}</b>
     </div>

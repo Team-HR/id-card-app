@@ -1,43 +1,60 @@
 <template>
   <div
-    class="q-ma-sm"
+    id="frontId"
+    class="front-id q-ma-sm"
     style="
-      border: 1px solid gray;
-      background-color: aqua;
+      /* border: 1px solid gray; */
+      /* background-color: aqua; */
       height: 12.75cm;
       width: 8.1cm;
       font-size: 7pt;
       position: relative;
-      background-image: url('/images/lgu_id_front.jpg');
+      background-image: url('/images/lgu_id_front.png');
       background-position: center;
       background-size: contain;
     "
   >
     <div
       style="
-        width: 116px;
-        height: 116px;
+        writing-mode: vertical-rl;
+        text-orientation: upright;
+        position: absolute;
+        top: 75px;
+        left: 5px;
+        font-size: 12pt;
+        color: white;
+        font-weight: 500;
+        text-shadow: 0px 2px 2px black;
+      "
+    >
+      {{ details.employmentStatus }} EMPLOYEE
+    </div>
+
+    <div
+      style="
+        width: 169px;
+        height: 168px;
         background-color: aliceblue;
         border-radius: 100%;
-        position: relative;
-        top: 162px;
-        left: 97px;
+        position: absolute;
+        top: 80px;
+        left: 81px;
       "
     >
       <img
         :src="imgSrc"
-        style="width: 116px; margin: auto; border-radius: 100%"
+        style="width: 169px; margin: auto; border-radius: 100%"
       />
     </div>
 
     <div
       style="
-        margin-top: 10px;
-        width: 100%;
-        text-align: center;
-        position: relative;
-        top: 173px;
-        left: 21px;
+        text-align: left;
+        position: absolute;
+        top: 260px;
+        left: 172px;
+        font-size: 13pt;
+        font-weight: 500;
       "
     >
       {{ details.idNumber ? details.idNumber : "_ - ____" }}
@@ -45,28 +62,26 @@
 
     <div
       style="
-        margin-top: 10px;
-        /* margin-bottom: 0px !important;
-              padding-bottom: 0px !important; */
-        margin-left: 20px;
         font-size: 32pt;
         width: 100%;
         text-align: left;
-        line-height: 0.6;
         font-weight: 500;
+        position: absolute;
+        bottom: 119px;
+        left: 40px;
       "
     >
       {{ details.lastName }}
     </div>
     <div
       style="
-        margin-top: 0px !important;
-        padding: 0px !important;
-        margin-left: 20px;
-        font-size: 16pt;
+        font-size: 23pt;
         width: 100%;
         text-align: left;
-        font-weight: 500;
+        font-weight: 700;
+        position: absolute;
+        bottom: 95px;
+        left: 40px;
       "
     >
       {{ details.firstName }}
@@ -74,19 +89,19 @@
     </div>
     <div
       style="
-        margin-top: 0px !important;
-        padding: 0px !important;
-        margin-left: 20px;
-        font-size: 10pt;
+        font-size: 12pt;
         width: 100%;
         text-align: left;
-        font-weight: 500;
+        /* font-weight: 500; */
         font-stretch: ultra-expanded;
+        position: absolute;
+        bottom: 80px;
+        left: 40px;
       "
     >
       {{ details.position }}
     </div>
-    <div
+    <!-- <div
       style="
         margin-top: 0px !important;
         padding: 0px !important;
@@ -98,19 +113,14 @@
       "
     >
       {{ details.position_function }}
-    </div>
+    </div> -->
   </div>
 </template>
-
-<style>
-.detail {
-  margin-left: 10px;
-}
-</style>
 
 <script setup>
 defineOptions({
   name: "IdCardFront",
+  methods: {},
 });
 
 const props = defineProps({
