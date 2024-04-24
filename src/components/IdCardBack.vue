@@ -1,5 +1,6 @@
 <template>
   <div
+    id="IdCardBack"
     class="q-ma-sm"
     style="
       /* border: 1px solid gray; */
@@ -106,14 +107,14 @@
 
     <div
       class="detail"
-      style="position: absolute; top: 318px; left: 91px; font-size: 9pt"
+      style="position: absolute; top: 319px; left: 91px; font-size: 9pt"
     >
       {{ details.date_issued }}
     </div>
 
     <div
       class="detail"
-      style="position: absolute; top: 333px; left: 91px; font-size: 9pt"
+      style="position: absolute; top: 335px; left: 91px; font-size: 9pt"
     >
       {{ details.date_issued }}
     </div>

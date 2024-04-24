@@ -140,6 +140,11 @@
       </div>
     </div>
   </q-page>
+  <q-btn
+    style="position: absolute; bottom: 17px; left: 650px"
+    label="Download"
+    @click="downloadImage()"
+  ></q-btn>
 </template>
 
 <script setup>
@@ -147,6 +152,9 @@ import VueAvatar from "vue-avatar-editor-improved/src/components/VueAvatar.vue";
 
 import IdCardFront from "components/IdCardFront.vue";
 import IdCardBack from "components/IdCardBack.vue";
+
+import * as htmlToImage from "html-to-image";
+import { toPng, toJpeg, toBlob, toPixelData, toSvg } from "html-to-image";
 
 defineOptions({
   name: "IndexPage",
@@ -178,6 +186,31 @@ defineOptions({
   },
 
   methods: {
+    downloadImage() {
+      var node1 = document.getElementById("IdCardFront");
+      var node2 = document.getElementById("IdCardBack");
+      htmlToImage.toJpeg(node1, { quality: 0.95 }).then((dataUrl) => {
+        var link = document.createElement("a");
+        link.download =
+          this.selected_employee_data.lastName +
+          "_" +
+          this.selected_employee_data.idNumber +
+          "_FRONT.jpeg";
+        link.href = dataUrl;
+        link.click();
+      });
+
+      htmlToImage.toJpeg(node2, { quality: 0.95 }).then((dataUrl) => {
+        var link = document.createElement("a");
+        link.download =
+          this.selected_employee_data.lastName +
+          "_" +
+          this.selected_employee_data.idNumber +
+          "_BACK.jpeg";
+        link.href = dataUrl;
+        link.click();
+      });
+    },
     onSubmit() {
       console.log(this.selected_employee_data);
     },

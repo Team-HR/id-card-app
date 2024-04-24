@@ -1,6 +1,6 @@
 <template>
   <div
-    id="frontId"
+    id="IdCardFront"
     class="front-id q-ma-sm"
     style="
       /* border: 1px solid gray; */
@@ -120,7 +120,6 @@
 <script setup>
 defineOptions({
   name: "IdCardFront",
-  methods: {},
 });
 
 const props = defineProps({
