@@ -1,10 +1,10 @@
 <template>
   <div
     id="IdCardFront"
-    class="front-id q-ma-sm"
+    class="front-id"
     style="
       /* border: 1px solid gray; */
-      /* background-color: aqua; */
+      background-color: aqua;
       height: 12.75cm;
       width: 8.1cm;
       font-size: 7pt;
@@ -27,7 +27,9 @@
         text-shadow: 0px 2px 2px black;
       "
     >
-      {{ details.employmentStatus }} EMPLOYEE
+      {{
+        details.employmentStatus ? `${details.employmentStatus} EMPLOYEE` : ""
+      }}
     </div>
 
     <div
@@ -57,7 +59,7 @@
         font-weight: 500;
       "
     >
-      {{ details.idNumber ? details.idNumber : "_ - ____" }}
+      {{ details.empno ? details.empno : "_ - ____" }}
     </div>
 
     <div
@@ -71,7 +73,7 @@
         left: 40px;
       "
     >
-      {{ details.lastName }}
+      {{ details.lastName }}{{ details.extName ? ", " + details.extName : "" }}
     </div>
     <div
       style="
@@ -85,7 +87,7 @@
       "
     >
       {{ details.firstName }}
-      {{ details.middleName }}
+      {{ details.middleName ? details.middleName[0] + ". " : "" }}
     </div>
     <div
       style="

@@ -1,7 +1,6 @@
 <template>
   <div
     id="IdCardBack"
-    class="q-ma-sm"
     style="
       /* border: 1px solid gray; */
       /* background-color: aqua; */

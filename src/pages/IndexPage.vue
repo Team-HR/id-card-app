@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pa-md">
+  <q-page class="q-pa-md" style="position: relative">
     <div class="row" style="position: inherit">
       <div class="col" style="">
         <q-select
@@ -12,6 +12,7 @@
           label="Search Employee"
           :options="selections"
           @filter="filterFn"
+          @update:model-value="getEmployeeData()"
           behavior="menu"
         >
           <template v-slot:no-option>
@@ -21,14 +22,15 @@
           </template>
         </q-select>
 
-        <q-btn class="q-mb-md" @click="getEmployeeData()" type="button"
+        <!-- <q-btn class="q-mb-md" @click="getEmployeeData()" type="button"
           >Get</q-btn
-        >
+        > -->
 
         <div class="row">
           <div class="col">
             <div style="margin-left: 100px">
               <vue-avatar
+                image=""
                 :width="200"
                 :height="200"
                 :rotation="rotation"
@@ -63,7 +65,7 @@
             >
               <q-input
                 filled
-                v-model="selected_employee_data.idNumber"
+                v-model="selected_employee_data.empno"
                 label="ID Number *"
                 hint=""
                 lazy-rules
@@ -104,7 +106,7 @@
                   <q-input
                     filled
                     v-model="selected_employee_data.middleName"
-                    label="M.I."
+                    label="Middle Name"
                     hint=""
                   />
                 </div>
@@ -119,6 +121,7 @@
 
               <q-input
                 filled
+                v-model="selected_employee_data.address"
                 label="Address"
                 hint=""
                 lazy-rules
@@ -128,23 +131,23 @@
                 ]"
               />
 
-              <q-btn type="submit">Save</q-btn>
+              <q-btn class="q-mr-sm" type="submit">Save</q-btn>
+              <q-btn label="Download" @click="downloadImage()"></q-btn>
             </q-form>
           </div>
         </div>
       </div>
-      <div class="col flex flex-center q-mt-lg" style="position: relative">
+      <div
+        id="cardFrontAndBack"
+        class="col flex flex-center q-mt-lg"
+        style="position: relative"
+      >
         <!-- <div style="background-color: aqua; height: 8.5cm; width: 5.4cm"></div> -->
         <IdCardFront :details="selected_employee_data" :imgSrc="imgSrc" />
         <IdCardBack :details="selected_employee_data" />
       </div>
     </div>
   </q-page>
-  <q-btn
-    style="position: absolute; bottom: 17px; left: 650px"
-    label="Download"
-    @click="downloadImage()"
-  ></q-btn>
 </template>
 
 <script setup>
@@ -168,13 +171,14 @@ defineOptions({
     return {
       selected_employee: null,
       selected_employee_data: {
-        idNumber: null,
+        empno: null,
         lastName: null,
         firstName: null,
         middleName: null,
         extName: null,
         position: null,
         position_function: null,
+        address: null,
       },
       employees: [],
       selections: this.employees,
@@ -187,25 +191,27 @@ defineOptions({
 
   methods: {
     downloadImage() {
+      // canvasWidth: 204, canvasHeight: 324
+      // canvasWidth: 204, canvasHeight: 324
       var node1 = document.getElementById("IdCardFront");
       var node2 = document.getElementById("IdCardBack");
-      htmlToImage.toJpeg(node1, { quality: 0.95 }).then((dataUrl) => {
+      htmlToImage.toJpeg(node1, { quality: 1 }).then((dataUrl) => {
         var link = document.createElement("a");
         link.download =
           this.selected_employee_data.lastName +
           "_" +
-          this.selected_employee_data.idNumber +
+          this.selected_employee_data.empno +
           "_FRONT.jpeg";
         link.href = dataUrl;
         link.click();
       });
 
-      htmlToImage.toJpeg(node2, { quality: 0.95 }).then((dataUrl) => {
+      htmlToImage.toJpeg(node2, { quality: 1 }).then((dataUrl) => {
         var link = document.createElement("a");
         link.download =
           this.selected_employee_data.lastName +
           "_" +
-          this.selected_employee_data.idNumber +
+          this.selected_employee_data.empno +
           "_BACK.jpeg";
         link.href = dataUrl;
         link.click();
@@ -249,7 +255,9 @@ defineOptions({
       var img = this.$refs.vueavatar.getImageScaled();
       // this.$refs.image.src = img.toDataURL();
       this.imgSrc = img.toDataURL();
+      console.log(this.imgSrc);
     },
+
     onImageReady: function onImageReady() {
       this.scale = 1;
       this.rotation = 0;
