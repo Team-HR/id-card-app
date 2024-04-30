@@ -40,7 +40,7 @@
 
         <div class="row">
           <div class="col">
-            <div style="margin-left: 100px">
+            <div style="margin-left: 30px">
               <vue-avatar
                 image=""
                 :width="200"
@@ -69,7 +69,7 @@
               <br />
             </div>
           </div>
-          <div class="col">
+          <div class="col-7">
             <q-form
               @submit.prevent="onSubmit"
               @reset="onReset"
@@ -87,35 +87,37 @@
                     (val && val.length > 0) || 'Please enter the ID number',
                 ]"
               />
+              <div class="row">
+                <q-input
+                  class="col"
+                  dense
+                  filled
+                  v-model="selected_employee_data.lastName"
+                  label="Last Name"
+                  hint=""
+                  lazy-rules
+                  :rules="[
+                    (val) =>
+                      (val && val.length > 0) ||
+                      '* Last Name should not be empty!',
+                  ]"
+                />
 
-              <q-input
-                dense
-                filled
-                v-model="selected_employee_data.lastName"
-                label="Last Name"
-                hint=""
-                lazy-rules
-                :rules="[
-                  (val) =>
-                    (val && val.length > 0) ||
-                    '* Last Name should not be empty!',
-                ]"
-              />
-
-              <q-input
-                dense
-                filled
-                v-model="selected_employee_data.firstName"
-                label="First Name"
-                hint=""
-                lazy-rules
-                :rules="[
-                  (val) =>
-                    (val && val.length > 0) ||
-                    '* First Name should not be empty!',
-                ]"
-              />
-
+                <q-input
+                  class="col q-ml-sm"
+                  dense
+                  filled
+                  v-model="selected_employee_data.firstName"
+                  label="First Name"
+                  hint=""
+                  lazy-rules
+                  :rules="[
+                    (val) =>
+                      (val && val.length > 0) ||
+                      '* First Name should not be empty!',
+                  ]"
+                />
+              </div>
               <div class="row">
                 <div class="col">
                   <q-input
