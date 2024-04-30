@@ -1,3 +1,15 @@
+<style>
+.q-field {
+  padding-bottom: 8px;
+}
+
+.q-field__bottom {
+  /* margin: 0px !important;
+  padding: 0px !important; */
+  display: none !important;
+  /* background-color: red; */
+}
+</style>
 <template>
   <q-page class="q-pa-md" style="position: relative">
     <div class="row" style="position: inherit">
@@ -64,6 +76,7 @@
               class="q-gutter-sm_"
             >
               <q-input
+                dense
                 filled
                 v-model="selected_employee_data.empno"
                 label="ID Number *"
@@ -76,6 +89,7 @@
               />
 
               <q-input
+                dense
                 filled
                 v-model="selected_employee_data.lastName"
                 label="Last Name"
@@ -89,6 +103,7 @@
               />
 
               <q-input
+                dense
                 filled
                 v-model="selected_employee_data.firstName"
                 label="First Name"
@@ -104,6 +119,7 @@
               <div class="row">
                 <div class="col">
                   <q-input
+                    dense
                     filled
                     v-model="selected_employee_data.middleName"
                     label="Middle Name"
@@ -112,6 +128,7 @@
                 </div>
                 <div class="col q-ml-sm">
                   <q-input
+                    dense
                     filled
                     v-model="selected_employee_data.extName"
                     label="Name Extension"
@@ -120,6 +137,65 @@
               </div>
 
               <q-input
+                dense
+                filled
+                v-model="selected_employee_data.address_res_barangay"
+                label="Barangay"
+                hint=""
+                lazy-rules
+                :rules="[
+                  (val) =>
+                    (val && val.length > 0) || '* Field should not be empty!',
+                ]"
+              />
+
+              <q-input
+                dense
+                filled
+                v-model="selected_employee_data.address_res_city"
+                label="City/Municipality"
+                hint=""
+                lazy-rules
+                :rules="[
+                  (val) =>
+                    (val && val.length > 0) || '* Field should not be empty!',
+                ]"
+              />
+
+              <q-input
+                dense
+                filled
+                v-model="selected_employee_data.address_res_province"
+                label="Province"
+                hint=""
+                lazy-rules
+                :rules="[
+                  (val) =>
+                    (val && val.length > 0) || '* Field should not be empty!',
+                ]"
+              />
+
+              <div class="row">
+                <q-select
+                  class="col"
+                  dense
+                  outlined
+                  v-model="selected_employee_data.gender"
+                  :options="['MALE', 'FEMALE']"
+                  label="Gender"
+                />
+                <q-input
+                  class="col q-ml-sm"
+                  dense
+                  filled
+                  v-model="selected_employee_data.birthdate"
+                  label="Birthdate"
+                  type="date"
+                />
+              </div>
+
+              <!-- <q-input
+                dense
                 filled
                 v-model="selected_employee_data.address"
                 label="Address"
@@ -129,8 +205,65 @@
                   (val) =>
                     (val && val.length > 0) || '* Address should not be empty!',
                 ]"
+              /> -->
+
+              <div class="row">
+                <q-input
+                  class="col"
+                  dense
+                  filled
+                  v-model="selected_employee_data.blood_type"
+                  label="Blood Type"
+                  hint=""
+                  lazy-rules
+                  :rules="[
+                    (val) =>
+                      (val && val.length > 0) || '* Field should not be empty!',
+                  ]"
+                />
+
+                <q-input
+                  class="col q-ml-sm"
+                  dense
+                  filled
+                  v-model="selected_employee_data.contact_number"
+                  label="Contact Number"
+                  hint=""
+                  lazy-rules
+                  :rules="[
+                    (val) =>
+                      (val && val.length > 0) || '* Field should not be empty!',
+                  ]"
+                />
+              </div>
+
+              <q-input
+                dense
+                filled
+                v-model="selected_employee_data.emergency_name"
+                label="Emergency Contact Person"
+                hint=""
+                lazy-rules
+                :rules="[
+                  (val) =>
+                    (val && val.length > 0) || '* Field should not be empty!',
+                ]"
               />
 
+              <q-input
+                dense
+                filled
+                v-model="selected_employee_data.emergency_number"
+                label="Emergency Contact Number"
+                hint=""
+                lazy-rules
+                :rules="[
+                  (val) =>
+                    (val && val.length > 0) || '* Field should not be empty!',
+                ]"
+              />
+
+              <div class="q-mt-sm"></div>
               <q-btn class="q-mr-sm" type="submit">Save</q-btn>
               <q-btn label="Download" @click="downloadImage()"></q-btn>
             </q-form>
@@ -151,6 +284,8 @@
 </template>
 
 <script setup>
+import { useQuasar } from "quasar";
+
 import VueAvatar from "vue-avatar-editor-improved/src/components/VueAvatar.vue";
 
 import IdCardFront from "components/IdCardFront.vue";
@@ -218,7 +353,18 @@ defineOptions({
       });
     },
     onSubmit() {
-      console.log(this.selected_employee_data);
+      // console.log(this.selected_employee_data);
+      this.$api
+        .post("http://localhost:8081/test.php", {
+          saveEmployeeData: true,
+          selected_employee_data: this.selected_employee_data,
+        })
+        .then(({ data }) => {
+          console.log("SAVED DATA: ", data);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     },
     onReset() {},
     getEmployeeData() {
@@ -255,7 +401,7 @@ defineOptions({
       var img = this.$refs.vueavatar.getImageScaled();
       // this.$refs.image.src = img.toDataURL();
       this.imgSrc = img.toDataURL();
-      console.log(this.imgSrc);
+      // console.log(this.imgSrc);
     },
 
     onImageReady: function onImageReady() {

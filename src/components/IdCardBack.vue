@@ -35,7 +35,11 @@
         line-height: 13pt;
       "
     >
-      {{ details.address }}
+      <!-- {{ details.address }} -->
+      {{
+        details.address_res_barangay ? details.address_res_barangay + ", " : ""
+      }}
+      {{ details.address_res_city }}, {{ details.address_res_province }}
     </div>
 
     <div
@@ -69,17 +73,18 @@
     <div
       style="
         width: 100%;
-        text-align: center;
+        text-align: left;
         position: absolute;
-        left: 0px;
-        bottom: 182px;
-        font-weight: 600;
+        left: 22px;
+        bottom: 178px;
+        /* font-weight: 600; */
+        font-size: 14px;
       "
     >
       {{ details.emergency_name }}
     </div>
 
-    <div
+    <!-- <div
       style="
         width: 100%;
         text-align: center;
@@ -89,16 +94,21 @@
         font-weight: 600;
       "
     >
-      {{ details.emergency_address }}
-    </div>
+      {{
+        details.emergency_address
+          ? details.emergency_address.substr(0, 46)
+          : ""
+      }}...
+    </div> -->
     <div
       style="
         width: 100%;
-        text-align: center;
+        text-align: left;
         position: absolute;
-        left: 0px;
-        top: 305px;
-        font-weight: 600;
+        left: 22px;
+        top: 297px;
+        /* font-weight: 600; */
+        font-size: 16px;
       "
     >
       {{ details.emergency_number }}
@@ -115,7 +125,7 @@
       class="detail"
       style="position: absolute; top: 335px; left: 91px; font-size: 9pt"
     >
-      {{ details.date_issued }}
+      {{ details.date_valid_until }}
     </div>
 
     <!-- signature container start -->
