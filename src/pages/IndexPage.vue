@@ -24,6 +24,7 @@
           label="Search Employee"
           :options="selections"
           @filter="filterFn"
+          @clear="onClearForm()"
           @update:model-value="getEmployeeData()"
           behavior="menu"
         >
@@ -76,6 +77,7 @@
               class="q-gutter-sm_"
             >
               <q-input
+                :disable="!selected_employee"
                 dense
                 filled
                 v-model="selected_employee_data.empno"
@@ -89,6 +91,7 @@
               />
               <div class="row">
                 <q-input
+                  :disable="!selected_employee"
                   class="col"
                   dense
                   filled
@@ -101,9 +104,33 @@
                       (val && val.length > 0) ||
                       '* Last Name should not be empty!',
                   ]"
-                />
+                >
+                  <template v-slot:append>
+                    <q-btn round dense flat icon="format_shapes" />
+                  </template>
+                </q-input>
+                <!-- 
+                <q-input
+                  bottom-slots
+                  v-model="text"
+                  label="Label"
+                  counter
+                  maxlength="12"
+                  :dense="dense"
+                >
+                  <template v-slot:before>
+                    <q-icon name="event" />
+                  </template>
+
+                  <template v-slot:hint> Field hint </template>
+
+                  <template v-slot:append>
+                    <q-btn round dense flat icon="add" />
+                  </template>
+                </q-input> -->
 
                 <q-input
+                  :disable="!selected_employee"
                   class="col q-ml-sm"
                   dense
                   filled
@@ -116,11 +143,16 @@
                       (val && val.length > 0) ||
                       '* First Name should not be empty!',
                   ]"
-                />
+                >
+                  <template v-slot:append>
+                    <q-btn round dense flat icon="format_shapes" />
+                  </template>
+                </q-input>
               </div>
               <div class="row">
                 <div class="col">
                   <q-input
+                    :disable="!selected_employee"
                     dense
                     filled
                     v-model="selected_employee_data.middleName"
@@ -130,6 +162,7 @@
                 </div>
                 <div class="col q-ml-sm">
                   <q-input
+                    :disable="!selected_employee"
                     dense
                     filled
                     v-model="selected_employee_data.extName"
@@ -139,6 +172,7 @@
               </div>
 
               <q-input
+                :disable="!selected_employee"
                 dense
                 filled
                 v-model="selected_employee_data.address_res_barangay"
@@ -152,6 +186,7 @@
               />
 
               <q-input
+                :disable="!selected_employee"
                 dense
                 filled
                 v-model="selected_employee_data.address_res_city"
@@ -165,6 +200,7 @@
               />
 
               <q-input
+                :disable="!selected_employee"
                 dense
                 filled
                 v-model="selected_employee_data.address_res_province"
@@ -179,6 +215,7 @@
 
               <div class="row">
                 <q-select
+                  :disable="!selected_employee"
                   class="col"
                   dense
                   outlined
@@ -187,6 +224,7 @@
                   label="Gender"
                 />
                 <q-input
+                  :disable="!selected_employee"
                   class="col q-ml-sm"
                   dense
                   filled
@@ -197,6 +235,7 @@
               </div>
 
               <!-- <q-input
+                :disable="!selected_employee"
                 dense
                 filled
                 v-model="selected_employee_data.address"
@@ -211,6 +250,7 @@
 
               <div class="row">
                 <q-input
+                  :disable="!selected_employee"
                   class="col"
                   dense
                   filled
@@ -225,6 +265,7 @@
                 />
 
                 <q-input
+                  :disable="!selected_employee"
                   class="col q-ml-sm"
                   dense
                   filled
@@ -240,6 +281,7 @@
               </div>
 
               <q-input
+                :disable="!selected_employee"
                 dense
                 filled
                 v-model="selected_employee_data.emergency_name"
@@ -253,6 +295,7 @@
               />
 
               <q-input
+                :disable="!selected_employee"
                 dense
                 filled
                 v-model="selected_employee_data.emergency_number"
@@ -266,8 +309,14 @@
               />
 
               <div class="q-mt-sm"></div>
-              <q-btn class="q-mr-sm" type="submit">Save</q-btn>
-              <q-btn label="Download" @click="downloadImage()"></q-btn>
+              <q-btn :disable="!selected_employee" class="q-mr-sm" type="submit"
+                >Save</q-btn
+              >
+              <q-btn
+                :disable="!selected_employee"
+                label="Download"
+                @click="downloadImage()"
+              ></q-btn>
             </q-form>
           </div>
         </div>
@@ -354,6 +403,14 @@ defineOptions({
         link.click();
       });
     },
+    onClearForm() {
+      window.location.reload();
+      // console.log("clear");
+      // this.selected_employee_data = {};
+      // vue-avatar-editor-improved
+      // console.log(this.$refs.vueavatar.resetImage());
+      // console.log((this.$refs.vueavatar.image = "#"));
+    },
     onSubmit() {
       // console.log(this.selected_employee_data);
       this.$api
@@ -370,6 +427,7 @@ defineOptions({
     },
     onReset() {},
     getEmployeeData() {
+      if (!this.selected_employee) return;
       this.$api
         .post("http://localhost:8081/test.php", {
           getEmployeeData: true,
