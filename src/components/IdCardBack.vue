@@ -138,9 +138,10 @@
         text-align: center;
       "
       id="signatureDiv"
-      @click="promptSigDialog()"
+      @click="getSignatureDialog()"
     >
       <img
+        :hidden="details.name ? false : true"
         id="signatureImage"
         src="~/assets/images/get_sig.png"
         style="
@@ -230,7 +231,8 @@
 <script setup>
 import "assets/libs/q.js";
 import WacomGSS from "assets/libs/wgssStuSdk.js";
-import { ref } from "vue";
+import { ref, watch } from "vue";
+import axios from "axios";
 
 defineOptions({
   name: "IdCardBack",
@@ -242,6 +244,12 @@ const props = defineProps({
     required: true,
   },
 });
+
+const emit = defineEmits(["onPenDataSave"]);
+
+function savePenData() {
+  emit("onPenDataSave", m_penData);
+}
 
 var Dialog = ref(false);
 
@@ -270,6 +278,35 @@ var modalBackground;
 var protocol;
 var retry = 0;
 var tablet;
+
+watch(
+  () => props.details,
+  (newValue, oldValue) => {
+    // Note: `newValue` will be equal to `oldValue` here
+    // *unless* state.someObject has been replaced
+    // console.log("sig_Src: ", newValue.sig_src);
+    if (newValue.sig_src) {
+      m_penData = newValue.sig_src;
+      m_capability = {
+        encodingFlag: 3,
+        maxReportRate: 200,
+        resolution: 2540,
+        screenHeight: 200,
+        screenWidth: 320,
+        tabletMaxPressure: 1023,
+        tabletMaxX: 9600,
+        tabletMaxY: 6000,
+      };
+
+      m_inkThreshold = { offPressureMark: 16, onPressureMark: 21 };
+
+      // start
+      // promptSigDialog();
+      generateImage();
+    }
+  },
+  { deep: true }
+);
 
 function checkForSigCaptX() {
   // Establishing a connection to SigCaptX Web Service can take a few seconds,
@@ -435,9 +472,12 @@ window.addEventListener("beforeunload", function (e) {
 function DCANotReady() {}
 DCANotReady.prototype = new Error();
 
-function promptSigDialog() {
+function getSignatureDialog() {
   Dialog.value = true;
-  // console.log("setup.dialog: ", setup.dialog);
+  promptSigDialog();
+}
+
+function promptSigDialog() {
   var p = new WacomGSS.STU.Protocol();
   var intf;
   var m_encH;
@@ -485,12 +525,12 @@ function promptSigDialog() {
       return tablet.getInkThreshold();
     })
     .then(function (message) {
-      console.log("received: " + JSON.stringify(message));
+      console.log("m_inkThreshold received: " + JSON.stringify(message));
       m_inkThreshold = message;
       return tablet.getCapability();
     })
     .then(function (message) {
-      console.log("received: " + JSON.stringify(message));
+      console.log("m_capability received: " + JSON.stringify(message));
       m_capability = message;
 
       createModalWindow(m_capability.screenWidth, m_capability.screenHeight);
@@ -611,6 +651,7 @@ function promptSigDialog() {
         processPoint(report, canvas, ctx);
         m_penData.push(report);
       };
+
       var penDataEncryptedOption = function (report) {
         //console.log("reportOp: " + JSON.stringify(report));
         processButtons(report.penData[0], canvas);
@@ -627,6 +668,7 @@ function promptSigDialog() {
       var decrypted = function (report) {
         //console.log("decrypted: " + JSON.stringify(report));
       };
+
       m_penData = new Array();
       reportHandler.onReportPenData = penData;
       reportHandler.onReportPenDataOption = penData;
@@ -756,6 +798,7 @@ function clearScreen() {
 function btnOk_Click() {
   // You probably want to add additional processing here.
   // console.log("this.dialog: ", this.dialog);
+  console.log("btnOk_Click: ", this);
   generateImage();
   setTimeout(close, 0);
 }
@@ -858,7 +901,6 @@ function generateImage() {
   var signatureCanvas = document.createElement("canvas");
   signatureCanvas.id = "signatureCanvas";
   signatureCanvas.height = signatureImage.height;
-  console.log("signatureImage.height: ", signatureImage.height);
   signatureCanvas.width = signatureImage.width;
   var signatureCtx = signatureCanvas.getContext("2d");
 
@@ -871,6 +913,10 @@ function generateImage() {
   for (var i = 0; i < m_penData.length; i++) {
     processPoint(m_penData[i], signatureCanvas, signatureCtx);
   }
+
+  // console.log("m_penData: ", m_penData);
+  savePenData();
+
   signatureImage.src = signatureCanvas.toDataURL("image/png");
 }
 

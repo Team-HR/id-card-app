@@ -59,32 +59,34 @@
         font-weight: 500;
       "
     >
-      {{ details.empno ? details.empno : "_ - ____" }}
+      {{
+        details.empno
+          ? `${details.empno.substr(0, 1)}-${details.empno.substr(-4, 4)}`
+          : "_ - ____"
+      }}
     </div>
 
     <div
+      :style="`font-size:${textFormat.lastName.font_size}px; bottom: ${textFormat.lastName.bottom}px;
+        left: ${textFormat.lastName.left}px; `"
       style="
-        font-size: 32pt;
         width: 100%;
         text-align: left;
         font-weight: 500;
         position: absolute;
-        bottom: 119px;
-        left: 40px;
       "
     >
       {{ details.lastName }}{{ details.extName ? ", " + details.extName : "" }}
     </div>
     <div
       style="
-        font-size: 23pt;
         width: 100%;
         text-align: left;
         font-weight: 700;
         position: absolute;
-        bottom: 95px;
-        left: 40px;
       "
+      :style="`font-size:${textFormat.firstName.font_size}px; bottom: ${textFormat.firstName.bottom}px;
+        left: ${textFormat.firstName.left}px; `"
     >
       {{ details.firstName }}
       {{ details.middleName ? details.middleName[0] + ". " : "" }}
@@ -131,6 +133,10 @@ const props = defineProps({
   },
   imgSrc: {
     type: String,
+    required: true,
+  },
+  textFormat: {
+    type: Object,
     required: true,
   },
 });

@@ -106,7 +106,10 @@
                   ]"
                 >
                   <template v-slot:append>
-                    <q-btn round dense flat icon="format_shapes" />
+                    <TextFormatter
+                      :textProps="textFormat.lastName"
+                      textFor="lastName"
+                    />
                   </template>
                 </q-input>
                 <!-- 
@@ -145,7 +148,11 @@
                   ]"
                 >
                   <template v-slot:append>
-                    <q-btn round dense flat icon="format_shapes" />
+                    <!-- <q-btn round dense flat icon="format_shapes" /> -->
+                    <TextFormatter
+                      :textProps="textFormat.firstName"
+                      textFor="firstName"
+                    />
                   </template>
                 </q-input>
               </div>
@@ -327,8 +334,15 @@
         style="position: relative"
       >
         <!-- <div style="background-color: aqua; height: 8.5cm; width: 5.4cm"></div> -->
-        <IdCardFront :details="selected_employee_data" :imgSrc="imgSrc" />
-        <IdCardBack :details="selected_employee_data" />
+        <IdCardFront
+          :details="selected_employee_data"
+          :imgSrc="imgSrc"
+          :textFormat="textFormat"
+        />
+        <IdCardBack
+          :details="selected_employee_data"
+          @onPenDataSave="savePendata"
+        />
       </div>
     </div>
   </q-page>
@@ -341,6 +355,7 @@ import VueAvatar from "vue-avatar-editor-improved/src/components/VueAvatar.vue";
 
 import IdCardFront from "components/IdCardFront.vue";
 import IdCardBack from "components/IdCardBack.vue";
+import TextFormatter from "components/TextFormatter.vue";
 
 import * as htmlToImage from "html-to-image";
 import { toPng, toJpeg, toBlob, toPixelData, toSvg } from "html-to-image";
@@ -351,10 +366,30 @@ defineOptions({
     VueAvatar: VueAvatar,
     IdCardFront,
     IdCardBack,
+    TextFormatter,
   },
 
   data: function data() {
     return {
+      textFormat: {
+        lastName: {
+          font_size: 43,
+          bottom: 119,
+          left: 40,
+        },
+        firstName: {
+          font_size: 28,
+          bottom: 97,
+          left: 40,
+        },
+        // font-size: 28px;
+        // width: 100%;
+        // text-align: left;
+        // font-weight: 700;
+        // position: absolute;
+        // bottom: 97px;
+        // left: 40px;
+      },
       selected_employee: null,
       selected_employee_data: {
         empno: null,
@@ -376,8 +411,22 @@ defineOptions({
   },
 
   methods: {
+    savePendata(data) {
+      this.$api
+        .post("http://localhost:8081/test.php", {
+          savePendata: true,
+          m_penData: data,
+          employees_id: this.selected_employee_data.employees_id,
+        })
+        .then(({ data }) => {})
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+    adjustLastName() {
+      console.log("adjust lastname");
+    },
     downloadImage() {
-      // canvasWidth: 204, canvasHeight: 324
       // canvasWidth: 204, canvasHeight: 324
       var node1 = document.getElementById("IdCardFront");
       var node2 = document.getElementById("IdCardBack");
@@ -412,11 +461,12 @@ defineOptions({
       // console.log((this.$refs.vueavatar.image = "#"));
     },
     onSubmit() {
-      // console.log(this.selected_employee_data);
+      console.log(this.textFormat);
       this.$api
         .post("http://localhost:8081/test.php", {
           saveEmployeeData: true,
           selected_employee_data: this.selected_employee_data,
+          textFormat: this.textFormat,
         })
         .then(({ data }) => {
           console.log("SAVED DATA: ", data);
@@ -436,6 +486,16 @@ defineOptions({
         .then(({ data }) => {
           console.log("EMPLOYEE DATA: ", data);
           this.selected_employee_data = data;
+          if (data.text_formatting) {
+            this.textFormat.lastName.font_size =
+              data.text_formatting.lastName.font_size;
+            this.textFormat.lastName.bottom =
+              data.text_formatting.lastName.bottom;
+            this.textFormat.firstName.font_size =
+              data.text_formatting.firstName.font_size;
+            this.textFormat.firstName.bottom =
+              data.text_formatting.firstName.bottom;
+          }
         })
         .catch((err) => {
           console.error(err);
