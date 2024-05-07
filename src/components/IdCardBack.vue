@@ -140,15 +140,20 @@
       id="signatureDiv"
       @click="getSignatureDialog()"
     >
+      <!-- src="~/assets/images/get_sig.png" -->
+      <!-- :hidden="details.name ? false : true" -->
+
       <img
-        :hidden="details.name ? false : true"
         id="signatureImage"
         src="~/assets/images/get_sig.png"
         style="
-          max-width: 233px;
-          max-height: 182px;
-          vertical-align: bottom;
-          /* background-color: red; */
+          height: 227px;
+          width: 359px;
+          /* vertical-align: bottom; */
+          position: absolute;
+          bottom: -146px;
+          left: -27px;
+          transform: scale(0.4);
         "
       />
     </div>
@@ -290,9 +295,9 @@ watch(
       m_capability = {
         encodingFlag: 3,
         maxReportRate: 200,
-        resolution: 2540,
-        screenHeight: 200,
-        screenWidth: 320,
+        resolution: 64000,
+        screenHeight: 227,
+        screenWidth: 359,
         tabletMaxPressure: 1023,
         tabletMaxX: 9600,
         tabletMaxY: 6000,
@@ -900,13 +905,14 @@ function generateImage() {
   var signatureImage = document.getElementById("signatureImage");
   var signatureCanvas = document.createElement("canvas");
   signatureCanvas.id = "signatureCanvas";
-  signatureCanvas.height = signatureImage.height;
-  signatureCanvas.width = signatureImage.width;
+  signatureCanvas.height = signatureImage.height; //227
+  signatureCanvas.width = signatureImage.width; //359
+
   var signatureCtx = signatureCanvas.getContext("2d");
 
   clearCanvasOut(signatureCanvas, signatureCtx);
 
-  signatureCtx.lineWidth = 1;
+  signatureCtx.lineWidth = "2.5";
   signatureCtx.strokeStyle = "black";
   lastPoint = { x: 0, y: 0 };
   isDown = false;
