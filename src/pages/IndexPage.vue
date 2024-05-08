@@ -42,7 +42,7 @@
         <div class="row">
           <div class="col">
             <div style="margin-left: 30px">
-              <vue-avatar
+              <!-- <vue-avatar
                 image=""
                 :width="200"
                 :height="200"
@@ -53,6 +53,7 @@
                 @vue-avatar-editor:image-ready="onImageReady"
               >
               </vue-avatar>
+
               <br />
               <label>
                 Zoom : {{ scale }}x
@@ -67,7 +68,11 @@
               </label>
               <br />
               <button v-on:click="saveClicked">Get image</button>
-              <br />
+              <br /> -->
+              <!-- PhotoGetter Component Start -->
+              <PhotoGetter @imageCaptured="saveImageCaptured" />
+              <PhotoAdjuster :photoProps="photoFormat" />
+              <!-- PhotoGetter Component End -->
             </div>
           </div>
           <div class="col-7">
@@ -192,19 +197,36 @@
                 ]"
               />
 
-              <q-input
-                :disable="!selected_employee"
-                dense
-                filled
-                v-model="selected_employee_data.address_res_city"
-                label="City/Municipality"
-                hint=""
-                lazy-rules
-                :rules="[
-                  (val) =>
-                    (val && val.length > 0) || '* Field should not be empty!',
-                ]"
-              />
+              <div class="row">
+                <q-input
+                  class="col q-mr-sm"
+                  :disable="!selected_employee"
+                  dense
+                  filled
+                  v-model="selected_employee_data.address_res_city"
+                  label="City/Municipality"
+                  hint=""
+                  lazy-rules
+                  :rules="[
+                    (val) =>
+                      (val && val.length > 0) || '* Field should not be empty!',
+                  ]"
+                />
+                <q-input
+                  class="col"
+                  :disable="!selected_employee"
+                  dense
+                  filled
+                  v-model="selected_employee_data.address_res_zip_code"
+                  label="Zipcode"
+                  hint=""
+                  lazy-rules
+                  :rules="[
+                    (val) =>
+                      (val && val.length > 0) || '* Field should not be empty!',
+                  ]"
+                />
+              </div>
 
               <q-input
                 :disable="!selected_employee"
@@ -338,6 +360,7 @@
           :details="selected_employee_data"
           :imgSrc="imgSrc"
           :textFormat="textFormat"
+          :photoFormat="photoFormat"
         />
         <IdCardBack
           :details="selected_employee_data"
@@ -345,6 +368,9 @@
         />
       </div>
     </div>
+    <!-- <video id="player" autoplay></video>
+    <button id="capture">Capture</button>
+    <canvas id="canvas" width="320" height="240"></canvas> -->
   </q-page>
 </template>
 
@@ -355,6 +381,9 @@ import VueAvatar from "vue-avatar-editor-improved/src/components/VueAvatar.vue";
 
 import IdCardFront from "components/IdCardFront.vue";
 import IdCardBack from "components/IdCardBack.vue";
+import PhotoGetter from "components/PhotoGetter.vue";
+import PhotoAdjuster from "components/PhotoAdjuster.vue";
+
 import TextFormatter from "components/TextFormatter.vue";
 
 import * as htmlToImage from "html-to-image";
@@ -371,6 +400,14 @@ defineOptions({
 
   data: function data() {
     return {
+      // <!-- top: -14px;
+      //     left: -58px;
+      //     transform: scale(1.5); -->
+      photoFormat: {
+        top: -14,
+        left: -58,
+        scale: 1.5,
+      },
       textFormat: {
         lastName: {
           font_size: 43,
@@ -411,6 +448,22 @@ defineOptions({
   },
 
   methods: {
+    saveImageCaptured(dataUrl) {
+      // console.log(dataUrl);
+      this.imgSrc = dataUrl;
+      this.$api
+        .post("http://localhost:8081/test.php", {
+          saveImageCaptured: true,
+          dataUrl: dataUrl,
+          employees_id: this.selected_employee_data.employees_id,
+        })
+        .then(({ data }) => {
+          console.log("saveImage(dataUrl): ", data);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
     savePendata(data) {
       this.$api
         .post("http://localhost:8081/test.php", {
@@ -484,7 +537,7 @@ defineOptions({
           employeeId: this.selected_employee.value,
         })
         .then(({ data }) => {
-          console.log("EMPLOYEE DATA: ", data);
+          // console.log("EMPLOYEE DATA: ", data);
           this.selected_employee_data = data;
           if (data.text_formatting) {
             this.textFormat.lastName.font_size =
@@ -536,12 +589,34 @@ defineOptions({
         getEmployeeList: "true",
       })
       .then(({ data }) => {
-        console.log(data);
+        // console.log(data);
         this.employees = data;
       })
       .catch((err) => {
         console.error(err);
       });
+  },
+
+  mounted() {
+    // const player = document.getElementById("player");
+    // const canvas = document.getElementById("canvas");
+    // const context = canvas.getContext("2d");
+    // const captureButton = document.getElementById("capture");
+    // const constraints = {
+    //   video: true,
+    // };
+    // captureButton.addEventListener("click", () => {
+    //   // Draw the video frame to the canvas.
+    //   context.drawImage(player, 0, 0, canvas.width, canvas.height);
+    // });
+    // console.log(
+    //   "enumerate camera devices ",
+    //   navigator.mediaDevices.enumerateDevices()
+    // );
+    // // Attach the video stream to the video element and autoplay.
+    // navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+    //   player.srcObject = stream;
+    // });
   },
 });
 </script>

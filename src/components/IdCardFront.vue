@@ -36,16 +36,24 @@
       style="
         width: 169px;
         height: 168px;
-        background-color: aliceblue;
+        /* background-color: aliceblue; */
         border-radius: 100%;
         position: absolute;
         top: 80px;
         left: 81px;
+        border: 1px solid #058040;
+        border-radius: 100%;
+        overflow: hidden;
       "
     >
       <img
-        :src="imgSrc"
-        style="width: 169px; margin: auto; border-radius: 100%"
+        :src="
+          imgSrc
+            ? imgSrc
+            : 'http://localhost:8081/id_photos/' + details.employees_id + '.png'
+        "
+        style="position: relative"
+        :style="`top:${photoFormat.top}px; left: ${photoFormat.left}px; transform: scale(${photoFormat.scale})`"
       />
     </div>
 
@@ -136,6 +144,10 @@ const props = defineProps({
     required: true,
   },
   textFormat: {
+    type: Object,
+    required: true,
+  },
+  photoFormat: {
     type: Object,
     required: true,
   },

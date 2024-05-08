@@ -39,7 +39,8 @@
       {{
         details.address_res_barangay ? details.address_res_barangay + ", " : ""
       }}
-      {{ details.address_res_city }}, {{ details.address_res_province }}
+      {{ details.address_res_city }}, {{ details.address_res_zip_code }},
+      {{ details.address_res_province }}
     </div>
 
     <div
