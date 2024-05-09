@@ -1,7 +1,17 @@
 <template>
   <div id="photoGetterContainer">
     <!-- <img id="capturePhotoImg" src="~/assets/images/default-img.jpg" /> -->
-    <img id="uploadedPhoto" src="#" hidden />
+    <div
+      hidden
+      id="uploadedPhotoEditor"
+      style="width: 250px; height: 188px; overflow: hidden; display: relative"
+    >
+      <img
+        id="uploadedPhoto"
+        src="#"
+        style="transform: scale(1); width: 250px !important"
+      />
+    </div>
     <div :hidden="hasNewCapture" style="overflow: hidden">
       <!-- '' -->
       <img
@@ -29,13 +39,17 @@
       /> -->
     </div>
 
-    <canvas id="canvasCapture" style="width: 250px; height: 188px"></canvas>
+    <canvas id="canvasCapture" width="250px" height="188px"></canvas>
   </div>
 
   <!-- <q-btn unelevated class="" label="Upload" icon="file_upload" /> -->
 
   <div class="q-mt-sm">
-    <q-btn unelevated icon="file_upload" @click="promptUploadPhoto()"
+    <q-btn
+      unelevated
+      icon="file_upload"
+      @click="promptUploadPhoto()"
+      :disable="!selected_employee_data.employees_id"
       >Upload</q-btn
     >
     <input
@@ -143,17 +157,20 @@ defineOptions({
     },
     uploadPhoto(event) {
       const uploadPhotoInput = document.getElementById("uploadPhotoInput");
+      var uploadedPhoto = document.getElementById("uploadedPhoto");
+
       if (uploadPhotoInput.files && uploadPhotoInput.files[0]) {
-        var uploadedPhoto = document.getElementById("uploadedPhoto");
         uploadedPhoto.onload = () => {
           URL.revokeObjectURL(uploadedPhoto.src); // no longer needed, free memory
 
+          const uploadedPhotoEditor = document.getElementById(
+            "uploadedPhotoEditor"
+          );
           const canvas = document.getElementById("canvasCapture");
+          // canvas.style.width = uploadedPhotoEditor.style.width;
+          // canvas.style.height = uploadedPhotoEditor.style.height;
           const context = canvas.getContext("2d");
 
-          var hRatio = canvas.width / uploadedPhoto.width;
-          var vRatio = canvas.height / uploadedPhoto.height;
-          var ratio = Math.max(hRatio, vRatio);
           context.drawImage(
             uploadedPhoto,
             0,
@@ -162,14 +179,19 @@ defineOptions({
             uploadedPhoto.height,
             0,
             0,
-            uploadedPhoto.width * ratio,
-            uploadedPhoto.height * ratio
+            canvas.width,
+            canvas.height
           );
 
+          console.log(uploadedPhoto.width + " " + uploadedPhoto.height);
+          console.log(canvas.width + " " + canvas.height);
           // console.log("canvas.toDataURL()", canvas.toDataURL());
           const dataUrl = canvas.toDataURL("image/jpeg", 1.0);
-          console.log("context.drawImage: ", dataUrl);
+          console.log(dataUrl);
+          this.$emit("imageCaptured", dataUrl);
+          this.hasNewCapture = true;
         };
+
         uploadedPhoto.src = URL.createObjectURL(uploadPhotoInput.files[0]); // set src to blob url
       }
     },

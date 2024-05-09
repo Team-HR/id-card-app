@@ -21,7 +21,7 @@
           v-model="selected_employee_input"
           use-input
           input-debounce="0"
-          label="Search employee_input"
+          label="Select Employee"
           :options="selections"
           @filter="filterFn"
           @clear="onClearForm()"
@@ -474,7 +474,8 @@ defineOptions({
           this.selected_employee_data.empno +
           "_FRONT.jpeg";
         link.href = dataUrl;
-        link.click();
+        // console.log(dataUrl);
+        // link.click();
       });
 
       htmlToImage.toJpeg(node2, { quality: 1 }).then((dataUrl) => {
@@ -485,6 +486,7 @@ defineOptions({
           this.selected_employee_data.empno +
           "_BACK.jpeg";
         link.href = dataUrl;
+        // console.log(dataUrl);
         link.click();
       });
     },
