@@ -1,22 +1,66 @@
 <template>
   <div id="photoGetterContainer">
     <!-- <img id="capturePhotoImg" src="~/assets/images/default-img.jpg" /> -->
-    <canvas id="canvasCapture" width="250" height="187.5"></canvas>
+    <img id="uploadedPhoto" src="#" hidden />
+    <div :hidden="hasNewCapture" style="overflow: hidden">
+      <!-- '' -->
+      <img
+        :hidden="!selected_employee_data.employees_id"
+        id="defaultImg"
+        width="250"
+        height="187.5"
+        :src="
+          'http://192.168.14.36:8081/id_photos/' +
+          selected_employee_data.employees_id +
+          '.jpg'
+        "
+      />
+      <!-- <img
+        :hidden="selected_employee_data.employees_id"
+        id="defaultImg"
+        :src="'/images/default-img.jpg'"
+        style="
+          width: 250px;
+          height: 240px;
+          position: relative;
+          top: -24px;
+          left: 0px;
+        "
+      /> -->
+    </div>
+
+    <canvas id="canvasCapture" style="width: 250px; height: 188px"></canvas>
   </div>
 
   <!-- <q-btn unelevated class="" label="Upload" icon="file_upload" /> -->
-  <q-btn
-    unelevated
-    class=""
-    label="CAM"
-    icon="add_a_photo"
-    @click="promptDialog"
-  />
 
+  <div class="q-mt-sm">
+    <q-btn unelevated icon="file_upload" @click="promptUploadPhoto()"
+      >Upload</q-btn
+    >
+    <input
+      id="uploadPhotoInput"
+      type="file"
+      accept="image/jpeg"
+      hidden
+      @change="uploadPhoto(event)"
+    />
+
+    <q-btn
+      unelevated
+      class=""
+      label="CAM"
+      icon="add_a_photo"
+      @click="promptDialog"
+      :disable="!selected_employee_data.employees_id"
+    />
+
+    <slot name="buttons"></slot>
+  </div>
   <!-- <q-btn unelevated class="" label="" icon="format_shapes" /> -->
 
   <q-dialog v-model="prompt" persistent>
-    <q-card style="min-width: 350px; text-align: center">
+    <q-card style="min-width: 1500px; text-align: center">
       <q-card-section class="q-pt-none q-ma-lg">
         <q-select
           v-model="selectedCamDevice"
@@ -24,7 +68,7 @@
           label="Device"
         />
 
-        <video id="player" autoplay style="width: 250px"></video>
+        <video id="player" autoplay style="width: 1000px"></video>
         <br />
         <q-btn id="capture">Capture</q-btn>
       </q-card-section>
@@ -38,11 +82,12 @@
 
 <style>
 #photoGetterContainer {
-  border: 1px solid grey;
-  margin-top: 20px;
-  margin-left: 15px;
+  /* border: 1px solid grey; */
   width: 250px;
   height: 187.5px;
+  margin-top: 20px;
+  margin-left: 15px;
+
   background-color: aliceblue;
   /* cursor: pointer; */
 }
@@ -61,6 +106,7 @@ defineOptions({
   name: "PhotoGetter",
   data() {
     return {
+      hasNewCapture: false,
       prompt: false,
       selectedCamDevice: null,
       camDevices: [],
@@ -68,6 +114,14 @@ defineOptions({
     };
   },
   watch: {
+    "selected_employee_data.employees_id"(val) {
+      // this.$nextTick(() => {
+      //   const canvas = document.getElementById("canvasCapture");
+      //   const ctx = canvas.getContext("2d");
+      //   const image = document.getElementById("defaultImg");
+      //   ctx.drawImage(image, 10, 10, canvas.width, canvas.height);
+      // });
+    },
     prompt(val, oldValue) {
       if (!val) {
         if (window.stream) {
@@ -82,6 +136,44 @@ defineOptions({
     },
   },
   methods: {
+    promptUploadPhoto() {
+      const uploadPhotoInput = document
+        .getElementById("uploadPhotoInput")
+        .click();
+    },
+    uploadPhoto(event) {
+      const uploadPhotoInput = document.getElementById("uploadPhotoInput");
+      if (uploadPhotoInput.files && uploadPhotoInput.files[0]) {
+        var uploadedPhoto = document.getElementById("uploadedPhoto");
+        uploadedPhoto.onload = () => {
+          URL.revokeObjectURL(uploadedPhoto.src); // no longer needed, free memory
+
+          const canvas = document.getElementById("canvasCapture");
+          const context = canvas.getContext("2d");
+
+          var hRatio = canvas.width / uploadedPhoto.width;
+          var vRatio = canvas.height / uploadedPhoto.height;
+          var ratio = Math.max(hRatio, vRatio);
+          context.drawImage(
+            uploadedPhoto,
+            0,
+            0,
+            uploadedPhoto.width,
+            uploadedPhoto.height,
+            0,
+            0,
+            uploadedPhoto.width * ratio,
+            uploadedPhoto.height * ratio
+          );
+
+          // console.log("canvas.toDataURL()", canvas.toDataURL());
+          const dataUrl = canvas.toDataURL("image/jpeg", 1.0);
+          console.log("context.drawImage: ", dataUrl);
+        };
+        uploadedPhoto.src = URL.createObjectURL(uploadPhotoInput.files[0]); // set src to blob url
+      }
+    },
+
     promptDialog() {
       this.camDevices = [];
       this.getDevices().then(this.gotDevices);
@@ -98,14 +190,18 @@ defineOptions({
           video: true,
         };
 
+        // console.log(canvas.width + " : " + canvas.height);
+
         captureButton.addEventListener("click", () => {
           // Draw the video frame to the canvas.
           context.drawImage(this.player, 0, 0, canvas.width, canvas.height);
           // console.log("canvas.toDataURL()", canvas.toDataURL());
-          const dataUrl = canvas.toDataURL();
-
+          const dataUrl = canvas.toDataURL("image/jpeg", 1.0);
+          // console.log("canvas.toDataURL: ", dataUrl);
+          this.prompt = !this.prompt;
           this.$emit("imageCaptured", dataUrl);
 
+          this.hasNewCapture = true;
           // Stop all video streams.
           if (window.stream) {
             window.stream.getTracks().forEach((track) => {
@@ -176,13 +272,12 @@ defineOptions({
     },
   },
 
-  mounted() {},
+  created() {},
 });
 
 const props = defineProps({
-  // src: {
-  //   type: String,
-  //   required: true,
-  // },
+  selected_employee_data: {
+    type: Object,
+  },
 });
 </script>

@@ -50,7 +50,9 @@
         :src="
           imgSrc
             ? imgSrc
-            : 'http://localhost:8081/id_photos/' + details.employees_id + '.png'
+            : 'http://192.168.14.36:8081/id_photos/' +
+              details.employees_id +
+              '.jpg'
         "
         style="position: relative"
         :style="`top:${photoFormat.top}px; left: ${photoFormat.left}px; transform: scale(${photoFormat.scale})`"

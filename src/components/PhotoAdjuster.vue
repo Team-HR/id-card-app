@@ -1,6 +1,11 @@
 <template>
-  <div style="position: relative" ref="clickBox" class="flex">
-    <q-btn round dense flat icon="format_shapes" @click="promptDialog()" />
+  <div style="position: relative; display: inline" ref="clickBox">
+    <q-btn
+      unelevated
+      icon="format_shapes"
+      @click="promptDialog()"
+      :disable="!selected_employee_data.employees_id"
+    />
     <div
       class="q-pa-md"
       :hidden="displayModal == false"
@@ -9,9 +14,9 @@
         z-index: 999;
         background-color: white;
         width: 250px;
-        box-shadow: 10px 10px 20px 10px;
+        box-shadow: 10px 19px 60px -27px;
         border-radius: 5px;
-        right: 0px;
+        right: -210px;
       "
     >
       <q-btn
@@ -23,17 +28,17 @@
       <label for="" style="font-size: 12pt"
         >Vertical: {{ photoFormat.top }}px</label
       >
-      <q-slider v-model="photoFormat.top" :min="-28" :max="0" :step="1" />
+      <q-slider v-model="photoFormat.top" :min="-70" :max="56" :step="1" />
 
       <label for="" style="font-size: 12pt"
         >Horizontal: {{ photoFormat.left }}px</label
       >
-      <q-slider v-model="photoFormat.left" :min="-116" :max="0" :step="1" />
+      <q-slider v-model="photoFormat.left" :min="-290" :max="232" :step="1" />
 
       <label for="" style="font-size: 12pt"
         >Scale: {{ photoFormat.scale }}px</label
       >
-      <q-slider v-model="photoFormat.scale" :min="0" :max="3" :step="0.01" />
+      <q-slider v-model="photoFormat.scale" :min="0" :max="3" :step="0.1" />
 
       <q-btn size="xs" @click="displayModal = !displayModal">Close</q-btn>
     </div>
@@ -66,6 +71,9 @@ const props = defineProps({
   photoProps: {
     type: Object,
     required: true,
+  },
+  selected_employee_data: {
+    type: Object,
   },
 });
 </script>

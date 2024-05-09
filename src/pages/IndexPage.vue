@@ -18,10 +18,10 @@
           clearable
           class="q-mb-md"
           filled
-          v-model="selected_employee"
+          v-model="selected_employee_input"
           use-input
           input-debounce="0"
-          label="Search Employee"
+          label="Search employee_input"
           :options="selections"
           @filter="filterFn"
           @clear="onClearForm()"
@@ -42,36 +42,19 @@
         <div class="row">
           <div class="col">
             <div style="margin-left: 30px">
-              <!-- <vue-avatar
-                image=""
-                :width="200"
-                :height="200"
-                :rotation="rotation"
-                :borderRadius="borderRadius"
-                :scale="scale"
-                ref="vueavatar"
-                @vue-avatar-editor:image-ready="onImageReady"
-              >
-              </vue-avatar>
-
-              <br />
-              <label>
-                Zoom : {{ scale }}x
-                <br />
-                <input
-                  type="range"
-                  min="1"
-                  max="3"
-                  step="0.02"
-                  v-model="scale"
-                />
-              </label>
-              <br />
-              <button v-on:click="saveClicked">Get image</button>
-              <br /> -->
               <!-- PhotoGetter Component Start -->
-              <PhotoGetter @imageCaptured="saveImageCaptured" />
-              <PhotoAdjuster :photoProps="photoFormat" />
+              <PhotoGetter
+                @imageCaptured="saveImageCaptured"
+                :selected_employee_data="selected_employee_data"
+              >
+                <template v-slot:buttons>
+                  <PhotoAdjuster
+                    :photoProps="photoFormat"
+                    :selected_employee_data="selected_employee_data"
+                  />
+                </template>
+              </PhotoGetter>
+
               <!-- PhotoGetter Component End -->
             </div>
           </div>
@@ -82,7 +65,7 @@
               class="q-gutter-sm_"
             >
               <q-input
-                :disable="!selected_employee"
+                :disable="!selected_employee_input"
                 dense
                 filled
                 v-model="selected_employee_data.empno"
@@ -96,7 +79,7 @@
               />
               <div class="row">
                 <q-input
-                  :disable="!selected_employee"
+                  :disable="!selected_employee_input"
                   class="col"
                   dense
                   filled
@@ -138,7 +121,7 @@
                 </q-input> -->
 
                 <q-input
-                  :disable="!selected_employee"
+                  :disable="!selected_employee_input"
                   class="col q-ml-sm"
                   dense
                   filled
@@ -164,7 +147,7 @@
               <div class="row">
                 <div class="col">
                   <q-input
-                    :disable="!selected_employee"
+                    :disable="!selected_employee_input"
                     dense
                     filled
                     v-model="selected_employee_data.middleName"
@@ -174,7 +157,7 @@
                 </div>
                 <div class="col q-ml-sm">
                   <q-input
-                    :disable="!selected_employee"
+                    :disable="!selected_employee_input"
                     dense
                     filled
                     v-model="selected_employee_data.extName"
@@ -184,7 +167,7 @@
               </div>
 
               <q-input
-                :disable="!selected_employee"
+                :disable="!selected_employee_input"
                 dense
                 filled
                 v-model="selected_employee_data.address_res_barangay"
@@ -200,7 +183,7 @@
               <div class="row">
                 <q-input
                   class="col q-mr-sm"
-                  :disable="!selected_employee"
+                  :disable="!selected_employee_input"
                   dense
                   filled
                   v-model="selected_employee_data.address_res_city"
@@ -214,7 +197,7 @@
                 />
                 <q-input
                   class="col"
-                  :disable="!selected_employee"
+                  :disable="!selected_employee_input"
                   dense
                   filled
                   v-model="selected_employee_data.address_res_zip_code"
@@ -229,7 +212,7 @@
               </div>
 
               <q-input
-                :disable="!selected_employee"
+                :disable="!selected_employee_input"
                 dense
                 filled
                 v-model="selected_employee_data.address_res_province"
@@ -244,7 +227,7 @@
 
               <div class="row">
                 <q-select
-                  :disable="!selected_employee"
+                  :disable="!selected_employee_input"
                   class="col"
                   dense
                   outlined
@@ -253,7 +236,7 @@
                   label="Gender"
                 />
                 <q-input
-                  :disable="!selected_employee"
+                  :disable="!selected_employee_input"
                   class="col q-ml-sm"
                   dense
                   filled
@@ -264,7 +247,7 @@
               </div>
 
               <!-- <q-input
-                :disable="!selected_employee"
+                :disable="!selected_employee_input"
                 dense
                 filled
                 v-model="selected_employee_data.address"
@@ -279,7 +262,7 @@
 
               <div class="row">
                 <q-input
-                  :disable="!selected_employee"
+                  :disable="!selected_employee_input"
                   class="col"
                   dense
                   filled
@@ -294,7 +277,7 @@
                 />
 
                 <q-input
-                  :disable="!selected_employee"
+                  :disable="!selected_employee_input"
                   class="col q-ml-sm"
                   dense
                   filled
@@ -310,7 +293,7 @@
               </div>
 
               <q-input
-                :disable="!selected_employee"
+                :disable="!selected_employee_input"
                 dense
                 filled
                 v-model="selected_employee_data.emergency_name"
@@ -324,7 +307,7 @@
               />
 
               <q-input
-                :disable="!selected_employee"
+                :disable="!selected_employee_input"
                 dense
                 filled
                 v-model="selected_employee_data.emergency_number"
@@ -338,11 +321,14 @@
               />
 
               <div class="q-mt-sm"></div>
-              <q-btn :disable="!selected_employee" class="q-mr-sm" type="submit"
+              <q-btn
+                :disable="!selected_employee_input"
+                class="q-mr-sm"
+                type="submit"
                 >Save</q-btn
               >
               <q-btn
-                :disable="!selected_employee"
+                :disable="!selected_employee_input"
                 label="Download"
                 @click="downloadImage()"
               ></q-btn>
@@ -400,9 +386,6 @@ defineOptions({
 
   data: function data() {
     return {
-      // <!-- top: -14px;
-      //     left: -58px;
-      //     transform: scale(1.5); -->
       photoFormat: {
         top: -14,
         left: -58,
@@ -427,7 +410,7 @@ defineOptions({
         // bottom: 97px;
         // left: 40px;
       },
-      selected_employee: null,
+      selected_employee_input: null,
       selected_employee_data: {
         empno: null,
         lastName: null,
@@ -449,10 +432,9 @@ defineOptions({
 
   methods: {
     saveImageCaptured(dataUrl) {
-      // console.log(dataUrl);
       this.imgSrc = dataUrl;
       this.$api
-        .post("http://localhost:8081/test.php", {
+        .post("http://192.168.14.36:8081/test.php", {
           saveImageCaptured: true,
           dataUrl: dataUrl,
           employees_id: this.selected_employee_data.employees_id,
@@ -464,9 +446,10 @@ defineOptions({
           console.error(err);
         });
     },
+
     savePendata(data) {
       this.$api
-        .post("http://localhost:8081/test.php", {
+        .post("http://192.168.14.36:8081/test.php", {
           savePendata: true,
           m_penData: data,
           employees_id: this.selected_employee_data.employees_id,
@@ -514,12 +497,12 @@ defineOptions({
       // console.log((this.$refs.vueavatar.image = "#"));
     },
     onSubmit() {
-      console.log(this.textFormat);
       this.$api
-        .post("http://localhost:8081/test.php", {
+        .post("http://192.168.14.36:8081/test.php", {
           saveEmployeeData: true,
           selected_employee_data: this.selected_employee_data,
           textFormat: this.textFormat,
+          photoFormat: this.photoFormat,
         })
         .then(({ data }) => {
           console.log("SAVED DATA: ", data);
@@ -530,14 +513,14 @@ defineOptions({
     },
     onReset() {},
     getEmployeeData() {
-      if (!this.selected_employee) return;
+      if (!this.selected_employee_input) return;
       this.$api
-        .post("http://localhost:8081/test.php", {
+        .post("http://192.168.14.36:8081/test.php", {
           getEmployeeData: true,
-          employeeId: this.selected_employee.value,
+          employeeId: this.selected_employee_input.value,
         })
         .then(({ data }) => {
-          // console.log("EMPLOYEE DATA: ", data);
+          console.log("EMPLOYEE DATA: ", data);
           this.selected_employee_data = data;
           if (data.text_formatting) {
             this.textFormat.lastName.font_size =
@@ -548,6 +531,12 @@ defineOptions({
               data.text_formatting.firstName.font_size;
             this.textFormat.firstName.bottom =
               data.text_formatting.firstName.bottom;
+          }
+
+          if (data.photo_formatting) {
+            this.photoFormat.top = data.photo_formatting.top;
+            this.photoFormat.left = data.photo_formatting.left;
+            this.photoFormat.scale = data.photo_formatting.scale;
           }
         })
         .catch((err) => {
@@ -585,7 +574,7 @@ defineOptions({
 
   created() {
     this.$api
-      .post("http://localhost:8081/test.php", {
+      .post("http://192.168.14.36:8081/test.php", {
         getEmployeeList: "true",
       })
       .then(({ data }) => {
