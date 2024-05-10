@@ -2,19 +2,23 @@
   <div id="photoGetterContainer">
     <!-- <img id="capturePhotoImg" src="~/assets/images/default-img.jpg" /> -->
     <div
-      hidden
       id="uploadedPhotoEditor"
       style="width: 250px; height: 188px; overflow: hidden; display: relative"
     >
       <img
         id="uploadedPhoto"
-        src="#"
+        ref="uploadedPhotoRef"
+        :src="
+          'http://192.168.14.36:8081/id_photos/' +
+          selected_employee_data.employees_id +
+          '.jpg'
+        "
         style="transform: scale(1); width: 250px !important"
       />
     </div>
     <div :hidden="hasNewCapture" style="overflow: hidden">
       <!-- '' -->
-      <img
+      <!-- <img
         :hidden="!selected_employee_data.employees_id"
         id="defaultImg"
         width="250"
@@ -24,7 +28,7 @@
           selected_employee_data.employees_id +
           '.jpg'
         "
-      />
+      /> -->
       <!-- <img
         :hidden="selected_employee_data.employees_id"
         id="defaultImg"
@@ -39,7 +43,7 @@
       /> -->
     </div>
 
-    <canvas id="canvasCapture" width="250px" height="188px"></canvas>
+    <canvas hidden id="canvasCapture" width="250px" height="188px"></canvas>
   </div>
 
   <!-- <q-btn unelevated class="" label="Upload" icon="file_upload" /> -->
@@ -48,17 +52,18 @@
     <q-btn
       unelevated
       icon="file_upload"
-      @click="promptUploadPhoto()"
+      @click="uploadDialog = !uploadDialog"
       :disable="!selected_employee_data.employees_id"
       >Upload</q-btn
     >
-    <input
+
+    <!-- <input
       id="uploadPhotoInput"
       type="file"
       accept="image/jpeg"
       hidden
       @change="uploadPhoto(event)"
-    />
+    /> -->
 
     <q-btn
       unelevated
@@ -92,6 +97,42 @@
       </q-card-actions>
     </q-card>
   </q-dialog>
+
+  <q-dialog v-model="uploadDialog" persistent>
+    <q-card style="_min-width: 1500px; text-align: center">
+      <q-card-section class="q-pt-none q-ma-lg">
+        <vue-avatar
+          image=""
+          :width="250"
+          :height="188"
+          :rotation="rotation"
+          :borderRadius="borderRadius"
+          :scale="scale"
+          ref="vueavatar"
+          @vue-avatar-editor:image-ready="onImageReady"
+        >
+        </vue-avatar>
+
+        <br />
+        <label>
+          Zoom : {{ scale }}x
+          <br />
+          <input
+            type="range"
+            :min="1"
+            :max="3"
+            :step="0.02"
+            v-model.number="scale"
+          />
+        </label>
+        <br />
+        <q-btn label="Get Image" @click="saveClicked" />
+      </q-card-section>
+      <q-card-actions align="right" class="text-primary">
+        <q-btn flat label="Cancel" v-close-popup />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
 </template>
 
 <style>
@@ -115,16 +156,26 @@
 </style>
 
 <script setup>
+import VueAvatar from "vue-avatar-editor-improved/src/components/VueAvatar.vue";
+
 defineEmits(["imageCaptured"]);
 defineOptions({
   name: "PhotoGetter",
+  components: {
+    VueAvatar: VueAvatar,
+  },
   data() {
     return {
+      uploadDialog: false,
       hasNewCapture: false,
       prompt: false,
       selectedCamDevice: null,
       camDevices: [],
       player: null,
+      rotation: 0,
+      scale: 1,
+      borderRadius: 0,
+      imgSrc: null,
     };
   },
   watch: {
@@ -150,10 +201,29 @@ defineOptions({
     },
   },
   methods: {
+    saveClicked: function saveClicked() {
+      var img = this.$refs.vueavatar.getImageScaled();
+      // this.$refs.image.src = img.toDataURL();
+      const imgDataUrl = img.toDataURL("image/jpeg", 1.0);
+
+      const uploadedPhoto = document.getElementById("uploadedPhoto");
+      uploadedPhoto.src = imgDataUrl;
+      const canvas = document.getElementById("canvasCapture");
+      const context = canvas.getContext("2d");
+      context.drawImage(uploadedPhoto, 0, 0, canvas.width, canvas.height);
+
+      this.$emit("imageCaptured", imgDataUrl);
+      this.hasNewCapture = true;
+      this.uploadDialog = !this.uploadDialog;
+    },
+    onImageReady: function onImageReady() {
+      this.scale = 1;
+      this.rotation = 0;
+    },
     promptUploadPhoto() {
-      const uploadPhotoInput = document
-        .getElementById("uploadPhotoInput")
-        .click();
+      // const uploadPhotoInput = document
+      //   .getElementById("uploadPhotoInput")
+      //   .click();
     },
     uploadPhoto(event) {
       const uploadPhotoInput = document.getElementById("uploadPhotoInput");
@@ -217,9 +287,11 @@ defineOptions({
         captureButton.addEventListener("click", () => {
           // Draw the video frame to the canvas.
           context.drawImage(this.player, 0, 0, canvas.width, canvas.height);
-          // console.log("canvas.toDataURL()", canvas.toDataURL());
           const dataUrl = canvas.toDataURL("image/jpeg", 1.0);
-          // console.log("canvas.toDataURL: ", dataUrl);
+
+          const uploadedPhoto = document.getElementById("uploadedPhoto");
+          uploadedPhoto.src = dataUrl;
+
           this.prompt = !this.prompt;
           this.$emit("imageCaptured", dataUrl);
 
@@ -271,6 +343,7 @@ defineOptions({
 
     async getDevices() {
       // AFAICT in Safari this only gets default devices until gUM is called :/
+      console.log(navigator.mediaDevices.enumerateDevices());
       return await navigator.mediaDevices.enumerateDevices();
     },
 

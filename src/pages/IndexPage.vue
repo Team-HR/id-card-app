@@ -402,13 +402,6 @@ defineOptions({
           bottom: 97,
           left: 40,
         },
-        // font-size: 28px;
-        // width: 100%;
-        // text-align: left;
-        // font-weight: 700;
-        // position: absolute;
-        // bottom: 97px;
-        // left: 40px;
       },
       selected_employee_input: null,
       selected_employee_data: {
@@ -423,9 +416,6 @@ defineOptions({
       },
       employees: [],
       selections: this.employees,
-      rotation: 0,
-      scale: 1,
-      borderRadius: 0,
       imgSrc: "",
     };
   },
@@ -475,7 +465,7 @@ defineOptions({
           "_FRONT.jpeg";
         link.href = dataUrl;
         // console.log(dataUrl);
-        // link.click();
+        link.click();
       });
 
       htmlToImage.toJpeg(node2, { quality: 1 }).then((dataUrl) => {
@@ -559,18 +549,6 @@ defineOptions({
           (v) => v.label.toLowerCase().indexOf(needle) > -1
         );
       });
-    },
-
-    saveClicked: function saveClicked() {
-      var img = this.$refs.vueavatar.getImageScaled();
-      // this.$refs.image.src = img.toDataURL();
-      this.imgSrc = img.toDataURL();
-      // console.log(this.imgSrc);
-    },
-
-    onImageReady: function onImageReady() {
-      this.scale = 1;
-      this.rotation = 0;
     },
   },
 
