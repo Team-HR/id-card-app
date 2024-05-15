@@ -77,6 +77,29 @@
                     (val && val.length > 0) || 'Please enter the ID number',
                 ]"
               />
+              <q-input
+                readonly=""
+                :disable="!selected_employee_input"
+                class="col"
+                dense
+                filled
+                v-model="selected_employee_data.position"
+                label="Position"
+                hint=""
+                lazy-rules
+                :rules="[
+                  (val) =>
+                    (val && val.length > 0) ||
+                    '* Position should not be empty!',
+                ]"
+              >
+                <template v-slot:append>
+                  <TextFormatter
+                    :textProps="textFormat.position"
+                    textFor="position"
+                  />
+                </template>
+              </q-input>
               <div class="row">
                 <q-input
                   :disable="!selected_employee_input"
@@ -100,25 +123,6 @@
                     />
                   </template>
                 </q-input>
-                <!-- 
-                <q-input
-                  bottom-slots
-                  v-model="text"
-                  label="Label"
-                  counter
-                  maxlength="12"
-                  :dense="dense"
-                >
-                  <template v-slot:before>
-                    <q-icon name="event" />
-                  </template>
-
-                  <template v-slot:hint> Field hint </template>
-
-                  <template v-slot:append>
-                    <q-btn round dense flat icon="add" />
-                  </template>
-                </q-input> -->
 
                 <q-input
                   :disable="!selected_employee_input"
@@ -363,8 +367,6 @@
 <script setup>
 import { useQuasar } from "quasar";
 
-import VueAvatar from "vue-avatar-editor-improved/src/components/VueAvatar.vue";
-
 import IdCardFront from "components/IdCardFront.vue";
 import IdCardBack from "components/IdCardBack.vue";
 import PhotoGetter from "components/PhotoGetter.vue";
@@ -378,7 +380,6 @@ import { toPng, toJpeg, toBlob, toPixelData, toSvg } from "html-to-image";
 defineOptions({
   name: "IndexPage",
   components: {
-    VueAvatar: VueAvatar,
     IdCardFront,
     IdCardBack,
     TextFormatter,
@@ -392,6 +393,12 @@ defineOptions({
         scale: 1.5,
       },
       textFormat: {
+        position: {
+          font_size: 17,
+          bottom: 83,
+          left: 40,
+          line_height: 20,
+        },
         lastName: {
           font_size: 43,
           bottom: 119,

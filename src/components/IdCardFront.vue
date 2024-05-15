@@ -103,15 +103,13 @@
     </div>
     <div
       style="
-        font-size: 12pt;
-        width: 100%;
+        width: 258px;
         text-align: left;
-        /* font-weight: 500; */
         font-stretch: ultra-expanded;
         position: absolute;
-        bottom: 80px;
-        left: 40px;
       "
+      :style="`font-size:${textFormat.position.font_size}px; bottom: ${textFormat.position.bottom}px;
+        left: ${textFormat.position.left}px; line-height: ${textFormat.position.line_height}px;`"
     >
       {{ details.position }}
     </div>

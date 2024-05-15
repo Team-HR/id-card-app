@@ -119,7 +119,7 @@
           <br />
           <input
             type="range"
-            :min="1"
+            :min="-1"
             :max="3"
             :step="0.02"
             v-model.number="scale"
@@ -156,7 +156,7 @@
 </style>
 
 <script setup>
-import VueAvatar from "vue-avatar-editor-improved/src/components/VueAvatar.vue";
+import VueAvatar from "components/VueAvatar.vue";
 
 defineEmits(["imageCaptured"]);
 defineOptions({

@@ -30,7 +30,7 @@
     </q-drawer> -->
 
     <q-page-container>
-      <div class="q-mt-xl"></div>
+      <div class="q-mt-md"></div>
       <router-view />
     </q-page-container>
   </q-layout>
