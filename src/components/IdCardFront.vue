@@ -50,7 +50,7 @@
         :src="
           imgSrc
             ? imgSrc
-            : 'http://192.168.50.51:8081/id_photos/' +
+            : 'http://192.168.50.50:8081/id_photos/' +
               details.employees_id +
               '.jpg'
         "

@@ -9,7 +9,7 @@
         id="uploadedPhoto"
         ref="uploadedPhotoRef"
         :src="
-          'http://192.168.50.51:8081/id_photos/' +
+          'http://192.168.50.50:8081/id_photos/' +
           selected_employee_data.employees_id +
           '.jpg'
         "
@@ -24,7 +24,7 @@
         width="250"
         height="187.5"
         :src="
-          'http://192.168.50.51:8081/id_photos/' +
+          'http://192.168.50.50:8081/id_photos/' +
           selected_employee_data.employees_id +
           '.jpg'
         "
