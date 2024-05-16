@@ -47,13 +47,7 @@
       "
     >
       <img
-        :src="
-          imgSrc
-            ? imgSrc
-            : 'http://192.168.50.50:8081/id_photos/' +
-              details.employees_id +
-              '.jpg'
-        "
+        :src="imgSrc ? imgSrc : imgSrcFromServer"
         style="position: relative"
         :style="`top:${photoFormat.top}px; left: ${photoFormat.left}px; transform: scale(${photoFormat.scale})`"
       />
@@ -132,6 +126,35 @@
 <script setup>
 defineOptions({
   name: "IdCardFront",
+  data() {
+    return {
+      imgSrcFromServer: null,
+    };
+  },
+  watch: {
+    details(newValue, oldValue) {
+      if (newValue) {
+        this.getPhoto();
+        console.log("imgSrc: ", this.imgSrc);
+      }
+    },
+  },
+  methods: {
+    getPhoto() {
+      this.$api
+        .post("http://localhost:8081/test.php", {
+          getPhoto: true,
+          employees_id: this.details.employees_id,
+        })
+        .then(({ data }) => {
+          console.log("getPhoto: ", data);
+          this.imgSrcFromServer = data;
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+  },
 });
 
 const props = defineProps({

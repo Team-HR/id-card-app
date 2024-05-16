@@ -431,7 +431,7 @@ defineOptions({
     saveImageCaptured(dataUrl) {
       this.imgSrc = dataUrl;
       this.$api
-        .post("http://192.168.50.50:8081/test.php", {
+        .post("http://localhost:8081/test.php", {
           saveImageCaptured: true,
           dataUrl: dataUrl,
           employees_id: this.selected_employee_data.employees_id,
@@ -446,7 +446,7 @@ defineOptions({
 
     savePendata(data) {
       this.$api
-        .post("http://192.168.50.50:8081/test.php", {
+        .post("http://localhost:8081/test.php", {
           savePendata: true,
           m_penData: data,
           employees_id: this.selected_employee_data.employees_id,
@@ -497,7 +497,7 @@ defineOptions({
     },
     onSubmit() {
       this.$api
-        .post("http://192.168.50.50:8081/test.php", {
+        .post("http://localhost:8081/test.php", {
           saveEmployeeData: true,
           selected_employee_data: this.selected_employee_data,
           textFormat: this.textFormat,
@@ -514,7 +514,7 @@ defineOptions({
     getEmployeeData() {
       if (!this.selected_employee_input) return;
       this.$api
-        .post("http://192.168.50.50:8081/test.php", {
+        .post("http://localhost:8081/test.php", {
           getEmployeeData: true,
           employeeId: this.selected_employee_input.value,
         })
@@ -561,7 +561,7 @@ defineOptions({
 
   created() {
     this.$api
-      .post("http://192.168.50.50:8081/test.php", {
+      .post("http://localhost:8081/test.php", {
         getEmployeeList: "true",
       })
       .then(({ data }) => {
