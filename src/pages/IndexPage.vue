@@ -348,7 +348,7 @@
         <!-- <div style="background-color: aqua; height: 8.5cm; width: 5.4cm"></div> -->
         <IdCardFront
           :details="selected_employee_data"
-          :imgSrc="imgSrc"
+          :timestamp="timestamp"
           :textFormat="textFormat"
           :photoFormat="photoFormat"
         />
@@ -423,37 +423,14 @@ defineOptions({
       },
       employees: [],
       selections: this.employees,
-      imgSrc: "",
+      timestamp: 0,
     };
   },
 
   methods: {
     saveImageCaptured(formData) {
-      // this.imgSrc = dataUrl;
-      formData.append("employees_id", this.selected_employee_data.employees_id);
-      this.$api
-        .post("http://192.168.50.50:8081/id_photo_upload.php", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        })
-        .then(({ data }) => {
-          console.log("saveImage(dataUrl): ", data);
+      this.timestamp = new Date().valueOf();
 
-          this.$api
-            .post("http://192.168.50.50:8081/test.php", {
-              getPhoto: true,
-              employees_id: this.selected_employee_data.employees_id,
-            })
-            .then(({ data }) => {
-              console.log("getPhoto: ", data);
-              this.imgSrc = data;
-            })
-            .catch((err) => {
-              console.error(err);
-            });
-        })
-        .catch((err) => {
-          console.error(err);
-        });
       // var xhr = new XMLHttpRequest();
       // xhr.open("POST", "http://192.168.50.50:8081/id_photo_upload.php", true);
       // xhr.onload = function () {

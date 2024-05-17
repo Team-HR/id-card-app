@@ -47,7 +47,7 @@
       "
     >
       <img
-        :src="imgSrc ? imgSrc : imgSrcFromServer"
+        :src="imgSrcFromServer"
         style="position: relative"
         :style="`top:${photoFormat.top}px; left: ${photoFormat.left}px; transform: scale(${photoFormat.scale})`"
       />
@@ -132,9 +132,18 @@ defineOptions({
     };
   },
   watch: {
-    details(newValue, oldValue) {
+    "details.employees_id"(newValue, oldValue) {
       if (newValue) {
-        this.getPhoto();
+        this.$nextTick(() => {
+          this.getPhoto();
+        });
+      }
+    },
+    timestamp(newValue) {
+      if (newValue) {
+        this.$nextTick(() => {
+          this.getPhoto();
+        });
       }
     },
   },
@@ -161,8 +170,8 @@ const props = defineProps({
     type: Object,
     required: true,
   },
-  imgSrc: {
-    type: String,
+  timestamp: {
+    type: Number,
     required: true,
   },
   textFormat: {

@@ -11,7 +11,6 @@
         style="transform: scale(1); width: 250px !important"
       />
     </div>
-    <div :hidden="hasNewCapture" style="overflow: hidden"></div>
 
     <canvas hidden id="canvasCapture" width="250px" height="188px"></canvas>
   </div>
@@ -115,7 +114,6 @@ defineOptions({
   data() {
     return {
       uploadDialog: false,
-      hasNewCapture: false,
       prompt: false,
       selectedCamDevice: null,
       camDevices: [],
@@ -129,7 +127,9 @@ defineOptions({
   watch: {
     "selected_employee_data.employees_id"(val) {
       if (val) {
-        this.getPhoto();
+        this.$nextTick(() => {
+          this.getPhoto();
+        });
       }
       // this.$nextTick(() => {
       //   const canvas = document.getElementById("canvasCapture");
@@ -169,22 +169,19 @@ defineOptions({
       var form = document.getElementById("uploadForm");
       var formData = new FormData(form);
 
-      this.$emit("imageCaptured", formData);
-      this.hasNewCapture = true;
-      this.uploadDialog = !this.uploadDialog;
-      this.getPhoto();
-      // var xhr = new XMLHttpRequest();
-      // xhr.open("POST", "http://192.168.50.50:8081/id_photo_upload.php", true);
-
-      // xhr.onload = function () {
-      //   if (xhr.status === 200) {
-      //     alert("Image uploaded successfully");
-      //   } else {
-      //     alert("Upload failed");
-      //   }
-      // };
-
-      // xhr.send(formData);
+      formData.append("employees_id", this.selected_employee_data.employees_id);
+      this.$api
+        .post("http://192.168.50.50:8081/id_photo_upload.php", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        })
+        .then(({ data }) => {
+          this.getPhoto();
+          this.$emit("imageCaptured", formData);
+          this.uploadDialog = !this.uploadDialog;
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     },
 
     saveClicked: function saveClicked() {
@@ -199,18 +196,13 @@ defineOptions({
       context.drawImage(uploadedPhoto, 0, 0, canvas.width, canvas.height);
 
       this.$emit("imageCaptured", imgDataUrl);
-      this.hasNewCapture = true;
       this.uploadDialog = !this.uploadDialog;
     },
     onImageReady: function onImageReady() {
       this.scale = 1;
       this.rotation = 0;
     },
-    promptUploadPhoto() {
-      // const uploadPhotoInput = document
-      //   .getElementById("uploadPhotoInput")
-      //   .click();
-    },
+
     uploadPhoto(event) {
       const uploadPhotoInput = document.getElementById("uploadPhotoInput");
       var uploadedPhoto = document.getElementById("uploadedPhoto");
@@ -241,7 +233,6 @@ defineOptions({
 
           const dataUrl = canvas.toDataURL("image/jpeg", 1.0);
           this.$emit("imageCaptured", dataUrl);
-          this.hasNewCapture = true;
         };
 
         uploadedPhoto.src = URL.createObjectURL(uploadPhotoInput.files[0]); // set src to blob url
@@ -275,7 +266,6 @@ defineOptions({
           this.prompt = !this.prompt;
           this.$emit("imageCaptured", dataUrl);
 
-          this.hasNewCapture = true;
           // Stop all video streams.
           if (window.stream) {
             window.stream.getTracks().forEach((track) => {
