@@ -428,25 +428,47 @@ defineOptions({
   },
 
   methods: {
-    saveImageCaptured(dataUrl) {
-      this.imgSrc = dataUrl;
+    saveImageCaptured(formData) {
+      // this.imgSrc = dataUrl;
+      formData.append("employees_id", this.selected_employee_data.employees_id);
       this.$api
-        .post("http://localhost:8081/test.php", {
-          saveImageCaptured: true,
-          dataUrl: dataUrl,
-          employees_id: this.selected_employee_data.employees_id,
+        .post("http://192.168.50.50:8081/id_photo_upload.php", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
         })
         .then(({ data }) => {
           console.log("saveImage(dataUrl): ", data);
+
+          this.$api
+            .post("http://192.168.50.50:8081/test.php", {
+              getPhoto: true,
+              employees_id: this.selected_employee_data.employees_id,
+            })
+            .then(({ data }) => {
+              console.log("getPhoto: ", data);
+              this.imgSrc = data;
+            })
+            .catch((err) => {
+              console.error(err);
+            });
         })
         .catch((err) => {
           console.error(err);
         });
+      // var xhr = new XMLHttpRequest();
+      // xhr.open("POST", "http://192.168.50.50:8081/id_photo_upload.php", true);
+      // xhr.onload = function () {
+      //   if (xhr.status === 200) {
+      //     alert("Image uploaded successfully");
+      //   } else {
+      //     alert("Upload failed");
+      //   }
+      // };
+      // xhr.send(formData);
     },
 
     savePendata(data) {
       this.$api
-        .post("http://localhost:8081/test.php", {
+        .post("http://192.168.50.50:8081/test.php", {
           savePendata: true,
           m_penData: data,
           employees_id: this.selected_employee_data.employees_id,
@@ -497,15 +519,13 @@ defineOptions({
     },
     onSubmit() {
       this.$api
-        .post("http://localhost:8081/test.php", {
+        .post("http://192.168.50.50:8081/test.php", {
           saveEmployeeData: true,
           selected_employee_data: this.selected_employee_data,
           textFormat: this.textFormat,
           photoFormat: this.photoFormat,
         })
-        .then(({ data }) => {
-          console.log("SAVED DATA: ", data);
-        })
+        .then(({ data }) => {})
         .catch((err) => {
           console.error(err);
         });
@@ -514,12 +534,11 @@ defineOptions({
     getEmployeeData() {
       if (!this.selected_employee_input) return;
       this.$api
-        .post("http://localhost:8081/test.php", {
+        .post("http://192.168.50.50:8081/test.php", {
           getEmployeeData: true,
           employeeId: this.selected_employee_input.value,
         })
         .then(({ data }) => {
-          console.log("EMPLOYEE DATA: ", data);
           this.selected_employee_data = data;
           if (data.text_formatting) {
             this.textFormat.lastName.font_size =
@@ -561,7 +580,7 @@ defineOptions({
 
   created() {
     this.$api
-      .post("http://localhost:8081/test.php", {
+      .post("http://192.168.50.50:8081/test.php", {
         getEmployeeList: "true",
       })
       .then(({ data }) => {

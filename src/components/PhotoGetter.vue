@@ -8,40 +8,10 @@
       <img
         id="uploadedPhoto"
         ref="uploadedPhotoRef"
-        :src="
-          'http://localhost:8081/id_photos/' +
-          selected_employee_data.employees_id +
-          '.jpg'
-        "
         style="transform: scale(1); width: 250px !important"
       />
     </div>
-    <div :hidden="hasNewCapture" style="overflow: hidden">
-      <!-- '' -->
-      <!-- <img
-        :hidden="!selected_employee_data.employees_id"
-        id="defaultImg"
-        width="250"
-        height="187.5"
-        :src="
-          'http://localhost:8081/id_photos/' +
-          selected_employee_data.employees_id +
-          '.jpg'
-        "
-      /> -->
-      <!-- <img
-        :hidden="selected_employee_data.employees_id"
-        id="defaultImg"
-        :src="'/images/default-img.jpg'"
-        style="
-          width: 250px;
-          height: 240px;
-          position: relative;
-          top: -24px;
-          left: 0px;
-        "
-      /> -->
-    </div>
+    <div :hidden="hasNewCapture" style="overflow: hidden"></div>
 
     <canvas hidden id="canvasCapture" width="250px" height="188px"></canvas>
   </div>
@@ -101,32 +71,10 @@
   <q-dialog v-model="uploadDialog" persistent>
     <q-card style="_min-width: 1500px; text-align: center">
       <q-card-section class="q-pt-none q-ma-lg">
-        <vue-avatar
-          image=""
-          :width="250"
-          :height="188"
-          :rotation="rotation"
-          :borderRadius="borderRadius"
-          :scale="scale"
-          ref="vueavatar"
-          @vue-avatar-editor:image-ready="onImageReady"
-        >
-        </vue-avatar>
-
-        <br />
-        <label>
-          Zoom : {{ scale }}x
-          <br />
-          <input
-            type="range"
-            :min="-1"
-            :max="3"
-            :step="0.02"
-            v-model.number="scale"
-          />
-        </label>
-        <br />
-        <q-btn label="Get Image" @click="saveClicked" />
+        <form id="uploadForm" enctype="multipart/form-data">
+          <input type="file" id="fileInput" name="image" accept="image/*" />
+          <button type="button" @click="uploadImage()">Upload</button>
+        </form>
       </q-card-section>
       <q-card-actions align="right" class="text-primary">
         <q-btn flat label="Cancel" v-close-popup />
@@ -180,6 +128,9 @@ defineOptions({
   },
   watch: {
     "selected_employee_data.employees_id"(val) {
+      if (val) {
+        this.getPhoto();
+      }
       // this.$nextTick(() => {
       //   const canvas = document.getElementById("canvasCapture");
       //   const ctx = canvas.getContext("2d");
@@ -201,6 +152,41 @@ defineOptions({
     },
   },
   methods: {
+    getPhoto() {
+      this.$api
+        .post("http://192.168.50.50:8081/test.php", {
+          getPhoto: true,
+          employees_id: this.selected_employee_data.employees_id,
+        })
+        .then(({ data }) => {
+          this.$refs.uploadedPhotoRef.src = data;
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+    uploadImage() {
+      var form = document.getElementById("uploadForm");
+      var formData = new FormData(form);
+
+      this.$emit("imageCaptured", formData);
+      this.hasNewCapture = true;
+      this.uploadDialog = !this.uploadDialog;
+      this.getPhoto();
+      // var xhr = new XMLHttpRequest();
+      // xhr.open("POST", "http://192.168.50.50:8081/id_photo_upload.php", true);
+
+      // xhr.onload = function () {
+      //   if (xhr.status === 200) {
+      //     alert("Image uploaded successfully");
+      //   } else {
+      //     alert("Upload failed");
+      //   }
+      // };
+
+      // xhr.send(formData);
+    },
+
     saveClicked: function saveClicked() {
       var img = this.$refs.vueavatar.getImageScaled();
       // this.$refs.image.src = img.toDataURL();
@@ -253,11 +239,7 @@ defineOptions({
             canvas.height
           );
 
-          console.log(uploadedPhoto.width + " " + uploadedPhoto.height);
-          console.log(canvas.width + " " + canvas.height);
-          // console.log("canvas.toDataURL()", canvas.toDataURL());
           const dataUrl = canvas.toDataURL("image/jpeg", 1.0);
-          console.log(dataUrl);
           this.$emit("imageCaptured", dataUrl);
           this.hasNewCapture = true;
         };
@@ -281,8 +263,6 @@ defineOptions({
         const constraints = {
           video: true,
         };
-
-        // console.log(canvas.width + " : " + canvas.height);
 
         captureButton.addEventListener("click", () => {
           // Draw the video frame to the canvas.
@@ -343,14 +323,11 @@ defineOptions({
 
     async getDevices() {
       // AFAICT in Safari this only gets default devices until gUM is called :/
-      console.log(navigator.mediaDevices.enumerateDevices());
       return await navigator.mediaDevices.enumerateDevices();
     },
 
     async gotDevices(deviceInfos) {
-      // console.log(deviceInfos);
       window.deviceInfos = deviceInfos; // make available to console
-      // console.log("Available input and output devices:", deviceInfos);
       for (const deviceInfo of deviceInfos) {
         const option = { label: "", value: "" };
         option.value = deviceInfo.deviceId;

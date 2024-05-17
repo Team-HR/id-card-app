@@ -28,17 +28,17 @@
       <label for="" style="font-size: 12pt"
         >Vertical: {{ photoFormat.top }}px</label
       >
-      <q-slider v-model="photoFormat.top" :min="-70" :max="56" :step="1" />
+      <q-slider v-model="photoFormat.top" :min="-440" :max="440" :step="1" />
 
       <label for="" style="font-size: 12pt"
         >Horizontal: {{ photoFormat.left }}px</label
       >
-      <q-slider v-model="photoFormat.left" :min="-290" :max="232" :step="1" />
+      <q-slider v-model="photoFormat.left" :min="-500" :max="440" :step="1" />
 
       <label for="" style="font-size: 12pt"
         >Scale: {{ photoFormat.scale }}px</label
       >
-      <q-slider v-model="photoFormat.scale" :min="0" :max="3" :step="0.1" />
+      <q-slider v-model="photoFormat.scale" :min="0" :max="3" :step="0.01" />
 
       <q-btn size="xs" @click="displayModal = !displayModal">Close</q-btn>
     </div>
