@@ -119,14 +119,14 @@
       class="detail"
       style="position: absolute; top: 319px; left: 91px; font-size: 9pt"
     >
-      {{ details.date_issued }}
+      {{ details.date_issued_formatted }}
     </div>
 
     <div
       class="detail"
       style="position: absolute; top: 335px; left: 91px; font-size: 9pt"
     >
-      {{ details.date_valid_until }}
+      {{ details.date_expire_formatted }}
     </div>
 
     <!-- signature container start -->

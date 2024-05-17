@@ -516,6 +516,7 @@ defineOptions({
           employeeId: this.selected_employee_input.value,
         })
         .then(({ data }) => {
+          console.log("getEmployeeData: ", data);
           this.selected_employee_data = data;
           if (data.text_formatting) {
             this.textFormat.lastName.font_size =
