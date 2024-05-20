@@ -502,7 +502,9 @@ defineOptions({
           textFormat: this.textFormat,
           photoFormat: this.photoFormat,
         })
-        .then(({ data }) => {})
+        .then(({ data }) => {
+          this.getEmployeeData();
+        })
         .catch((err) => {
           console.error(err);
         });
