@@ -47,10 +47,17 @@
       "
     >
       <img
+        :hidden="imageIsLoading == 'loading'"
+        @load="imageIsLoading = 'loaded'"
         :src="imgSrcFromServer"
         style="position: relative"
         :style="`bottom:${photoFormat.top}px; right: ${photoFormat.left}px; transform: scale(${photoFormat.scale})`"
       />
+
+      <q-skeleton
+        style="width: 250px; height: 188px"
+        :hidden="imageIsLoading == 'loaded'"
+      ></q-skeleton>
     </div>
 
     <div
@@ -128,6 +135,7 @@ defineOptions({
   name: "IdCardFront",
   data() {
     return {
+      imageIsLoading: "loaded",
       imgSrcFromServer: null,
     };
   },
@@ -141,6 +149,7 @@ defineOptions({
     },
     timestamp(newValue) {
       if (newValue) {
+        this.imageIsLoading = "loading";
         this.$nextTick(() => {
           this.getPhoto();
         });
@@ -149,6 +158,7 @@ defineOptions({
   },
   methods: {
     getPhoto() {
+      this.imageIsLoading = "loading";
       this.imgSrcFromServer = "#";
       this.$api
         .post("http://192.168.50.50:8081/test.php", {
@@ -157,6 +167,7 @@ defineOptions({
         })
         .then(({ data }) => {
           this.imgSrcFromServer = data;
+          this.imageIsLoading = "loaded";
         })
         .catch((err) => {
           console.error(err);
