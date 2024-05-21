@@ -49,7 +49,7 @@
       <img
         :src="imgSrcFromServer"
         style="position: relative"
-        :style="`top:${photoFormat.top}px; left: ${photoFormat.left}px; transform: scale(${photoFormat.scale})`"
+        :style="`bottom:${photoFormat.top}px; right: ${photoFormat.left}px; transform: scale(${photoFormat.scale})`"
       />
     </div>
 

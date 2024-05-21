@@ -388,8 +388,8 @@ defineOptions({
   data: function data() {
     return {
       photoFormat: {
-        top: -1877, //-14,
-        left: -2906, //-58,
+        top: 1897, //-14,
+        left: 2924, //-58,
         scale: 0.071, //1.5,
       },
       textFormat: {

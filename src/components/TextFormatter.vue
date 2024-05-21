@@ -23,17 +23,39 @@
       <label for="" style="font-size: 12pt"
         >Font-size: {{ text.font_size }}px</label
       >
-      <q-slider v-model="text.font_size" :min="8" :max="30" :step="1" />
+      <!-- <q-slider v-model="text.font_size" :min="8" :max="30" :step="1" /> -->
+      <q-input
+        type="number"
+        v-model="text.font_size"
+        :min="8"
+        :max="60"
+        :step="1"
+      ></q-input>
+
       <label for="" style="font-size: 12pt"
         >Vertical Position: {{ text.bottom }}px</label
       >
-      <q-slider v-model="text.bottom" :min="0" :max="300" :step="1" />
+      <!-- <q-slider v-model="text.bottom" :min="0" :max="300" :step="1" /> -->
+      <q-input
+        type="number"
+        v-model="text.bottom"
+        :min="0"
+        :max="300"
+        :step="1"
+      ></q-input>
 
       <template v-if="textFor == 'position'">
         <label for="" style="font-size: 12pt"
           >Line Height: {{ text.line_height }}px</label
         >
-        <q-slider v-model="text.line_height" :min="0" :max="238" :step="1" />
+        <!-- <q-slider v-model="text.line_height" :min="0" :max="238" :step="1" /> -->
+        <q-input
+          type="number"
+          v-model="text.line_height"
+          :min="0"
+          :max="238"
+          :step="1"
+        ></q-input>
       </template>
 
       <!-- <label for="" style="font-size: 12pt"
