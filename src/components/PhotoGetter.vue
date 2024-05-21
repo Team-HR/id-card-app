@@ -3,13 +3,31 @@
     <!-- <img id="capturePhotoImg" src="~/assets/images/default-img.jpg" /> -->
     <div
       id="uploadedPhotoEditor"
-      style="width: 250px; height: 188px; overflow: hidden; display: relative"
+      style="
+        width: 250px;
+        height: 188px;
+        overflow: hidden;
+        display: relative;
+        text-align: center;
+      "
     >
+      <!-- :hidden="imageIsLoading"
+        @load="imageLoaded()" -->
       <img
+        :hidden="imageIsLoading == 'loading'"
+        @load="imageLoaded()"
         id="uploadedPhoto"
         ref="uploadedPhotoRef"
         style="transform: scale(1); width: 250px !important"
       />
+      <!-- <span :hidden="imageIsLoading == 'loaded'" style="padding-top: 100px"
+        >Loading Photo...</span
+      > -->
+
+      <q-skeleton
+        style="width: 250px; height: 188px"
+        :hidden="imageIsLoading == 'loaded'"
+      ></q-skeleton>
     </div>
 
     <canvas hidden id="canvasCapture" width="250px" height="188px"></canvas>
@@ -113,6 +131,7 @@ defineOptions({
   },
   data() {
     return {
+      imageIsLoading: "loaded",
       uploadDialog: false,
       prompt: false,
       selectedCamDevice: null,
@@ -127,8 +146,14 @@ defineOptions({
   watch: {
     "selected_employee_data.employees_id"(val) {
       if (val) {
+        this.imageIsLoading = "loading";
+
         this.$nextTick(() => {
-          this.getPhoto();
+          this.getPhoto().then(() => {
+            // if (!this.$refs.uploadedPhotoRef.src) {
+            //   this.imageIsLoading = null;
+            // }
+          });
         });
       }
       // this.$nextTick(() => {
@@ -152,20 +177,31 @@ defineOptions({
     },
   },
   methods: {
-    getPhoto() {
-      this.$api
+    imageLoaded() {
+      // alert("image has loaded");
+      this.imageIsLoading = "loaded";
+      // console.log();
+    },
+    async getPhoto() {
+      await this.$api
         .post("http://192.168.50.50:8081/test.php", {
           getPhoto: true,
           employees_id: this.selected_employee_data.employees_id,
         })
         .then(({ data }) => {
           this.$refs.uploadedPhotoRef.src = data;
+          // console.log("this.$refs.uploadedPhotoRef.src = data;", data);
+          if (!data) {
+            this.imageIsLoading = "loaded";
+            // alert();
+          }
         })
         .catch((err) => {
           console.error(err);
         });
     },
     uploadImage() {
+      this.imageIsLoading = "loading";
       var form = document.getElementById("uploadForm");
       var formData = new FormData(form);
 
@@ -178,6 +214,7 @@ defineOptions({
           this.getPhoto();
           this.$emit("imageCaptured", formData);
           this.uploadDialog = !this.uploadDialog;
+          this.imageIsLoading = "loaded";
         })
         .catch((err) => {
           console.error(err);
