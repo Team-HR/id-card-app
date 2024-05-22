@@ -161,7 +161,7 @@ defineOptions({
       this.imageIsLoading = "loading";
       this.imgSrcFromServer = "#";
       this.$api
-        .post("http://localhost:8081/test.php", {
+        .post("http://192.168.50.50:8081/test.php", {
           getPhoto: true,
           employees_id: this.details.employees_id,
         })

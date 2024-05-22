@@ -324,6 +324,29 @@
                 ]"
               />
 
+              <div class="row">
+                <div class="col">
+                  <q-input
+                    :disable="!selected_employee_input"
+                    dense
+                    filled
+                    v-model="selected_employee_data.date_issued"
+                    label="Date Issued"
+                    type="date"
+                  />
+                </div>
+                <div class="col q-ml-sm">
+                  <q-input
+                    :disable="!selected_employee_input"
+                    dense
+                    filled
+                    v-model="selected_employee_data.date_expire"
+                    label="Valid Until"
+                    type="date"
+                  />
+                </div>
+              </div>
+
               <div class="q-mt-sm"></div>
               <q-btn
                 :disable="!selected_employee_input"
@@ -432,7 +455,7 @@ defineOptions({
       this.timestamp = new Date().valueOf();
 
       // var xhr = new XMLHttpRequest();
-      // xhr.open("POST", "http://localhost:8081/id_photo_upload.php", true);
+      // xhr.open("POST", "http://192.168.50.50:8081/id_photo_upload.php", true);
       // xhr.onload = function () {
       //   if (xhr.status === 200) {
       //     alert("Image uploaded successfully");
@@ -445,7 +468,7 @@ defineOptions({
 
     savePendata(data) {
       this.$api
-        .post("http://localhost:8081/test.php", {
+        .post("http://192.168.50.50:8081/test.php", {
           savePendata: true,
           m_penData: data,
           employees_id: this.selected_employee_data.employees_id,
@@ -495,8 +518,10 @@ defineOptions({
       // console.log((this.$refs.vueavatar.image = "#"));
     },
     onSubmit() {
+      // console.log("onSumbit: ", this.selected_employee_data);
+      // return false;
       this.$api
-        .post("http://localhost:8081/test.php", {
+        .post("http://192.168.50.50:8081/test.php", {
           saveEmployeeData: true,
           selected_employee_data: this.selected_employee_data,
           textFormat: this.textFormat,
@@ -513,7 +538,7 @@ defineOptions({
     getEmployeeData() {
       if (!this.selected_employee_input) return;
       this.$api
-        .post("http://localhost:8081/test.php", {
+        .post("http://192.168.50.50:8081/test.php", {
           getEmployeeData: true,
           employeeId: this.selected_employee_input.value,
         })
@@ -560,7 +585,7 @@ defineOptions({
 
   created() {
     this.$api
-      .post("http://localhost:8081/test.php", {
+      .post("http://192.168.50.50:8081/test.php", {
         getEmployeeList: "true",
       })
       .then(({ data }) => {

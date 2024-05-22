@@ -184,7 +184,7 @@ defineOptions({
     },
     async getPhoto() {
       await this.$api
-        .post("http://localhost:8081/test.php", {
+        .post("http://192.168.50.50:8081/test.php", {
           getPhoto: true,
           employees_id: this.selected_employee_data.employees_id,
         })
@@ -207,7 +207,7 @@ defineOptions({
 
       formData.append("employees_id", this.selected_employee_data.employees_id);
       this.$api
-        .post("http://localhost:8081/id_photo_upload.php", formData, {
+        .post("http://192.168.50.50:8081/id_photo_upload.php", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         })
         .then(({ data }) => {
