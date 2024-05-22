@@ -52,14 +52,14 @@
       @change="uploadPhoto(event)"
     /> -->
 
-    <q-btn
+    <!-- <q-btn
       unelevated
       class=""
       label="CAM"
       icon="add_a_photo"
       @click="promptDialog"
       :disable="!selected_employee_data.employees_id"
-    />
+    /> -->
 
     <slot name="buttons"></slot>
   </div>
@@ -89,7 +89,7 @@
     <q-card style="_min-width: 1500px; text-align: center">
       <q-card-section class="q-pt-none q-ma-lg">
         <form id="uploadForm" enctype="multipart/form-data">
-          <input type="file" id="fileInput" name="image" accept="image/*" />
+          <input type="file" id="fileInput" name="image" accept="image/jpeg" />
           <button type="button" @click="uploadImage()">Upload</button>
         </form>
       </q-card-section>
@@ -184,7 +184,7 @@ defineOptions({
     },
     async getPhoto() {
       await this.$api
-        .post("http://192.168.50.50:8081/test.php", {
+        .post("http://localhost:8081/test.php", {
           getPhoto: true,
           employees_id: this.selected_employee_data.employees_id,
         })
@@ -207,7 +207,7 @@ defineOptions({
 
       formData.append("employees_id", this.selected_employee_data.employees_id);
       this.$api
-        .post("http://192.168.50.50:8081/id_photo_upload.php", formData, {
+        .post("http://localhost:8081/id_photo_upload.php", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         })
         .then(({ data }) => {
