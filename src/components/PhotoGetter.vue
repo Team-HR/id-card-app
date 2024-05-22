@@ -184,7 +184,7 @@ defineOptions({
     },
     async getPhoto() {
       await this.$api
-        .post("http://192.168.50.50:8081/test.php", {
+        .post("http://192.168.50.50:8081/id_card_backend.php", {
           getPhoto: true,
           employees_id: this.selected_employee_data.employees_id,
         })
