@@ -78,7 +78,6 @@
                 ]"
               />
               <q-input
-                readonly=""
                 :disable="!selected_employee_input"
                 class="col"
                 dense
@@ -288,11 +287,6 @@
                   v-model="selected_employee_data.contact_number"
                   label="Contact Number"
                   hint=""
-                  lazy-rules
-                  :rules="[
-                    (val) =>
-                      (val && val.length > 0) || '* Field should not be empty!',
-                  ]"
                 />
               </div>
 
@@ -317,11 +311,6 @@
                 v-model="selected_employee_data.emergency_number"
                 label="Emergency Contact Number"
                 hint=""
-                lazy-rules
-                :rules="[
-                  (val) =>
-                    (val && val.length > 0) || '* Field should not be empty!',
-                ]"
               />
 
               <div class="row">
@@ -359,6 +348,13 @@
                 label="Download"
                 @click="downloadImage()"
               ></q-btn>
+
+              <!-- <q-btn
+                class="q-ml-sm"
+                :disable="!selected_employee_input"
+                label="Download as PDF"
+                to="print"
+              ></q-btn> -->
             </q-form>
           </div>
         </div>
@@ -455,7 +451,7 @@ defineOptions({
       this.timestamp = new Date().valueOf();
 
       // var xhr = new XMLHttpRequest();
-      // xhr.open("POST", "http://localhost:8081/id_photo_upload.php", true);
+      // xhr.open("POST", "http://192.168.50.50:8081/id_photo_upload.php", true);
       // xhr.onload = function () {
       //   if (xhr.status === 200) {
       //     alert("Image uploaded successfully");
@@ -468,7 +464,7 @@ defineOptions({
 
     savePendata(data) {
       this.$api
-        .post("http://localhost:8081/id_card_backend.php", {
+        .post("http://192.168.50.50:8081/id_card_backend.php", {
           savePendata: true,
           m_penData: data,
           employees_id: this.selected_employee_data.employees_id,
@@ -518,10 +514,10 @@ defineOptions({
       // console.log((this.$refs.vueavatar.image = "#"));
     },
     onSubmit() {
-      // console.log("onSumbit: ", this.selected_employee_data);
+      console.log("this.textFormat: ", this.textFormat);
       // return false;
       this.$api
-        .post("http://localhost:8081/id_card_backend.php", {
+        .post("http://192.168.50.50:8081/id_card_backend.php", {
           saveEmployeeData: true,
           selected_employee_data: this.selected_employee_data,
           textFormat: this.textFormat,
@@ -538,7 +534,7 @@ defineOptions({
     getEmployeeData() {
       if (!this.selected_employee_input) return;
       this.$api
-        .post("http://localhost:8081/id_card_backend.php", {
+        .post("http://192.168.50.50:8081/id_card_backend.php", {
           getEmployeeData: true,
           employeeId: this.selected_employee_input.value,
         })
@@ -546,6 +542,13 @@ defineOptions({
           console.log("getEmployeeData: ", data);
           this.selected_employee_data = data;
           if (data.text_formatting) {
+            // font_size": 17, "bottom": 83, "left": 40, "line_height": 20
+            this.textFormat.position.font_size =
+              data.text_formatting.position.font_size;
+            this.textFormat.position.bottom =
+              data.text_formatting.position.bottom;
+            this.textFormat.position.line_height =
+              data.text_formatting.position.line_height;
             this.textFormat.lastName.font_size =
               data.text_formatting.lastName.font_size;
             this.textFormat.lastName.bottom =
@@ -585,7 +588,7 @@ defineOptions({
 
   created() {
     this.$api
-      .post("http://localhost:8081/id_card_backend.php", {
+      .post("http://192.168.50.50:8081/id_card_backend.php", {
         getEmployeeList: "true",
       })
       .then(({ data }) => {
