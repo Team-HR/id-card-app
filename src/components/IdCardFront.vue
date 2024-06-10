@@ -9,8 +9,9 @@
       width: 8.1cm;
       font-size: 7pt;
       position: relative;
-      background-image: url('/images/lgu_id_front.png');
+      background-image: url('/images/REG_ID_Front_Temp.jpg');
       background-position: center;
+      background-repeat: no-repeat;
       background-size: contain;
     "
   >
@@ -34,14 +35,12 @@
 
     <div
       style="
-        width: 169px;
-        height: 168px;
-        /* background-color: aliceblue; */
+        width: 177px;
+        height: 177px;
         border-radius: 100%;
         position: absolute;
-        top: 80px;
-        left: 81px;
-        border: 1px solid #058040;
+        top: 76px;
+        left: 76px;
         border-radius: 100%;
         overflow: hidden;
       "
@@ -64,12 +63,13 @@
       style="
         text-align: left;
         position: absolute;
-        top: 260px;
-        left: 172px;
+        top: 261px;
+        left: 107px;
         font-size: 13pt;
         font-weight: 500;
       "
     >
+      <b>ID NO.:</b>
       {{
         details.empno
           ? `${details.empno.substr(0, 1)}-${details.empno.substr(-4, 4)}`
