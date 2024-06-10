@@ -4,7 +4,7 @@
     class="front-id"
     style="
       /* border: 1px solid gray; */
-      background-color: aqua;
+      /* background-color: aqua; */
       height: 12.75cm;
       width: 8.1cm;
       font-size: 7pt;

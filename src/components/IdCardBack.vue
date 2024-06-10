@@ -8,7 +8,7 @@
       width: 8.1cm;
       font-size: 7pt;
       position: relative;
-      background-image: url('/images/lgu_id_back.png');
+      background-image: url('/images/REG_ID_Back_Temp.jpg');
       background-position: center;
       background-size: contain;
       font-family: sans-serif;
