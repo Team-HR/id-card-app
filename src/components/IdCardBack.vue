@@ -163,7 +163,7 @@
     <div
       style="
         position: absolute;
-        bottom: 74px;
+        bottom: 76px;
         width: 100%;
         text-align: center;
         font-size: 8pt;

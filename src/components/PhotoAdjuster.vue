@@ -25,13 +25,11 @@
         @click="reset()"
         >Reset</q-btn
       >
-      <label for="" style="font-size: 12pt"
-        >Vertical: {{ photoFormat.top }}px</label
-      >
+      <label style="font-size: 12pt">Vertical: {{ photoFormat.top }}px</label>
       <!-- <q-slider v-model="photoFormat.top" :min="-6500" :max="3000" :step="1" /> -->
       <q-input type="number" dense v-model="photoFormat.top"></q-input>
 
-      <label for="" style="font-size: 12pt"
+      <label style="font-size: 12pt"
         >Horizontal: {{ photoFormat.left }}px</label
       >
       <!-- <q-slider v-model="photoFormat.left" :min="-6000" :max="440" :step="1" /> -->
@@ -42,21 +40,22 @@
             dense
             flat
             icon="chevron_left"
-            @mousedown="photoFormat.left += 1"
+            type="button"
+            @mousedown="mousedown('left')"
+            @mouseup="mouseup()"
           />
           <q-btn
             round
             dense
             flat
             icon="chevron_right"
-            @click="photoFormat.left -= 1"
+            @mousedown="mousedown('right')"
+            @mouseup="mouseup()"
           />
         </template>
       </q-input>
 
-      <label for="" style="font-size: 12pt"
-        >Scale: {{ photoFormat.scale }}px</label
-      >
+      <label style="font-size: 12pt">Scale: {{ photoFormat.scale }}px</label>
       <!-- <q-slider
         v-model="photoFormat.scale"
         :min="0"
@@ -85,9 +84,27 @@ defineOptions({
       displayModal: false,
       photoFormat: this.photoProps,
       photoFormatDefault: Object.assign({}, this.photoProps),
+      interval: null,
+      count: 0,
+      horizontalDir: null,
     };
   },
   methods: {
+    mousedown(hDir) {
+      this.horizontalDir = hDir;
+      this.increment();
+      this.interval = setInterval(this.increment, 100);
+    },
+    mouseup() {
+      clearInterval(this.interval);
+    },
+    increment() {
+      if (this.horizontalDir == "left") {
+        this.photoFormat.left += 1;
+      } else {
+        this.photoFormat.left -= 1;
+      }
+    },
     promptDialog() {
       this.displayModal = !this.displayModal;
     },
