@@ -33,7 +33,14 @@
         >Horizontal: {{ photoFormat.left }}px</label
       >
       <!-- <q-slider v-model="photoFormat.left" :min="-6000" :max="440" :step="1" /> -->
-      <q-input type="number" dense v-model="photoFormat.left">
+      <q-input
+        type="number"
+        dense
+        v-model="photoFormat.left"
+        :min="-6000"
+        :max="440"
+        :step="1"
+      >
         <template v-slot:append>
           <q-btn
             round
