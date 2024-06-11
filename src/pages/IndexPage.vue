@@ -406,10 +406,15 @@ defineOptions({
 
   data: function data() {
     return {
+      // photoFormat: {
+      //   top: 1897, //-14,
+      //   left: 2924, //-58,
+      //   scale: 0.071, //1.5,
+      // },
       photoFormat: {
-        top: 1897, //-14,
-        left: 2924, //-58,
-        scale: 0.071, //1.5,
+        top: 27,
+        left: 117,
+        width: 401, //will be the scale
       },
       textFormat: {
         position: {

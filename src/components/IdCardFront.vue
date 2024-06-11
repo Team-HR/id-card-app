@@ -50,7 +50,7 @@
         @load="imageIsLoading = 'loaded'"
         :src="imgSrcFromServer"
         style="position: relative"
-        :style="`bottom:${photoFormat.top}px; right: ${photoFormat.left}px; transform: scale(${photoFormat.scale})`"
+        :style="`bottom:${photoFormat.top}px; right: ${photoFormat.left}px; width: ${photoFormat.width}px;`"
       />
 
       <q-skeleton

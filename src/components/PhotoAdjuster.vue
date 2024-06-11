@@ -62,9 +62,9 @@
         </template>
       </q-input>
 
-      <label style="font-size: 12pt">Scale: {{ photoFormat.scale }}px</label>
+      <label style="font-size: 12pt">Scale: {{ photoFormat.width }}px</label>
       <!-- <q-slider
-        v-model="photoFormat.scale"
+        v-model="photoFormat.width"
         :min="0"
         :max="0.15"
         :step="0.001"
@@ -72,10 +72,10 @@
       <q-input
         type="number"
         dense
-        v-model="photoFormat.scale"
+        v-model="photoFormat.width"
         :min="0"
-        :max="0.15"
-        :step="0.001"
+        :max="1000"
+        :step="1"
       ></q-input>
 
       <q-btn size="xs" @click="displayModal = !displayModal">Close</q-btn>
@@ -118,7 +118,7 @@ defineOptions({
     reset() {
       this.photoFormat.top = this.photoFormatDefault.top;
       this.photoFormat.left = this.photoFormatDefault.left;
-      this.photoFormat.scale = this.photoFormatDefault.scale;
+      this.photoFormat.width = this.photoFormatDefault.width;
     },
   },
 });
