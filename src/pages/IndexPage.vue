@@ -35,6 +35,7 @@
           </template>
         </q-select>
 
+        <q-btn label="Dashboard" to="dashboard"></q-btn>
         <!-- <q-btn class="q-mb-md" @click="getEmployeeData()" type="button"
           >Get</q-btn
         > -->
@@ -480,7 +481,7 @@ defineOptions({
         });
     },
     adjustLastName() {
-      console.log("adjust lastname");
+      // console.log("adjust lastname");
     },
     downloadImage() {
       // canvasWidth: 204, canvasHeight: 324
@@ -509,6 +510,15 @@ defineOptions({
         // console.log(dataUrl);
         link.click();
       });
+
+      this.$api
+        .post("http://192.168.50.50:8081/id_card_backend.php", {
+          tagAsPrinted: true,
+          selected_employee_data: this.selected_employee_data,
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     },
     onClearForm() {
       window.location.reload();
@@ -544,7 +554,7 @@ defineOptions({
           employeeId: this.selected_employee_input.value,
         })
         .then(({ data }) => {
-          console.log("getEmployeeData: ", data);
+          // console.log("getEmployeeData: ", data);
           this.selected_employee_data = data;
           if (data.text_formatting) {
             // font_size": 17, "bottom": 83, "left": 40, "line_height": 20
@@ -597,7 +607,7 @@ defineOptions({
         getEmployeeList: "true",
       })
       .then(({ data }) => {
-        // console.log(data);
+        console.log(data);
         this.employees = data;
       })
       .catch((err) => {
