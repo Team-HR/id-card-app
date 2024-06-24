@@ -350,12 +350,12 @@
                 @click="downloadImage()"
               ></q-btn>
 
-              <!-- <q-btn
-                class="q-ml-sm"
+              <q-btn
                 :disable="!selected_employee_input"
+                class="q-ml-sm"
                 label="Download as PDF"
-                to="print"
-              ></q-btn> -->
+                @click="downloadAsPdf()"
+              ></q-btn>
             </q-form>
           </div>
         </div>
@@ -483,6 +483,49 @@ defineOptions({
     adjustLastName() {
       // console.log("adjust lastname");
     },
+
+    downloadAsPdf() {
+      var node1 = document.getElementById("IdCardFront");
+      var node2 = document.getElementById("IdCardBack");
+      htmlToImage.toJpeg(node1, { quality: 1 }).then((dataUrl) => {
+        this.$api
+          .post(
+            "http://192.168.50.50:8081/id_card_upload.php",
+            {
+              employees_id: this.selected_employee_data.employees_id,
+              side: "front",
+              image: dataUrl,
+            },
+            {
+              headers: { "Content-Type": "multipart/form-data" },
+            }
+          )
+          .then(() => {
+            htmlToImage.toJpeg(node2, { quality: 1 }).then((dataUrl) => {
+              this.$api
+                .post(
+                  "http://192.168.50.50:8081/id_card_upload.php",
+                  {
+                    employees_id: this.selected_employee_data.employees_id,
+                    side: "back",
+                    image: dataUrl,
+                  },
+                  {
+                    headers: { "Content-Type": "multipart/form-data" },
+                  }
+                )
+                .then(() => {
+                  var link = document.createElement("a");
+                  link.href =
+                    "http://192.168.50.50:8081/id_card_print_pdf.php?employee_id=" +
+                    this.selected_employee_data.employees_id;
+                  link.click();
+                });
+            });
+          });
+      });
+    },
+
     downloadImage() {
       // canvasWidth: 204, canvasHeight: 324
       var node1 = document.getElementById("IdCardFront");
@@ -529,7 +572,6 @@ defineOptions({
       // console.log((this.$refs.vueavatar.image = "#"));
     },
     onSubmit() {
-      console.log("this.textFormat: ", this.textFormat);
       // return false;
       this.$api
         .post("http://192.168.50.50:8081/id_card_backend.php", {
