@@ -381,6 +381,13 @@
     <!-- <video id="player" autoplay></video>
     <button id="capture">Capture</button>
     <canvas id="canvas" width="320" height="240"></canvas> -->
+
+    <!-- <div style="width: 640px; height: 1014px; background-color: green"></div> -->
+    <div style="height: 200px"></div>
+    <IdCardBackV2
+      :details="selected_employee_data"
+      @onPenDataSave="savePendata"
+    />
   </q-page>
 </template>
 
@@ -389,6 +396,7 @@ import { useQuasar } from "quasar";
 
 import IdCardFront from "components/IdCardFront.vue";
 import IdCardBack from "components/IdCardBack.vue";
+import IdCardBackV2 from "components/IdCardBackV2.vue";
 import PhotoGetter from "components/PhotoGetter.vue";
 import PhotoAdjuster from "components/PhotoAdjuster.vue";
 
@@ -402,6 +410,7 @@ defineOptions({
   components: {
     IdCardFront,
     IdCardBack,
+    IdCardBackV2,
     TextFormatter,
   },
 
@@ -529,7 +538,7 @@ defineOptions({
     downloadImage() {
       // canvasWidth: 204, canvasHeight: 324
       var node1 = document.getElementById("IdCardFront");
-      var node2 = document.getElementById("IdCardBack");
+      var node2 = document.getElementById("IdCardBackV2");
       htmlToImage.toJpeg(node1, { quality: 1 }).then((dataUrl) => {
         var link = document.createElement("a");
         link.download =

@@ -1,11 +1,11 @@
 <template>
   <div
-    id="IdCardBack"
+    id="IdCardBackV2"
     style="
       /* border: 1px solid gray; */
       /* background-color: aqua; */
-      height: 12.75cm;
-      width: 8.1cm;
+      width: 640px;
+      height: 1014px;
       font-size: 7pt;
       position: relative;
       background-image: url('/images/REG_ID_Back_Temp.jpg');
@@ -25,14 +25,13 @@
       class="detail"
       style="
         position: absolute;
-        top: 79px;
-        left: 10px;
-        /* background-color: red; */
+        top: 170px;
+        left: 35px;
         overflow: hidden;
-        width: 265px;
-        height: 35px;
-        font-size: 11pt;
-        line-height: 13pt;
+        width: 559px;
+        height: 57px;
+        font-size: 22pt;
+        line-height: 23pt;
       "
     >
       <!-- {{ details.address }} -->
@@ -45,28 +44,28 @@
 
     <div
       class="detail"
-      style="position: absolute; top: 133px; left: 14px; font-size: 11pt"
+      style="position: absolute; top: 283px; left: 42px; font-size: 22pt"
     >
       {{ details.gender }}
     </div>
 
     <div
       class="detail"
-      style="position: absolute; top: 171px; left: 14px; font-size: 11pt"
+      style="position: absolute; top: 363px; left: 42px; font-size: 22pt"
     >
       {{ details.date_of_birth }}
     </div>
 
     <div
       class="detail"
-      style="position: absolute; top: 209px; left: 14px; font-size: 11pt"
+      style="position: absolute; top: 442px; left: 42px; font-size: 22pt"
     >
       {{ details.blood_type }}
     </div>
 
     <div
       class="detail"
-      style="position: absolute; top: 245px; left: 14px; font-size: 11pt"
+      style="position: absolute; top: 521px; left: 42px; font-size: 22pt"
     >
       {{ details.contact_number }}
     </div>
@@ -76,10 +75,9 @@
         width: 100%;
         text-align: left;
         position: absolute;
-        left: 22px;
-        bottom: 178px;
-        /* font-weight: 600; */
-        font-size: 14px;
+        bottom: 376px;
+        left: 46px;
+        font-size: 22pt;
       "
     >
       {{ details.emergency_name }}
@@ -101,15 +99,15 @@
           : ""
       }}...
     </div> -->
+
     <div
       style="
         width: 100%;
         text-align: left;
         position: absolute;
-        left: 22px;
-        top: 297px;
-        /* font-weight: 600; */
-        font-size: 16px;
+        bottom: 344px;
+        left: 46px;
+        font-size: 22pt;
       "
     >
       {{ details.emergency_number }}
@@ -117,14 +115,14 @@
 
     <div
       class="detail"
-      style="position: absolute; top: 319px; left: 91px; font-size: 9pt"
+      style="position: absolute; top: 671px; left: 204px; font-size: 19pt"
     >
       {{ details.date_issued_formatted }}
     </div>
 
     <div
       class="detail"
-      style="position: absolute; top: 335px; left: 91px; font-size: 9pt"
+      style="position: absolute; top: 705px; left: 205px; font-size: 19pt"
     >
       {{ details.date_expire_formatted }}
     </div>
@@ -145,7 +143,7 @@
       <!-- :hidden="details.name ? false : true" -->
 
       <img
-        id="signatureImage"
+        id="signatureImageV2"
         class="signatureImage"
         src="~/assets/images/get_sig.png"
         style="
@@ -153,9 +151,11 @@
           width: 359px;
           /* vertical-align: bottom; */
           position: absolute;
-          bottom: -146px;
-          left: -27px;
-          transform: scale(0.4);
+          /* bottom: -146px;
+          left: -27px; */
+          bottom: -584px;
+          left: 151px;
+          /* transform: scale(0.4); */
         "
       />
     </div>
@@ -904,7 +904,7 @@ function processPoint(point, in_canvas, in_ctx) {
 }
 
 function generateImage() {
-  var signatureImage = document.getElementById("signatureImage");
+  var signatureImage = document.getElementById("signatureImageV2");
   var signatureCanvas = document.createElement("canvas");
   signatureCanvas.id = "signatureCanvas";
   signatureCanvas.height = signatureImage.height; //227
