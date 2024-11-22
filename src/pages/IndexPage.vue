@@ -356,12 +356,12 @@
                   @click="downloadImage()"
                 ></q-btn>
 
-                <q-btn
+                <!-- <q-btn
                   :disable="!selected_employee_input"
                   class="q-ml-sm"
                   label="Download as PDF"
                   @click="downloadAsPdf()"
-                ></q-btn>
+                ></q-btn> -->
               </q-form>
             </div>
           </div>
