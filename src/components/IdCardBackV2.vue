@@ -76,29 +76,12 @@
         text-align: left;
         position: absolute;
         bottom: 376px;
-        left: 46px;
+        left: 53px;
         font-size: 22pt;
       "
     >
       {{ details.emergency_name }}
     </div>
-
-    <!-- <div
-      style="
-        width: 100%;
-        text-align: center;
-        position: absolute;
-        left: 0px;
-        top: 295px;
-        font-weight: 600;
-      "
-    >
-      {{
-        details.emergency_address
-          ? details.emergency_address.substr(0, 46)
-          : ""
-      }}...
-    </div> -->
 
     <div
       style="
@@ -106,7 +89,7 @@
         text-align: left;
         position: absolute;
         bottom: 344px;
-        left: 46px;
+        left: 53px;
         font-size: 22pt;
       "
     >
@@ -122,7 +105,7 @@
 
     <div
       class="detail"
-      style="position: absolute; top: 705px; left: 205px; font-size: 19pt"
+      style="position: absolute; top: 705px; left: 204px; font-size: 19pt"
     >
       {{ details.date_expire_formatted }}
     </div>

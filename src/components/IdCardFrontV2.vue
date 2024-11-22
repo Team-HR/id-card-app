@@ -1,6 +1,6 @@
 <template>
   <div
-    id="IdCardFront"
+    id="IdCardFrontV2"
     class="front-id"
     style="
       /* border: 1px solid gray; */
@@ -8,14 +8,11 @@
       width: 640px;
       height: 1014px;
       font-size: 22pt;
-      position: absolute;
-      background-image: url(/images/REG_ID_Front_Temp.jpg);
-      background-position: center center;
+      position: relative;
+      background-image: url('/images/REG_ID_Front_Temp.jpg');
+      background-position: center;
       background-repeat: no-repeat;
       background-size: contain;
-      transform: scale(0.5);
-      top: -200px;
-      left: -142px;
     "
   >
     <div
