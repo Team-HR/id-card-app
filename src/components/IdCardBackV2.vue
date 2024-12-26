@@ -144,7 +144,7 @@
     </div>
 
     <!-- signature container end -->
-    <div
+    <!-- <div
       style="
         position: absolute;
         bottom: 76px;
@@ -154,7 +154,7 @@
       "
     >
       <b>{{ details.name }}</b>
-    </div>
+    </div> -->
   </div>
 
   <q-dialog v-model="Dialog" backdrop-filter="sepia(90%)" persistent>
