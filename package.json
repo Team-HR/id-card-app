@@ -1,8 +1,8 @@
 {
   "name": "id-card-app",
   "version": "0.0.1",
-  "description": "A Quasar Project",
-  "productName": "Quasar App",
+  "description": "A LGU ID Bayawan City Editor App",
+  "productName": "LGU ID Editor App",
   "author": "fjavalencia <franzval123@gmail.com>",
   "private": true,
   "scripts": {
@@ -17,6 +17,7 @@
     "axios": "^1.2.1",
     "html-to-image": "^1.11.11",
     "pinia": "^2.0.11",
+    "qrcode": "^1.5.4",
     "quasar": "^2.8.0",
     "vue": "^3.4.18",
     "vue-avatar-editor-improved": "^1.0.7",

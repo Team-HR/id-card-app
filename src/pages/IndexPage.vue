@@ -63,11 +63,7 @@
               </div>
             </div>
             <div class="col-7">
-              <q-form
-                @submit.prevent="onSubmit"
-                @reset="onReset"
-                class="q-gutter-sm_"
-              >
+              <q-form @submit.prevent="onSubmit" @reset="onReset" class="q-gutter-sm_">
                 <q-input
                   :disable="!selected_employee_input"
                   dense
@@ -77,8 +73,7 @@
                   hint=""
                   lazy-rules
                   :rules="[
-                    (val) =>
-                      (val && val.length > 0) || 'Please enter the ID number',
+                    (val) => (val && val.length > 0) || 'Please enter the ID number',
                   ]"
                 />
                 <q-input
@@ -91,16 +86,11 @@
                   hint=""
                   lazy-rules
                   :rules="[
-                    (val) =>
-                      (val && val.length > 0) ||
-                      '* Position should not be empty!',
+                    (val) => (val && val.length > 0) || '* Position should not be empty!',
                   ]"
                 >
                   <template v-slot:append>
-                    <TextFormatter
-                      :textProps="textFormat.position"
-                      textFor="position"
-                    />
+                    <TextFormatter :textProps="textFormat.position" textFor="position" />
                   </template>
                 </q-input>
                 <div class="row">
@@ -115,8 +105,7 @@
                     lazy-rules
                     :rules="[
                       (val) =>
-                        (val && val.length > 0) ||
-                        '* Last Name should not be empty!',
+                        (val && val.length > 0) || '* Last Name should not be empty!',
                     ]"
                   >
                     <template v-slot:append>
@@ -138,8 +127,7 @@
                     lazy-rules
                     :rules="[
                       (val) =>
-                        (val && val.length > 0) ||
-                        '* First Name should not be empty!',
+                        (val && val.length > 0) || '* First Name should not be empty!',
                     ]"
                   >
                     <template v-slot:append>
@@ -182,8 +170,7 @@
                   hint=""
                   lazy-rules
                   :rules="[
-                    (val) =>
-                      (val && val.length > 0) || '* Field should not be empty!',
+                    (val) => (val && val.length > 0) || '* Field should not be empty!',
                   ]"
                 />
 
@@ -198,9 +185,7 @@
                     hint=""
                     lazy-rules
                     :rules="[
-                      (val) =>
-                        (val && val.length > 0) ||
-                        '* Field should not be empty!',
+                      (val) => (val && val.length > 0) || '* Field should not be empty!',
                     ]"
                   />
                   <q-input
@@ -213,9 +198,7 @@
                     hint=""
                     lazy-rules
                     :rules="[
-                      (val) =>
-                        (val && val.length > 0) ||
-                        '* Field should not be empty!',
+                      (val) => (val && val.length > 0) || '* Field should not be empty!',
                     ]"
                   />
                 </div>
@@ -229,8 +212,7 @@
                   hint=""
                   lazy-rules
                   :rules="[
-                    (val) =>
-                      (val && val.length > 0) || '* Field should not be empty!',
+                    (val) => (val && val.length > 0) || '* Field should not be empty!',
                   ]"
                 />
 
@@ -280,9 +262,7 @@
                     hint=""
                     lazy-rules
                     :rules="[
-                      (val) =>
-                        (val && val.length > 0) ||
-                        '* Field should not be empty!',
+                      (val) => (val && val.length > 0) || '* Field should not be empty!',
                     ]"
                   />
 
@@ -306,8 +286,7 @@
                   hint=""
                   lazy-rules
                   :rules="[
-                    (val) =>
-                      (val && val.length > 0) || '* Field should not be empty!',
+                    (val) => (val && val.length > 0) || '* Field should not be empty!',
                   ]"
                 />
 
@@ -344,10 +323,7 @@
                 </div>
 
                 <div class="q-mt-sm"></div>
-                <q-btn
-                  :disable="!selected_employee_input"
-                  class="q-mr-sm"
-                  type="submit"
+                <q-btn :disable="!selected_employee_input" class="q-mr-sm" type="submit"
                   >Save</q-btn
                 >
                 <q-btn
@@ -407,10 +383,7 @@
           :photoFormat="photoFormat"
         />
 
-        <IdCardBackV2
-          :details="selected_employee_data"
-          @onPenDataSave="savePendata"
-        />
+        <IdCardBackV2 :details="selected_employee_data" @onPenDataSave="savePendata" />
       </div>
     </div>
   </q-page>
@@ -617,6 +590,7 @@ defineOptions({
           photoFormat: this.photoFormat,
         })
         .then(({ data }) => {
+          alert("Save changes");
           this.getEmployeeData();
         })
         .catch((err) => {
@@ -636,20 +610,15 @@ defineOptions({
           this.selected_employee_data = data;
           if (data.text_formatting) {
             // font_size": 17, "bottom": 83, "left": 40, "line_height": 20
-            this.textFormat.position.font_size =
-              data.text_formatting.position.font_size;
-            this.textFormat.position.bottom =
-              data.text_formatting.position.bottom;
+            this.textFormat.position.font_size = data.text_formatting.position.font_size;
+            this.textFormat.position.bottom = data.text_formatting.position.bottom;
             this.textFormat.position.line_height =
               data.text_formatting.position.line_height;
-            this.textFormat.lastName.font_size =
-              data.text_formatting.lastName.font_size;
-            this.textFormat.lastName.bottom =
-              data.text_formatting.lastName.bottom;
+            this.textFormat.lastName.font_size = data.text_formatting.lastName.font_size;
+            this.textFormat.lastName.bottom = data.text_formatting.lastName.bottom;
             this.textFormat.firstName.font_size =
               data.text_formatting.firstName.font_size;
-            this.textFormat.firstName.bottom =
-              data.text_formatting.firstName.bottom;
+            this.textFormat.firstName.bottom = data.text_formatting.firstName.bottom;
           }
 
           if (data.photo_formatting) {

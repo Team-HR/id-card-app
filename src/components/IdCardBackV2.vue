@@ -35,13 +35,13 @@
       "
     >
       <!-- {{ details.address }} -->
-      {{
-        details.address_res_barangay ? details.address_res_barangay + ", " : ""
-      }}
+      {{ details.address_res_barangay ? details.address_res_barangay + ", " : "" }}
       {{ details.address_res_city }}, {{ details.address_res_zip_code }},
       {{ details.address_res_province }}
     </div>
-
+    <div style="position: absolute; top: 242px; left: 347px">
+      <img id="qr-img-v2" style="height: 300px; width: 300px" alt="" />
+    </div>
     <div
       class="detail"
       style="position: absolute; top: 283px; left: 42px; font-size: 22pt"
@@ -224,6 +224,35 @@ import WacomGSS from "assets/libs/wgssStuSdk.js";
 import { ref, watch } from "vue";
 import axios from "axios";
 
+import QRCode from "qrcode";
+
+// QRCode.toCanvas(document.getElementById("canvas"), "sample text", function (error) {
+//   if (error) console.error(error);
+//   console.log("success!");
+// });
+
+// With promises
+// QRCode.toDataURL("https://ihris.hrmdo-lgubayawan.link/verify/index.php?id=15867")
+//   .then((url) => {
+//     console.log("QRCode: ", url);
+//     var qr_el = document.getElementById("qr-img-v2");
+//     qr_el.src = url;
+//   })
+//   .catch((err) => {
+//     console.error(err);
+//   });
+
+// With async/await
+const generateQR = async (text) => {
+  try {
+    var qr_el = document.getElementById("qr-img-v2");
+    qr_el.src = await QRCode.toDataURL(text);
+    // console.log();
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 defineOptions({
   name: "IdCardBack",
 });
@@ -294,6 +323,10 @@ watch(
       // promptSigDialog();
       generateImage();
     }
+    generateQR(
+      "https://ihris.hrmdo-lgubayawan.link/verify/index.php?id=" +
+        props.details.employees_id
+    );
   },
   { deep: true }
 );
@@ -579,14 +612,12 @@ function promptSigDialog() {
           var penDataOptionMode = p.PenDataOptionMode.PenDataOptionMode_None;
           switch (message) {
             case WacomGSS.STU.ProductId.ProductId_520A:
-              penDataOptionMode =
-                p.PenDataOptionMode.PenDataOptionMode_TimeCount;
+              penDataOptionMode = p.PenDataOptionMode.PenDataOptionMode_TimeCount;
               break;
             case WacomGSS.STU.ProductId.ProductId_430:
             case WacomGSS.STU.ProductId.ProductId_530:
             case WacomGSS.STU.ProductId.ProductId_540:
-              penDataOptionMode =
-                p.PenDataOptionMode.PenDataOptionMode_TimeCountSequence;
+              penDataOptionMode = p.PenDataOptionMode.PenDataOptionMode_TimeCountSequence;
               break;
             default:
               console.log(
@@ -765,8 +796,7 @@ function drawButtons() {
       m_btns[i].Bounds.x +
       (m_btns[i].Bounds.width / 2 - ctx.measureText(m_btns[i].Text).width / 2);
     var yOffset;
-    if (m_usbDevices[0].idProduct == WacomGSS.STU.ProductId.ProductId_300)
-      yOffset = 28;
+    if (m_usbDevices[0].idProduct == WacomGSS.STU.ProductId.ProductId_300) yOffset = 28;
     else if (m_usbDevices[0].idProduct == WacomGSS.STU.ProductId.ProductId_430)
       yOffset = 26;
     else yOffset = 40;
@@ -826,12 +856,8 @@ function clearCanvasOut(in_canvas, in_ctx) {
 
 function processButtons(point, in_canvas) {
   var nextPoint = {};
-  nextPoint.x = Math.round(
-    (in_canvas.width * point.x) / m_capability.tabletMaxX
-  );
-  nextPoint.y = Math.round(
-    (in_canvas.height * point.y) / m_capability.tabletMaxY
-  );
+  nextPoint.x = Math.round((in_canvas.width * point.x) / m_capability.tabletMaxX);
+  nextPoint.y = Math.round((in_canvas.height * point.y) / m_capability.tabletMaxY);
   var isDown2 = isDown
     ? !(point.pressure <= m_inkThreshold.offPressureMark)
     : point.pressure > m_inkThreshold.onPressureMark;
@@ -857,12 +883,8 @@ function processButtons(point, in_canvas) {
 
 function processPoint(point, in_canvas, in_ctx) {
   var nextPoint = {};
-  nextPoint.x = Math.round(
-    (in_canvas.width * point.x) / m_capability.tabletMaxX
-  );
-  nextPoint.y = Math.round(
-    (in_canvas.height * point.y) / m_capability.tabletMaxY
-  );
+  nextPoint.x = Math.round((in_canvas.width * point.x) / m_capability.tabletMaxX);
+  nextPoint.y = Math.round((in_canvas.height * point.y) / m_capability.tabletMaxY);
   var isDown2 = isDown
     ? !(point.pressure <= m_inkThreshold.offPressureMark)
     : point.pressure > m_inkThreshold.onPressureMark;
@@ -871,10 +893,7 @@ function processPoint(point, in_canvas, in_ctx) {
     lastPoint = nextPoint;
   }
 
-  if (
-    (isDown2 && 10 < distance(lastPoint, nextPoint)) ||
-    (isDown && !isDown2)
-  ) {
+  if ((isDown2 && 10 < distance(lastPoint, nextPoint)) || (isDown && !isDown2)) {
     in_ctx.beginPath();
     in_ctx.moveTo(lastPoint.x, lastPoint.y);
     in_ctx.lineTo(nextPoint.x, nextPoint.y);
