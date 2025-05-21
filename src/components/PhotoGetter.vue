@@ -68,11 +68,7 @@
   <q-dialog v-model="prompt" persistent>
     <q-card style="min-width: 1500px; text-align: center">
       <q-card-section class="q-pt-none q-ma-lg">
-        <q-select
-          v-model="selectedCamDevice"
-          :options="camDevices"
-          label="Device"
-        />
+        <q-select v-model="selectedCamDevice" :options="camDevices" label="Device" />
 
         <video id="player" autoplay style="width: 1000px"></video>
         <br />
@@ -184,7 +180,7 @@ defineOptions({
     },
     async getPhoto() {
       await this.$api
-        .post("http://192.168.50.50:8081/id_card_backend.php", {
+        .post(import.meta.env.VITE_API_URL + "/id_card_backend.php", {
           getPhoto: true,
           employees_id: this.selected_employee_data.employees_id,
         })
@@ -207,7 +203,7 @@ defineOptions({
 
       formData.append("employees_id", this.selected_employee_data.employees_id);
       this.$api
-        .post("http://192.168.50.50:8081/id_photo_upload.php", formData, {
+        .post(import.meta.env.VITE_API_URL + "/id_photo_upload.php", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         })
         .then(({ data }) => {
@@ -248,9 +244,7 @@ defineOptions({
         uploadedPhoto.onload = () => {
           URL.revokeObjectURL(uploadedPhoto.src); // no longer needed, free memory
 
-          const uploadedPhotoEditor = document.getElementById(
-            "uploadedPhotoEditor"
-          );
+          const uploadedPhotoEditor = document.getElementById("uploadedPhotoEditor");
           const canvas = document.getElementById("canvasCapture");
           // canvas.style.width = uploadedPhotoEditor.style.width;
           // canvas.style.height = uploadedPhotoEditor.style.height;
@@ -332,9 +326,7 @@ defineOptions({
         video: { deviceId: videoSource ? { exact: videoSource } : undefined },
       };
 
-      return navigator.mediaDevices
-        .getUserMedia(constraints)
-        .then(this.gotStream);
+      return navigator.mediaDevices.getUserMedia(constraints).then(this.gotStream);
       // .catch(handleError);
     },
 

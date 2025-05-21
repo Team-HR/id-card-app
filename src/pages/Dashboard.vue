@@ -12,12 +12,8 @@ td {
 </style>
 
 <template>
-  <q-page
-    class="q-pa-md"
-    style="background-color: #e8e8e852; position: relative"
-  >
+  <q-page class="q-pa-md" style="background-color: #e8e8e852; position: relative">
     <q-btn color="white" text-color="black" label="Back" to="/"></q-btn>
-
     <q-select
       clearable
       class="q-ma-md"
@@ -37,36 +33,84 @@ td {
         </q-item>
       </template>
     </q-select>
+    <div v-if="selectedDepartment">
+      <template v-for="item in rows" :key="item.id">
+        <div class="deptCard">
+          <h4>{{ `${item.department} (${item.alias})` }}</h4>
 
-    <template v-for="item in items" :key="item.id">
-      <div class="deptCard">
-        <h5>{{ `${item.department} (${item.alias})` }}</h5>
-        <table style="margin-top: 10px">
-          <thead>
-            <tr>
-              <th>ID#</th>
-              <th>Name</th>
-              <th>Created at</th>
-              <th>Updated at</th>
-              <th>Printed at</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="emp in item.employees"
-              :key="emp.id"
-              :class="getColorStatus(emp)"
-            >
-              <td>{{ emp.empno }}</td>
-              <td>{{ emp.full_name }}</td>
-              <td>{{ emp.created_at }}</td>
-              <td>{{ emp.updated_at }}</td>
-              <td>{{ emp.printed_at }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </template>
+          <q-linear-progress
+            size="50px"
+            :value="item.perentageCompletion / 100"
+            color="green"
+            class="q-my-md"
+          >
+            <div class="absolute-full flex flex-center">
+              <q-badge
+                color="white"
+                text-color="green"
+                :label="`${item.perentageCompletion}% (${item.totalAccomplishedEmployee}/${item.totalDepartmentEmployee})`"
+              />
+            </div>
+          </q-linear-progress>
+
+          <q-table
+            :rows-per-page-options="[0, 5, 10, 15]"
+            flat
+            :rows="item.employees"
+            :columns="columns"
+            :row-key="(row) => row.empno"
+            selection="multiple"
+            v-model:selected="selected"
+            :selected-rows-label="getSelectedString"
+          />
+        </div>
+      </template>
+    </div>
+    <div v-else>
+      <template v-for="item in rows" :key="item.id">
+        <div class="q-my-lg">
+          <span>{{ `${item.department} (${item.alias})` }}</span>
+          <q-linear-progress
+            size="20px"
+            :value="item.perentageCompletion / 100"
+            color="green"
+          >
+            <div class="absolute-full flex flex-center">
+              <q-badge
+                color="white"
+                text-color="green"
+                :label="`${item.perentageCompletion}% (${item.totalAccomplishedEmployee}/${item.totalDepartmentEmployee})`"
+              />
+            </div>
+          </q-linear-progress>
+        </div>
+      </template>
+    </div>
+    <q-page-sticky position="bottom-left" :offset="[18, 18]">
+      <!-- <q-btn fab icon="add" color="accent" /> -->
+      <q-fab
+        v-if="countSelected > 0"
+        v-model="fab1"
+        :label="`Selected: ${countSelected}`"
+        label-position="left"
+        color="purple"
+        icon="keyboard_arrow_right"
+        direction="right"
+      >
+        <q-fab-action
+          color="primary"
+          @click="unselectAll"
+          icon="cancel"
+          label="Unselect All"
+        />
+        <q-fab-action
+          color="secondary"
+          @click="printSelected"
+          icon="print"
+          label="Print Selected"
+        />
+      </q-fab>
+    </q-page-sticky>
   </q-page>
 </template>
 
@@ -103,13 +147,77 @@ defineOptions({
 
   data: function data() {
     return {
-      departments: [],
+      columns: [
+        {
+          name: "desc",
+          required: true,
+          label: "ID No.",
+          align: "left",
+          field: (row) => row.empno,
+          format: (val) => `${val}`,
+          sortable: true,
+        },
+        {
+          name: "full_name",
+          align: "left",
+          label: "Name",
+          field: "full_name",
+          sortable: true,
+        },
+
+        {
+          name: "percentageCompletion",
+          align: "left",
+          label: "Details Completed",
+          field: "percentageCompletion",
+          sortable: true,
+        },
+
+        {
+          name: "created_at",
+          align: "left",
+          label: "Created at",
+          field: "created_at",
+          sortable: true,
+        },
+        {
+          name: "updated_at",
+          align: "left",
+          label: "Updated at",
+          field: "updated_at",
+          sortable: true,
+        },
+        {
+          name: "printed_at",
+          align: "left",
+          label: "Printed at",
+          field: "printed_at",
+          sortable: true,
+        },
+
+        // Details Completed	Created at	Updated at	Printed at
+      ],
+      selected: [],
+      fab1: false,
       selections: [],
+      departments: [],
       selectedDepartment: null,
-      items: [],
+      rows: [],
     };
   },
   methods: {
+    unselectAll() {
+      this.selected = [];
+    },
+    printSelected() {},
+    getSelectedString() {
+      // return this.selected.length;
+      return this.selected.length === 0
+        ? ""
+        : `Selected ${this.selected.length} ID${this.selected.length > 1 ? "s" : ""} `;
+      // selected of ${this.rows.length}
+    },
+
     getColorStatus(emp) {
       if (emp.created_at && !emp.printed_at) {
         return "incomplete";
@@ -119,23 +227,23 @@ defineOptions({
     },
     getIdCardsDataCaptured() {
       this.$api
-        .post("http://192.168.50.50:8081/id_card_backend.php", {
+        .post(import.meta.env.VITE_API_URL + "/id_card_backend.php", {
           getIdCardsDataCaptured: true,
           selectedDepartment: this.selectedDepartment,
         })
         .then(({ data }) => {
-          console.log(data);
-          this.items = data;
+          console.log("Selected Departments w/ Employees:", data);
+          this.rows = data;
         });
     },
 
     async getDepartments() {
       this.$api
-        .post("http://192.168.50.50:8081/id_card_backend.php", {
+        .post(import.meta.env.VITE_API_URL + "/id_card_backend.php", {
           getDepartments: true,
         })
         .then(({ data }) => {
-          console.log("departments: ", data);
+          // console.log("departments: ", data);
           this.departments = data;
           // this.list = data.all;
         });
@@ -157,7 +265,11 @@ defineOptions({
       });
     },
   },
-  created() {},
+  computed: {
+    countSelected() {
+      return this.selected.length;
+    },
+  },
   mounted() {
     this.getDepartments().then(() => {
       this.getIdCardsDataCaptured();

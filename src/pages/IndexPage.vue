@@ -464,22 +464,11 @@ defineOptions({
   methods: {
     saveImageCaptured(formData) {
       this.timestamp = new Date().valueOf();
-
-      // var xhr = new XMLHttpRequest();
-      // xhr.open("POST", "http://192.168.50.50:8081/id_photo_upload.php", true);
-      // xhr.onload = function () {
-      //   if (xhr.status === 200) {
-      //     alert("Image uploaded successfully");
-      //   } else {
-      //     alert("Upload failed");
-      //   }
-      // };
-      // xhr.send(formData);
     },
 
     savePendata(data) {
       this.$api
-        .post("http://192.168.50.50:8081/id_card_backend.php", {
+        .post(import.meta.env.VITE_API_URL + "/id_card_backend.php", {
           savePendata: true,
           m_penData: data,
           employees_id: this.selected_employee_data.employees_id,
@@ -499,7 +488,7 @@ defineOptions({
       htmlToImage.toJpeg(node1, { quality: 1 }).then((dataUrl) => {
         this.$api
           .post(
-            "http://192.168.50.50:8081/id_card_upload.php",
+            import.meta.env.VITE_API_URL + "/id_card_upload.php",
             {
               employees_id: this.selected_employee_data.employees_id,
               side: "front",
@@ -513,7 +502,7 @@ defineOptions({
             htmlToImage.toJpeg(node2, { quality: 1 }).then((dataUrl) => {
               this.$api
                 .post(
-                  "http://192.168.50.50:8081/id_card_upload.php",
+                  import.meta.env.VITE_API_URL + "/id_card_upload.php",
                   {
                     employees_id: this.selected_employee_data.employees_id,
                     side: "back",
@@ -526,7 +515,8 @@ defineOptions({
                 .then(() => {
                   var link = document.createElement("a");
                   link.href =
-                    "http://192.168.50.50:8081/id_card_print_pdf.php?employee_id=" +
+                    import.meta.env.VITE_API_URL +
+                    "/id_card_print_pdf.php?employee_id=" +
                     this.selected_employee_data.employees_id;
                   link.click();
                 });
@@ -564,7 +554,7 @@ defineOptions({
       });
 
       this.$api
-        .post("http://192.168.50.50:8081/id_card_backend.php", {
+        .post(import.meta.env.VITE_API_URL + "/id_card_backend.php", {
           tagAsPrinted: true,
           selected_employee_data: this.selected_employee_data,
         })
@@ -583,7 +573,7 @@ defineOptions({
     onSubmit() {
       // return false;
       this.$api
-        .post("http://192.168.50.50:8081/id_card_backend.php", {
+        .post(import.meta.env.VITE_API_URL + "/id_card_backend.php", {
           saveEmployeeData: true,
           selected_employee_data: this.selected_employee_data,
           textFormat: this.textFormat,
@@ -601,7 +591,7 @@ defineOptions({
     getEmployeeData() {
       if (!this.selected_employee_input) return;
       this.$api
-        .post("http://192.168.50.50:8081/id_card_backend.php", {
+        .post(import.meta.env.VITE_API_URL + "/id_card_backend.php", {
           getEmployeeData: true,
           employeeId: this.selected_employee_input.value,
         })
@@ -650,7 +640,7 @@ defineOptions({
 
   created() {
     this.$api
-      .post("http://192.168.50.50:8081/id_card_backend.php", {
+      .post(import.meta.env.VITE_API_URL + "/id_card_backend.php", {
         getEmployeeList: "true",
       })
       .then(({ data }) => {
