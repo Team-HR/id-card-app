@@ -32,7 +32,7 @@
         left: 35px;
         overflow: hidden;
         width: 559px;
-        height: 57px;
+        height: 59px;
         font-size: 22pt;
         line-height: 23pt;
       "
@@ -40,7 +40,7 @@
       <!-- {{ details.address }} -->
       {{ details.address_res_barangay ? details.address_res_barangay + ", " : "" }}
       {{ details.address_res_city }}, {{ details.address_res_zip_code }},
-      {{ details.address_res_province }}
+      {{ details.address_res_province }}, {{ details.address_res_country }}
     </div>
 
     <div style="position: absolute; top: 242px; left: 347px">

@@ -31,9 +31,7 @@
         text-shadow: 0px 2px 2px black;
       "
     >
-      {{
-        details.employmentStatus ? `${details.employmentStatus} EMPLOYEE` : ""
-      }}
+      {{ details.employmentStatus ? `${details.employmentStatus} EMPLOYEE` : "" }}
     </div>
 
     <div
@@ -86,22 +84,12 @@
         textFormat.lastName.bottom * 2.15
       }px;
         left: ${textFormat.lastName.left * 2}px; `"
-      style="
-        width: 100%;
-        text-align: left;
-        font-weight: 500;
-        position: absolute;
-      "
+      style="width: 100%; text-align: left; font-weight: 500; position: absolute"
     >
       {{ details.lastName }}{{ details.extName ? ", " + details.extName : "" }}
     </div>
     <div
-      style="
-        width: 100%;
-        text-align: left;
-        font-weight: 700;
-        position: absolute;
-      "
+      style="width: 100%; text-align: left; font-weight: 700; position: absolute"
       :style="`font-size:${textFormat.firstName.font_size * 2.05}px; bottom: ${
         textFormat.firstName.bottom * 2.15
       }px;
@@ -173,7 +161,7 @@ defineOptions({
       this.imageIsLoading = "loading";
       this.imgSrcFromServer = "#";
       this.$api
-        .post("http://192.168.50.50:8081/id_card_backend.php", {
+        .post(import.meta.env.VITE_API_URL + "/id_card_backend.php", {
           getPhoto: true,
           employees_id: this.details.employees_id,
         })
