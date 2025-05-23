@@ -6,6 +6,7 @@
 
 <script setup>
 import { useQuasar } from "quasar";
+// import puppeteer from "puppeteer";
 
 defineOptions({
   name: "TestPage",

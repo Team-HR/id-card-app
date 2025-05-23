@@ -37,7 +37,6 @@ td {
       <template v-for="item in rows" :key="item.id">
         <div class="deptCard">
           <h4>{{ `${item.department} (${item.alias})` }}</h4>
-
           <q-linear-progress
             size="50px"
             :value="item.perentageCompletion / 100"
@@ -52,7 +51,7 @@ td {
               />
             </div>
           </q-linear-progress>
-
+          <!-- {{ item.employees }} -->
           <q-table
             :rows-per-page-options="[0, 5, 10, 15]"
             flat
@@ -62,7 +61,20 @@ td {
             selection="multiple"
             v-model:selected="selected"
             :selected-rows-label="getSelectedString"
-          />
+            @update:selected="onUpdateSelected"
+          >
+            <template v-slot:body-selection="scope">
+              <!-- {{ scope.row.hasIdCard }} -->
+              <q-checkbox
+                v-model="scope.selected"
+                @update:model-value="scope.select"
+                v-if="isRowSelectable(scope.row)"
+              ></q-checkbox>
+              <div v-else style="text-align: center">
+                <q-icon name="no_photography" color="grey" />
+              </div>
+            </template>
+          </q-table>
         </div>
       </template>
     </div>
@@ -206,10 +218,30 @@ defineOptions({
     };
   },
   methods: {
+    isRowSelectable(row) {
+      return row.hasIdCard && row.completionRating >= 100;
+    },
+
+    onUpdateSelected(newSelection) {
+      // Filter out rows that should not be selectable
+      this.selected = newSelection.filter(this.isRowSelectable);
+    },
+
     unselectAll() {
       this.selected = [];
     },
-    printSelected() {},
+    printSelected() {
+      const employeeIds = this.selected.map((e) => e.employees_id).join(",");
+      const departmentId = this.selectedDepartment.value;
+      var link = document.createElement("a");
+      link.href =
+        import.meta.env.VITE_API_URL +
+        "/id_card_print_pdf.php?employeeIds=" +
+        employeeIds +
+        "&departmentId=" +
+        departmentId;
+      link.click();
+    },
     getSelectedString() {
       // return this.selected.length;
       return this.selected.length === 0
@@ -232,7 +264,6 @@ defineOptions({
           selectedDepartment: this.selectedDepartment,
         })
         .then(({ data }) => {
-          console.log("Selected Departments w/ Employees:", data);
           this.rows = data;
         });
     },

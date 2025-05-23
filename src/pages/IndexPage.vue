@@ -351,11 +351,7 @@
             :textFormat="textFormat"
             :photoFormat="photoFormat"
           />
-          <IdCardBack
-            style="transform: scale(0.5); position: absolute"
-            :details="selected_employee_data"
-            @onPenDataSave="savePendata"
-          />
+          <IdCardBack :details="selected_employee_data" @onPenDataSave="savePendata" />
         </div>
       </div>
       <!-- <video id="player" autoplay></video>
@@ -382,7 +378,6 @@
           :textFormat="textFormat"
           :photoFormat="photoFormat"
         />
-
         <IdCardBackV2 :details="selected_employee_data" @onPenDataSave="savePendata" />
       </div>
     </div>
@@ -411,6 +406,8 @@ defineOptions({
     IdCardFrontV2,
     IdCardBack,
     IdCardBackV2,
+    PhotoGetter,
+    PhotoAdjuster,
     TextFormatter,
   },
 
@@ -444,7 +441,7 @@ defineOptions({
           left: 40,
         },
       },
-      selected_employee_input: null,
+      selected_employee_input: null, //{ label: "VALENCIAS, FRANZ JOSHUA ALCAZAR", value: "9" },
       selected_employee_data: {
         empno: null,
         lastName: null,
@@ -455,6 +452,7 @@ defineOptions({
         position_function: null,
         address: null,
       },
+      selected_employee_image_data: null,
       employees: [],
       selections: this.employees,
       timestamp: 0,
@@ -525,6 +523,33 @@ defineOptions({
       });
     },
 
+    async setImageData() {
+      var node1 = document.getElementById("IdCardFrontV2");
+      var node2 = document.getElementById("IdCardBackV2");
+
+      var frontDataUrl = "";
+      var backDataUrl = "";
+
+      await htmlToImage.toJpeg(node1, { quality: 1 }).then((dataUrl) => {
+        frontDataUrl = dataUrl;
+      });
+
+      await htmlToImage.toJpeg(node2, { quality: 1 }).then((dataUrl) => {
+        backDataUrl = dataUrl;
+      });
+
+      // this.selected_employee_data.imageData = {
+      //   front: frontImageData,
+      //   back: backImageData,
+      // };
+      // return {
+      //   front: frontImageData,
+      //   back: backImageData,
+      // };
+
+      this.selected_employee_image_data = { frontDataUrl, backDataUrl };
+    },
+
     downloadImage() {
       // canvasWidth: 204, canvasHeight: 324
       var node1 = document.getElementById("IdCardFrontV2");
@@ -537,7 +562,6 @@ defineOptions({
           this.selected_employee_data.empno +
           "_FRONT.jpeg";
         link.href = dataUrl;
-        // console.log(dataUrl);
         link.click();
       });
 
@@ -549,7 +573,6 @@ defineOptions({
           this.selected_employee_data.empno +
           "_BACK.jpeg";
         link.href = dataUrl;
-        // console.log(dataUrl);
         link.click();
       });
 
@@ -570,21 +593,19 @@ defineOptions({
       // console.log(this.$refs.vueavatar.resetImage());
       // console.log((this.$refs.vueavatar.image = "#"));
     },
-    onSubmit() {
-      // return false;
+    async onSubmit() {
+      await this.setImageData(); // set front and back id image data to selected_employee_data
       this.$api
         .post(import.meta.env.VITE_API_URL + "/id_card_backend.php", {
           saveEmployeeData: true,
           selected_employee_data: this.selected_employee_data,
+          selected_employee_image_data: this.selected_employee_image_data,
           textFormat: this.textFormat,
           photoFormat: this.photoFormat,
         })
         .then(({ data }) => {
-          alert("Save changes");
+          console.log("Save changes");
           this.getEmployeeData();
-        })
-        .catch((err) => {
-          console.error(err);
         });
     },
     onReset() {},
@@ -644,7 +665,6 @@ defineOptions({
         getEmployeeList: "true",
       })
       .then(({ data }) => {
-        console.log(data);
         this.employees = data;
       })
       .catch((err) => {
@@ -653,6 +673,7 @@ defineOptions({
   },
 
   mounted() {
+    this.getEmployeeData();
     // const player = document.getElementById("player");
     // const canvas = document.getElementById("canvas");
     // const context = canvas.getContext("2d");

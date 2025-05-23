@@ -42,15 +42,17 @@
         overflow: hidden;
       "
     >
-      <img
-        :hidden="imageIsLoading == 'loading'"
-        @load="imageIsLoading = 'loaded'"
-        :src="imgSrcFromServer"
-        style="position: relative"
-        :style="`bottom:${photoFormat.top * 2}px; right: ${
-          photoFormat.left * 2
-        }px; width: ${photoFormat.width * 2.06}px;`"
-      />
+      <template v-if="imgSrcFromServer">
+        <img
+          :hidden="imageIsLoading == 'loading'"
+          @load="imageIsLoading = 'loaded'"
+          :src="imgSrcFromServer"
+          style="position: relative"
+          :style="`bottom:${photoFormat.top * 2}px; right: ${
+            photoFormat.left * 2
+          }px; width: ${photoFormat.width * 2.06}px;`"
+        />
+      </template>
 
       <q-skeleton
         style="width: 250px; height: 188px"
