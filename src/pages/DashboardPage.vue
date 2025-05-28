@@ -79,7 +79,8 @@ td {
       </template>
     </div>
     <div v-else>
-      <template v-for="item in rows" :key="item.id">
+      <DashChart :data="dashChartData" />
+      <!-- <template v-for="item in rows" :key="item.id">
         <div class="q-my-lg">
           <span>{{ `${item.department} (${item.alias})` }}</span>
           <q-linear-progress
@@ -96,7 +97,7 @@ td {
             </div>
           </q-linear-progress>
         </div>
-      </template>
+      </template> -->
     </div>
     <q-page-sticky position="bottom-left" :offset="[18, 18]">
       <!-- <q-btn fab icon="add" color="accent" /> -->
@@ -152,13 +153,15 @@ h5 {
 
 <script setup>
 import { useQuasar } from "quasar";
+import DashChart from "components/dashboard/dashChart.vue";
 
 defineOptions({
   name: "DashboardPage",
-  components: {},
+  components: { DashChart },
 
   data: function data() {
     return {
+      dashChartData: {},
       columns: [
         {
           name: "desc",
@@ -264,7 +267,9 @@ defineOptions({
           selectedDepartment: this.selectedDepartment,
         })
         .then(({ data }) => {
-          this.rows = data;
+          this.rows = data.rows;
+          this.dashChartData = data.dashChartData;
+          // console.log("getIdCardsDataCaptured: ", data);
         });
     },
 
