@@ -3,6 +3,7 @@ table {
   border: 1px solid #aaaaaa;
   border-collapse: collapse;
 }
+
 tr,
 th,
 td {
@@ -14,19 +15,9 @@ td {
 <template>
   <q-page class="q-pa-md" style="background-color: #e8e8e852; position: relative">
     <q-btn color="white" text-color="black" label="Back" to="/"></q-btn>
-    <q-select
-      clearable
-      class="q-ma-md"
-      filled
-      v-model="selectedDepartment"
-      use-input
-      input-debounce="0"
-      label="Sort by Department"
-      :options="selections"
-      @filter="filterFn"
-      behavior="menu"
-      @update:model-value="getIdCardsDataCaptured()"
-    >
+    <q-select clearable class="q-ma-md" filled v-model="selectedDepartment" use-input input-debounce="0"
+              label="Sort by Department" :options="selections" @filter="filterFn" behavior="menu"
+              @update:model-value="getIdCardsDataCaptured()">
       <template v-slot:no-option>
         <q-item>
           <q-item-section class="text-grey"> No results </q-item-section>
@@ -37,39 +28,20 @@ td {
       <template v-for="item in rows" :key="item.id">
         <div class="deptCard">
           <h4>{{ `${item.department} (${item.alias})` }}</h4>
-          <q-linear-progress
-            size="50px"
-            :value="item.perentageCompletion / 100"
-            color="green"
-            class="q-my-md"
-          >
+          <q-linear-progress size="50px" :value="item.perentageCompletion / 100" color="green" class="q-my-md">
             <div class="absolute-full flex flex-center">
-              <q-badge
-                color="white"
-                text-color="green"
-                :label="`${item.perentageCompletion}% (${item.totalAccomplishedEmployee}/${item.totalDepartmentEmployee})`"
-              />
+              <q-badge color="white" text-color="green"
+                       :label="`${item.perentageCompletion}% (${item.totalAccomplishedEmployee}/${item.totalDepartmentEmployee})`" />
             </div>
           </q-linear-progress>
           <!-- {{ item.employees }} -->
-          <q-table
-            :rows-per-page-options="[0, 5, 10, 15]"
-            flat
-            :rows="item.employees"
-            :columns="columns"
-            :row-key="(row) => row.empno"
-            selection="multiple"
-            v-model:selected="selected"
-            :selected-rows-label="getSelectedString"
-            @update:selected="onUpdateSelected"
-          >
+          <q-table :rows-per-page-options="[0, 5, 10, 15]" flat :rows="item.employees" :columns="columns"
+                   :row-key="(row) => row.empno" selection="multiple" v-model:selected="selected"
+                   :selected-rows-label="getSelectedString" @update:selected="onUpdateSelected">
             <template v-slot:body-selection="scope">
               <!-- {{ scope.row.hasIdCard }} -->
-              <q-checkbox
-                v-model="scope.selected"
-                @update:model-value="scope.select"
-                v-if="isRowSelectable(scope.row)"
-              ></q-checkbox>
+              <q-checkbox v-model="scope.selected" @update:model-value="scope.select"
+                          v-if="isRowSelectable(scope.row)"></q-checkbox>
               <div v-else style="text-align: center">
                 <q-icon name="no_photography" color="grey" />
               </div>
@@ -101,27 +73,10 @@ td {
     </div>
     <q-page-sticky position="bottom-left" :offset="[18, 18]">
       <!-- <q-btn fab icon="add" color="accent" /> -->
-      <q-fab
-        v-if="countSelected > 0"
-        v-model="fab1"
-        :label="`Selected: ${countSelected}`"
-        label-position="left"
-        color="purple"
-        icon="keyboard_arrow_right"
-        direction="right"
-      >
-        <q-fab-action
-          color="primary"
-          @click="unselectAll"
-          icon="cancel"
-          label="Unselect All"
-        />
-        <q-fab-action
-          color="secondary"
-          @click="printSelected"
-          icon="print"
-          label="Print Selected"
-        />
+      <q-fab v-if="countSelected > 0" v-model="fab1" :label="`Selected: ${countSelected}`" label-position="left"
+             color="purple" icon="keyboard_arrow_right" direction="right">
+        <q-fab-action color="primary" @click="unselectAll" icon="cancel" label="Unselect All" />
+        <q-fab-action color="secondary" @click="printSelected" icon="print" label="Print Selected" />
       </q-fab>
     </q-page-sticky>
   </q-page>
@@ -132,6 +87,7 @@ h5 {
   margin-top: 2px;
   margin-bottom: 2px;
 }
+
 .deptCard {
   border: 1px solid grey;
   margin: 30px;
@@ -140,12 +96,15 @@ h5 {
   border-radius: 20px;
   background-color: white;
 }
+
 .incomplete {
   background-color: #fcff527a;
 }
+
 .complete {
   background-color: #7aff527a;
 }
+
 .nacc {
   background-color: #d6d6d67a;
 }

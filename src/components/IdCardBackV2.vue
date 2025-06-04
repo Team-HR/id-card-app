@@ -1,7 +1,5 @@
 <template>
-  <div
-    id="IdCardBackV2"
-    style="
+  <div id="IdCardBackV2" style="
       /* border: 1px solid gray; */
       /* background-color: aqua; */
       width: 640px;
@@ -12,8 +10,7 @@
       background-position: center;
       background-size: contain;
       font-family: sans-serif;
-    "
-  >
+    ">
     <!-- QR start -->
     <!-- <img
       src="~/assets/images/qr_sample.png"
@@ -21,9 +18,7 @@
     /> -->
     <!-- QR end -->
 
-    <div
-      class="detail"
-      style="
+    <div class="detail" style="
         position: absolute;
         top: 170px;
         left: 35px;
@@ -33,8 +28,7 @@
         font-size: 22pt;
         line-height: 23pt;
         z-index: 9999;
-      "
-    >
+      ">
       <!-- {{ details.address }} -->
       {{ details.address_res_barangay ? details.address_res_barangay + ", " : "" }}
       {{ details.address_res_city }}, {{ details.address_res_zip_code }},
@@ -43,94 +37,64 @@
     <div style="position: absolute; top: 242px; left: 347px">
       <img id="qr-img-v2" style="height: 300px; width: 300px" alt="" />
     </div>
-    <div
-      class="detail"
-      style="position: absolute; top: 283px; left: 42px; font-size: 22pt"
-    >
+    <div class="detail" style="position: absolute; top: 283px; left: 42px; font-size: 22pt">
       {{ details.gender }}
     </div>
 
-    <div
-      class="detail"
-      style="position: absolute; top: 363px; left: 42px; font-size: 22pt"
-    >
+    <div class="detail" style="position: absolute; top: 363px; left: 42px; font-size: 22pt">
       {{ details.date_of_birth }}
     </div>
 
-    <div
-      class="detail"
-      style="position: absolute; top: 442px; left: 42px; font-size: 22pt"
-    >
+    <div class="detail" style="position: absolute; top: 442px; left: 42px; font-size: 22pt">
       {{ details.blood_type }}
     </div>
 
-    <div
-      class="detail"
-      style="position: absolute; top: 521px; left: 42px; font-size: 22pt"
-    >
+    <div class="detail" style="position: absolute; top: 521px; left: 42px; font-size: 22pt">
       {{ details.contact_number }}
     </div>
 
-    <div
-      style="
+    <div style="
         width: 100%;
         text-align: left;
         position: absolute;
         bottom: 376px;
         left: 53px;
         font-size: 22pt;
-      "
-    >
+      ">
       {{ details.emergency_name }}
     </div>
 
-    <div
-      style="
+    <div style="
         width: 100%;
         text-align: left;
         position: absolute;
         bottom: 344px;
         left: 53px;
         font-size: 22pt;
-      "
-    >
+      ">
       {{ details.emergency_number }}
     </div>
 
-    <div
-      class="detail"
-      style="position: absolute; top: 671px; left: 204px; font-size: 19pt"
-    >
+    <div class="detail" style="position: absolute; top: 671px; left: 204px; font-size: 19pt">
       {{ details.date_issued_formatted }}
     </div>
 
-    <div
-      class="detail"
-      style="position: absolute; top: 705px; left: 204px; font-size: 19pt"
-    >
+    <div class="detail" style="position: absolute; top: 705px; left: 204px; font-size: 19pt">
       {{ details.date_expire_formatted }}
     </div>
 
     <!-- signature container start -->
-    <div
-      style="
+    <div style="
         width: 100%;
         /* height: 20px; */
         position: absolute;
         top: 354px;
         text-align: center;
-      "
-      id="signatureDiv"
-      @click="getSignatureDialog()"
-    >
+      " id="signatureDiv" @click="getSignatureDialog()">
       <!-- src="~/assets/images/get_sig.png" -->
       <!-- :hidden="details.name ? false : true" -->
 
-      <img
-        id="signatureImageV2"
-        class="signatureImage"
-        src="~/assets/images/get_sig.png"
-        style="
+      <img id="signatureImageV2" class="signatureImage" src="~/assets/images/get_sig.png" style="
           height: 227px;
           width: 359px;
           /* vertical-align: bottom; */
@@ -140,8 +104,7 @@
           bottom: -584px;
           left: 151px;
           /* transform: scale(0.4); */
-        "
-      />
+        " />
     </div>
 
     <!-- signature container end -->
@@ -169,41 +132,32 @@
         <div id="sigPreviewContainer" style="position: relative"></div>
 
         <!-- ok btn -->
-        <div
-          style="
+        <div style="
             width: 107px;
             height: 29px;
             /* background-color: green; */
             position: absolute;
             bottom: 16px;
             left: 16px;
-          "
-          @click="btnOk_Click()"
-        ></div>
+          " @click="btnOk_Click()"></div>
         <!-- clear btn -->
-        <div
-          style="
+        <div style="
             width: 107px;
             height: 29px;
             /* background-color: grey; */
             position: absolute;
             bottom: 16px;
             left: 125px;
-          "
-          @click="btnClear_Click"
-        ></div>
+          " @click="btnClear_Click"></div>
         <!-- cancel btn -->
-        <div
-          style="
+        <div style="
             width: 107px;
             height: 29px;
             /* background-color: red; */
             position: absolute;
             bottom: 16px;
             right: 12px;
-          "
-          @click="btnCancel_Click"
-        ></div>
+          " @click="btnCancel_Click"></div>
       </q-card-section>
 
       <!-- <q-card-actions align="right">
@@ -326,7 +280,7 @@ watch(
     }
     generateQR(
       "https://ihris.hrmdo-lgubayawan.link/verify/index.php?id=" +
-        props.details.employees_id
+      props.details.employees_id
     );
   },
   { deep: true }
@@ -350,7 +304,7 @@ function checkForSigCaptX() {
   }
 }
 
-// setTimeout(checkForSigCaptX, TIMEOUT_SHORT);
+setTimeout(checkForSigCaptX, TIMEOUT_SHORT);
 
 function onDCAtimeout() {
   // Device Control App has timed-out and shut down
@@ -493,7 +447,7 @@ window.addEventListener("beforeunload", function (e) {
 });
 
 // Error-derived object for Device Control App not ready exception
-function DCANotReady() {}
+function DCANotReady() { }
 DCANotReady.prototype = new Error();
 
 function getSignatureDialog() {
