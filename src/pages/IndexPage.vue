@@ -17,20 +17,9 @@
     <div>
       <div class="row" style="position: inherit">
         <div class="col-6" style="">
-          <q-select
-            clearable
-            class="q-mb-md"
-            filled
-            v-model="selected_employee_input"
-            use-input
-            input-debounce="0"
-            label="Select Employee"
-            :options="selections"
-            @filter="filterFn"
-            @clear="onClearForm()"
-            @update:model-value="getEmployeeData()"
-            behavior="menu"
-          >
+          <q-select clearable class="q-mb-md" filled v-model="selected_employee_input" use-input input-debounce="0"
+                    label="Select Employee" :options="selections" @filter="filterFn" @clear="onClearForm()"
+                    @update:model-value="getEmployeeData()" behavior="menu">
             <template v-slot:no-option>
               <q-item>
                 <q-item-section class="text-grey"> No results </q-item-section>
@@ -47,15 +36,9 @@
             <div class="col">
               <div style="margin-left: 30px">
                 <!-- PhotoGetter Component Start -->
-                <PhotoGetter
-                  @imageCaptured="saveImageCaptured"
-                  :selected_employee_data="selected_employee_data"
-                >
+                <PhotoGetter @imageCaptured="saveImageCaptured" :selected_employee_data="selected_employee_data">
                   <template v-slot:buttons>
-                    <PhotoAdjuster
-                      :photoProps="photoFormat"
-                      :selected_employee_data="selected_employee_data"
-                    />
+                    <PhotoAdjuster :photoProps="photoFormat" :selected_employee_data="selected_employee_data" />
                   </template>
                 </PhotoGetter>
 
@@ -64,177 +47,81 @@
             </div>
             <div class="col-7">
               <q-form @submit.prevent="onSubmit" @reset="onReset" class="q-gutter-sm_">
-                <q-input
-                  :disable="!selected_employee_input"
-                  dense
-                  filled
-                  v-model="selected_employee_data.empno"
-                  label="ID Number *"
-                  hint=""
-                  lazy-rules
-                  :rules="[
-                    (val) => (val && val.length > 0) || 'Please enter the ID number',
-                  ]"
-                />
-                <q-input
-                  :disable="!selected_employee_input"
-                  class="col"
-                  dense
-                  filled
-                  v-model="selected_employee_data.position"
-                  label="Position"
-                  hint=""
-                  lazy-rules
-                  :rules="[
-                    (val) => (val && val.length > 0) || '* Position should not be empty!',
-                  ]"
-                >
+                <q-input :disable="!selected_employee_input" dense filled v-model="selected_employee_data.empno"
+                         label="ID Number *" hint="" lazy-rules :rules="[
+                          (val) => (val && val.length > 0) || 'Please enter the ID number',
+                        ]" />
+                <q-input :disable="!selected_employee_input" class="col" dense filled
+                         v-model="selected_employee_data.position" label="Position" hint="" lazy-rules :rules="[
+                          (val) => (val && val.length > 0) || '* Position should not be empty!',
+                        ]">
                   <template v-slot:append>
                     <TextFormatter :textProps="textFormat.position" textFor="position" />
                   </template>
                 </q-input>
                 <div class="row">
-                  <q-input
-                    :disable="!selected_employee_input"
-                    class="col"
-                    dense
-                    filled
-                    v-model="selected_employee_data.lastName"
-                    label="Last Name"
-                    hint=""
-                    lazy-rules
-                    :rules="[
-                      (val) =>
-                        (val && val.length > 0) || '* Last Name should not be empty!',
-                    ]"
-                  >
+                  <q-input :disable="!selected_employee_input" class="col" dense filled
+                           v-model="selected_employee_data.lastName" label="Last Name" hint="" lazy-rules :rules="[
+                            (val) =>
+                              (val && val.length > 0) || '* Last Name should not be empty!',
+                          ]">
                     <template v-slot:append>
-                      <TextFormatter
-                        :textProps="textFormat.lastName"
-                        textFor="lastName"
-                      />
+                      <TextFormatter :textProps="textFormat.lastName" textFor="lastName" />
                     </template>
                   </q-input>
 
-                  <q-input
-                    :disable="!selected_employee_input"
-                    class="col q-ml-sm"
-                    dense
-                    filled
-                    v-model="selected_employee_data.firstName"
-                    label="First Name"
-                    hint=""
-                    lazy-rules
-                    :rules="[
-                      (val) =>
-                        (val && val.length > 0) || '* First Name should not be empty!',
-                    ]"
-                  >
+                  <q-input :disable="!selected_employee_input" class="col q-ml-sm" dense filled
+                           v-model="selected_employee_data.firstName" label="First Name" hint="" lazy-rules :rules="[
+                            (val) =>
+                              (val && val.length > 0) || '* First Name should not be empty!',
+                          ]">
                     <template v-slot:append>
                       <!-- <q-btn round dense flat icon="format_shapes" /> -->
-                      <TextFormatter
-                        :textProps="textFormat.firstName"
-                        textFor="firstName"
-                      />
+                      <TextFormatter :textProps="textFormat.firstName" textFor="firstName" />
                     </template>
                   </q-input>
                 </div>
                 <div class="row">
                   <div class="col">
-                    <q-input
-                      :disable="!selected_employee_input"
-                      dense
-                      filled
-                      v-model="selected_employee_data.middleName"
-                      label="Middle Name"
-                      hint=""
-                    />
+                    <q-input :disable="!selected_employee_input" dense filled
+                             v-model="selected_employee_data.middleName" label="Middle Name" hint="" />
                   </div>
                   <div class="col q-ml-sm">
-                    <q-input
-                      :disable="!selected_employee_input"
-                      dense
-                      filled
-                      v-model="selected_employee_data.extName"
-                      label="Name Extension"
-                    />
+                    <q-input :disable="!selected_employee_input" dense filled v-model="selected_employee_data.extName"
+                             label="Name Extension" />
                   </div>
                 </div>
 
-                <q-input
-                  :disable="!selected_employee_input"
-                  dense
-                  filled
-                  v-model="selected_employee_data.address_res_barangay"
-                  label="Barangay"
-                  hint=""
-                  lazy-rules
-                  :rules="[
-                    (val) => (val && val.length > 0) || '* Field should not be empty!',
-                  ]"
-                />
+                <q-input :disable="!selected_employee_input" dense filled
+                         v-model="selected_employee_data.address_res_barangay" label="Barangay" hint="" lazy-rules
+                         :rules="[
+                          (val) => (val && val.length > 0) || '* Field should not be empty!',
+                        ]" />
 
                 <div class="row">
-                  <q-input
-                    class="col q-mr-sm"
-                    :disable="!selected_employee_input"
-                    dense
-                    filled
-                    v-model="selected_employee_data.address_res_city"
-                    label="City/Municipality"
-                    hint=""
-                    lazy-rules
-                    :rules="[
-                      (val) => (val && val.length > 0) || '* Field should not be empty!',
-                    ]"
-                  />
-                  <q-input
-                    class="col"
-                    :disable="!selected_employee_input"
-                    dense
-                    filled
-                    v-model="selected_employee_data.address_res_zip_code"
-                    label="Zipcode"
-                    hint=""
-                    lazy-rules
-                    :rules="[
-                      (val) => (val && val.length > 0) || '* Field should not be empty!',
-                    ]"
-                  />
+                  <q-input class="col q-mr-sm" :disable="!selected_employee_input" dense filled
+                           v-model="selected_employee_data.address_res_city" label="City/Municipality" hint=""
+                           lazy-rules :rules="[
+                            (val) => (val && val.length > 0) || '* Field should not be empty!',
+                          ]" />
+                  <q-input class="col" :disable="!selected_employee_input" dense filled
+                           v-model="selected_employee_data.address_res_zip_code" label="Zipcode" hint="" lazy-rules
+                           :rules="[
+                            (val) => (val && val.length > 0) || '* Field should not be empty!',
+                          ]" />
                 </div>
 
-                <q-input
-                  :disable="!selected_employee_input"
-                  dense
-                  filled
-                  v-model="selected_employee_data.address_res_province"
-                  label="Province"
-                  hint=""
-                  lazy-rules
-                  :rules="[
-                    (val) => (val && val.length > 0) || '* Field should not be empty!',
-                  ]"
-                />
+                <q-input :disable="!selected_employee_input" dense filled
+                         v-model="selected_employee_data.address_res_province" label="Province" hint="" lazy-rules
+                         :rules="[
+                          (val) => (val && val.length > 0) || '* Field should not be empty!',
+                        ]" />
 
                 <div class="row">
-                  <q-select
-                    :disable="!selected_employee_input"
-                    class="col"
-                    dense
-                    outlined
-                    v-model="selected_employee_data.gender"
-                    :options="['MALE', 'FEMALE']"
-                    label="Gender"
-                  />
-                  <q-input
-                    :disable="!selected_employee_input"
-                    class="col q-ml-sm"
-                    dense
-                    filled
-                    v-model="selected_employee_data.birthdate"
-                    label="Birthdate"
-                    type="date"
-                  />
+                  <q-select :disable="!selected_employee_input" class="col" dense outlined
+                            v-model="selected_employee_data.gender" :options="['MALE', 'FEMALE']" label="Gender" />
+                  <q-input :disable="!selected_employee_input" class="col q-ml-sm" dense filled
+                           v-model="selected_employee_data.birthdate" label="Birthdate" type="date" />
                 </div>
 
                 <!-- <q-input
@@ -252,85 +139,38 @@
               /> -->
 
                 <div class="row">
-                  <q-input
-                    :disable="!selected_employee_input"
-                    class="col"
-                    dense
-                    filled
-                    v-model="selected_employee_data.blood_type"
-                    label="Blood Type"
-                    hint=""
-                    lazy-rules
-                    :rules="[
-                      (val) => (val && val.length > 0) || '* Field should not be empty!',
-                    ]"
-                  />
+                  <q-input :disable="!selected_employee_input" class="col" dense filled
+                           v-model="selected_employee_data.blood_type" label="Blood Type" hint="" lazy-rules :rules="[
+                            (val) => (val && val.length > 0) || '* Field should not be empty!',
+                          ]" />
 
-                  <q-input
-                    :disable="!selected_employee_input"
-                    class="col q-ml-sm"
-                    dense
-                    filled
-                    v-model="selected_employee_data.contact_number"
-                    label="Contact Number"
-                    hint=""
-                  />
+                  <q-input :disable="!selected_employee_input" class="col q-ml-sm" dense filled
+                           v-model="selected_employee_data.contact_number" label="Contact Number" hint="" />
                 </div>
 
-                <q-input
-                  :disable="!selected_employee_input"
-                  dense
-                  filled
-                  v-model="selected_employee_data.emergency_name"
-                  label="Emergency Contact Person"
-                  hint=""
-                  lazy-rules
-                  :rules="[
-                    (val) => (val && val.length > 0) || '* Field should not be empty!',
-                  ]"
-                />
+                <q-input :disable="!selected_employee_input" dense filled
+                         v-model="selected_employee_data.emergency_name" label="Emergency Contact Person" hint=""
+                         lazy-rules :rules="[
+                          (val) => (val && val.length > 0) || '* Field should not be empty!',
+                        ]" />
 
-                <q-input
-                  :disable="!selected_employee_input"
-                  dense
-                  filled
-                  v-model="selected_employee_data.emergency_number"
-                  label="Emergency Contact Number"
-                  hint=""
-                />
+                <q-input :disable="!selected_employee_input" dense filled
+                         v-model="selected_employee_data.emergency_number" label="Emergency Contact Number" hint="" />
 
                 <div class="row">
                   <div class="col">
-                    <q-input
-                      :disable="!selected_employee_input"
-                      dense
-                      filled
-                      v-model="selected_employee_data.date_issued"
-                      label="Date Issued"
-                      type="date"
-                    />
+                    <q-input :disable="!selected_employee_input" dense filled
+                             v-model="selected_employee_data.date_issued" label="Date Issued" type="date" />
                   </div>
                   <div class="col q-ml-sm">
-                    <q-input
-                      :disable="!selected_employee_input"
-                      dense
-                      filled
-                      v-model="selected_employee_data.date_expire"
-                      label="Valid Until"
-                      type="date"
-                    />
+                    <q-input :disable="!selected_employee_input" dense filled
+                             v-model="selected_employee_data.date_expire" label="Valid Until" type="date" />
                   </div>
                 </div>
 
                 <div class="q-mt-sm"></div>
-                <q-btn :disable="!selected_employee_input" class="q-mr-sm" type="submit"
-                  >Save</q-btn
-                >
-                <q-btn
-                  :disable="!selected_employee_input"
-                  label="Download"
-                  @click="downloadImage()"
-                ></q-btn>
+                <q-btn :disable="!selected_employee_input" class="q-mr-sm" type="submit">Save</q-btn>
+                <q-btn :disable="!selected_employee_input" label="Download" @click="downloadImage()"></q-btn>
 
                 <!-- <q-btn
                   :disable="!selected_employee_input"
@@ -344,13 +184,8 @@
         </div>
         <div id="cardFrontAndBack" class="flex" style="position: relative">
           <!-- <div style="background-color: aqua; height: 8.5cm; width: 5.4cm"></div> -->
-          <IdCardFront
-            style="transform: scale(0.5); position: absolute"
-            :details="selected_employee_data"
-            :timestamp="timestamp"
-            :textFormat="textFormat"
-            :photoFormat="photoFormat"
-          />
+          <IdCardFront style="transform: scale(0.5); position: absolute" :details="selected_employee_data"
+                       :timestamp="timestamp" :textFormat="textFormat" :photoFormat="photoFormat" />
           <IdCardBack :details="selected_employee_data" @onPenDataSave="savePendata" />
         </div>
       </div>
@@ -358,26 +193,20 @@
     <button id="capture">Capture</button>
     <canvas id="canvas" width="320" height="240"></canvas> -->
       <!-- <br /> -->
-      <div
-        style="
+      <div style="
           margin-bottom: 10px;
           width: 100%;
           height: 100px;
           background-color: green;
           color: wheat;
           text-align: center;
-        "
-      >
+        ">
         <h1>PRE-RENDERED</h1>
       </div>
 
       <div class="flex flex-center">
-        <IdCardFrontV2
-          :details="selected_employee_data"
-          :timestamp="timestamp"
-          :textFormat="textFormat"
-          :photoFormat="photoFormat"
-        />
+        <IdCardFrontV2 :details="selected_employee_data" :timestamp="timestamp" :textFormat="textFormat"
+                       :photoFormat="photoFormat" />
         <IdCardBackV2 :details="selected_employee_data" @onPenDataSave="savePendata" />
       </div>
     </div>
@@ -421,7 +250,7 @@ defineOptions({
       photoFormat: {
         top: 27,
         left: 117,
-        width: 401, //will be the scale
+        scale: 50, //will be the scale
       },
       textFormat: {
         position: {
@@ -471,7 +300,7 @@ defineOptions({
           m_penData: data,
           employees_id: this.selected_employee_data.employees_id,
         })
-        .then(({ data }) => {})
+        .then(({ data }) => { })
         .catch((err) => {
           console.error(err);
         });
@@ -608,10 +437,10 @@ defineOptions({
           this.getEmployeeData();
         });
     },
-    onReset() {},
-    getEmployeeData() {
+    onReset() { },
+    async getEmployeeData() {
       if (!this.selected_employee_input) return;
-      this.$api
+      await this.$api
         .post(import.meta.env.VITE_API_URL + "/id_card_backend.php", {
           getEmployeeData: true,
           employeeId: this.selected_employee_input.value,
@@ -641,6 +470,8 @@ defineOptions({
         .catch((err) => {
           console.error(err);
         });
+      console.log("this.photoFormat:", this.photoFormat);
+
     },
     filterFn(val, update) {
       if (val === "") {
@@ -659,8 +490,8 @@ defineOptions({
     },
   },
 
-  created() {
-    this.$api
+  async created() {
+    await this.$api
       .post(import.meta.env.VITE_API_URL + "/id_card_backend.php", {
         getEmployeeList: "true",
       })

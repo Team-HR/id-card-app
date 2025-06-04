@@ -1,15 +1,7 @@
 <template>
   <div style="position: relative; display: inline" ref="clickBox">
-    <q-btn
-      unelevated
-      icon="format_shapes"
-      @click="promptDialog()"
-      :disable="!selected_employee_data.employees_id"
-    />
-    <div
-      class="q-pa-md"
-      :hidden="displayModal == false"
-      style="
+    <q-btn unelevated icon="format_shapes" @click="promptDialog()" :disable="!selected_employee_data.employees_id" />
+    <div class="q-pa-md" :hidden="displayModal == false" style="
         position: absolute;
         z-index: 999;
         background-color: white;
@@ -17,25 +9,15 @@
         box-shadow: 10px 19px 60px -27px;
         border-radius: 5px;
         right: -210px;
-      "
-    >
-      <q-btn size="xs" style="position: absolute; top: 10px; right: 10px" @click="reset()"
-        >Reset</q-btn
-      >
+      ">
+      <q-btn size="xs" style="position: absolute; top: 10px; right: 10px" @click="reset()">Reset</q-btn>
       <label style="font-size: 12pt">Vertical: {{ photoFormat.top }}px</label>
       <!-- <q-slider v-model="photoFormat.top" :min="-6500" :max="3000" :step="1" /> -->
       <q-input type="number" dense v-model="photoFormat.top"></q-input>
 
       <label style="font-size: 12pt">Horizontal: {{ photoFormat.left }}px</label>
       <!-- <q-slider v-model="photoFormat.left" :min="-6000" :max="440" :step="1" /> -->
-      <q-input
-        type="number"
-        dense
-        v-model="photoFormat.left"
-        :min="-6000"
-        :max="440"
-        :step="1"
-      >
+      <q-input type="number" dense v-model="photoFormat.left" :min="-6000" :max="440" :step="1">
         <!-- buggy left right btns -->
         <!-- <template v-slot:append>
           <q-btn
@@ -58,21 +40,8 @@
         </template> -->
       </q-input>
 
-      <label style="font-size: 12pt">Scale: {{ photoFormat.width }}px</label>
-      <!-- <q-slider
-        v-model="photoFormat.width"
-        :min="0"
-        :max="0.15"
-        :step="0.001"
-      /> -->
-      <q-input
-        type="number"
-        dense
-        v-model="photoFormat.width"
-        :min="0"
-        :max="1000"
-        :step="1"
-      ></q-input>
+      <label style="font-size: 12pt">Scale: {{ photoFormat.scale }}px</label>
+      <q-input type="number" dense v-model="photoFormat.scale" :min="0" :max="1000" :step="1"></q-input>
 
       <q-btn size="xs" @click="displayModal = !displayModal">Close</q-btn>
     </div>
@@ -114,7 +83,7 @@ defineOptions({
     reset() {
       this.photoFormat.top = this.photoFormatDefault.top;
       this.photoFormat.left = this.photoFormatDefault.left;
-      this.photoFormat.width = this.photoFormatDefault.width;
+      this.photoFormat.scale = this.photoFormatDefault.scale;
     },
   },
 });

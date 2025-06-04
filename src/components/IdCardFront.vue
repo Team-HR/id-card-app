@@ -38,8 +38,8 @@
         overflow: hidden;
       ">
       <img :hidden="imageIsLoading == 'loading'" @load="imageIsLoading = 'loaded'" :src="imgSrcFromServer"
-           style="position: relative" :style="`bottom:${photoFormat.top * 2}px; right: ${photoFormat.left * 2
-            }px; width: ${photoFormat.width * 2.06}px;`" />
+           style="position: relative" :style="`bottom:${photoFormat.top * 2}mm; right: ${photoFormat.left * 2
+            }mm; width: ${photoFormat.scale * 2.06}mm;`" />
 
       <q-skeleton style="width: 250px; height: 188px" :hidden="imageIsLoading == 'loaded'"></q-skeleton>
     </div>
