@@ -28,12 +28,21 @@ td {
       <template v-for="item in rows" :key="item.id">
         <div class="deptCard">
           <h4>{{ `${item.department} (${item.alias})` }}</h4>
-          <q-linear-progress size="50px" :value="item.perentageCompletion / 100" color="green" class="q-my-md">
+          <!-- <q-linear-progress size="50px" :value="item.perentageCompletion / 100" color="green" class="q-my-md">
             <div class="absolute-full flex flex-center">
               <q-badge color="white" text-color="green"
                        :label="`${item.perentageCompletion}% (${item.totalAccomplishedEmployee}/${item.totalDepartmentEmployee})`" />
             </div>
+          </q-linear-progress> -->
+
+          <q-linear-progress size="50px" :value="item.totalAccomplishedInputs / item.totalRequiredInputs" color="green"
+                             class="q-my-md">
+            <div class="absolute-full flex flex-center">
+              <q-badge color="white" text-color="green"
+                       :label="`${item.perentageCompletionInputs}% (${item.totalAccomplishedInputs}/${item.totalRequiredInputs})`" />
+            </div>
           </q-linear-progress>
+
           <!-- {{ item.employees }} -->
           <q-table :rows-per-page-options="[0, 5, 10, 15]" flat :rows="item.employees" :columns="columns"
                    :row-key="(row) => row.empno" selection="multiple" v-model:selected="selected"

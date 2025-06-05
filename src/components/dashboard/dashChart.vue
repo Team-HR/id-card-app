@@ -50,7 +50,7 @@ function createChart() {
       labels: props.data.labels.slice(0, 15),
       datasets: [
         {
-          label: "% of Employees Completed Inputs",
+          label: "% of Completed Inputs",
           data: props.data.values.slice(0, 15),
           borderWidth: 1,
         },
@@ -73,7 +73,7 @@ function createChart() {
       labels: props.data.labels.slice(15, 33),
       datasets: [
         {
-          label: "% of Employees Completed Inputs",
+          label: "% of Completed Inputs",
           data: props.data.values.slice(15, 33),
           borderWidth: 1,
         },
