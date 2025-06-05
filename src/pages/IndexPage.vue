@@ -51,33 +51,6 @@
                          label="ID Number *" hint="" lazy-rules :rules="[
                           (val) => (val && val.length > 0) || 'Please enter the ID number',
                         ]" />
-                <q-input :disable="!selected_employee_input" class="col" dense filled
-                         v-model="selected_employee_data.position" label="Position" hint="" lazy-rules :rules="[
-                          (val) => (val && val.length > 0) || '* Position should not be empty!',
-                        ]">
-                  <template v-slot:append>
-                    <TextFormatter :textProps="textFormat.position" textFor="position" />
-                  </template>
-                </q-input>
-
-                <!-- Department -->
-                <q-input :disable="!selected_employee_input" class="col" dense filled
-                         v-model="selected_employee_data.department" label="Department" hint="" lazy-rules :rules="[
-                          (val) => (val && val.length > 0) || '* Department should not be empty!',
-                        ]">
-                  <template v-slot:append>
-                    <TextFormatter :textProps="textFormat.department" textFor="department" />
-                  </template>
-                </q-input>
-
-
-                <!-- Section -->
-                <q-input :disable="!selected_employee_input" class="col" dense filled
-                         v-model="selected_employee_data.section" label="Section">
-                  <template v-slot:append>
-                    <TextFormatter :textProps="textFormat.section" textFor="section" />
-                  </template>
-                </q-input>
 
                 <div class="row">
                   <q-input :disable="!selected_employee_input" class="col" dense filled
@@ -111,6 +84,36 @@
                              label="Name Extension" />
                   </div>
                 </div>
+
+                <!-- Position -->
+                <q-input :disable="!selected_employee_input" class="col" dense filled
+                         v-model="selected_employee_data.position" label="Position" hint="" lazy-rules :rules="[
+                          (val) => (val && val.length > 0) || '* Position should not be empty!',
+                        ]">
+                  <template v-slot:append>
+                    <TextFormatter :textProps="textFormat.position" textFor="position" />
+                  </template>
+                </q-input>
+
+                <!-- Department -->
+                <q-input :disable="!selected_employee_input" class="col" dense filled
+                         v-model="selected_employee_data.department" label="Department" hint="" lazy-rules :rules="[
+                          (val) => (val && val.length > 0) || '* Department should not be empty!',
+                        ]">
+                  <template v-slot:append>
+                    <TextFormatter :textProps="textFormat.department" textFor="department" />
+                  </template>
+                </q-input>
+
+
+                <!-- Section -->
+                <q-input :disable="!selected_employee_input" class="col" dense filled
+                         v-model="selected_employee_data.section" label="Section">
+                  <template v-slot:append>
+                    <TextFormatter :textProps="textFormat.section" textFor="section" />
+                  </template>
+                </q-input>
+
 
                 <q-input :disable="!selected_employee_input" dense filled
                          v-model="selected_employee_data.address_res_barangay" label="Barangay" hint="" lazy-rules
@@ -271,8 +274,8 @@ defineOptions({
       // },
       $q: useQuasar(),
       photoFormat: {
-        top: 27,
-        left: 117,
+        top: 5,
+        left: 0,
         scale: 50, //will be the scale
       },
       textFormat: {

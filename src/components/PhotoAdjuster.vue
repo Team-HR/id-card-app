@@ -1,5 +1,5 @@
 <template>
-  <div style="position: relative; display: inline" ref="clickBox">
+  <div style="position: relative; display: inline;" ref="clickBox">
     <q-btn unelevated icon="format_shapes" @click="promptDialog()" :disable="!selected_employee_data.employees_id" />
     <div class="q-pa-md" :hidden="displayModal == false" style="
         position: absolute;
@@ -9,6 +9,7 @@
         box-shadow: 10px 19px 60px -27px;
         border-radius: 5px;
         right: -210px;
+         padding-right: 20px;
       ">
       <q-btn size="xs" style="position: absolute; top: 10px; right: 10px" @click="reset()">Reset</q-btn>
       <label style="font-size: 12pt">Vertical: {{ photoFormat.top }}px</label>
@@ -85,6 +86,13 @@ defineOptions({
       this.photoFormat.left = this.photoFormatDefault.left;
       this.photoFormat.scale = this.photoFormatDefault.scale;
     },
+  },
+  mounted() {
+    window.addEventListener("click", (e) => {
+      if (!this.$refs.clickBox.contains(e.target)) {
+        this.displayModal = false;
+      }
+    });
   },
 });
 

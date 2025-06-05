@@ -10,7 +10,10 @@
         border-radius: 5px;
         right: 0px;
       ">
-      <q-btn size="xs" style="position: absolute; top: 10px; right: 10px" @click="reset()">Reset</q-btn>
+      <q-btn flat round size="sm" style="position: absolute; top: 10px; right: 60px" @click="reset()"
+             icon="restart_alt"></q-btn>
+      <q-btn round size="sm" style="position: absolute; top: 10px; right: 10px" @click="displayModal = !displayModal"
+             icon="close"></q-btn>
       <label for="" style="font-size: 12pt">Font-size: {{ text.font_size }}px</label>
       <!-- <q-slider v-model="text.font_size" :min="8" :max="30" :step="1" /> -->
       <q-input type="number" v-model="text.font_size" :min="8" :max="60" :step="1"></q-input>
@@ -61,11 +64,11 @@ defineOptions({
     },
   },
   mounted() {
-    // window.addEventListener("click", (e) => {
-    //   if (!this.$refs.clickBox.contains(e.target)) {
-    //     this.displayModal = false;
-    //   }
-    // });
+    window.addEventListener("click", (e) => {
+      if (!this.$refs.clickBox.contains(e.target)) {
+        this.displayModal = false;
+      }
+    });
   },
 });
 
