@@ -59,6 +59,26 @@
                     <TextFormatter :textProps="textFormat.position" textFor="position" />
                   </template>
                 </q-input>
+
+                <!-- Department -->
+                <q-input :disable="!selected_employee_input" class="col" dense filled
+                         v-model="selected_employee_data.department" label="Department" hint="" lazy-rules :rules="[
+                          (val) => (val && val.length > 0) || '* Department should not be empty!',
+                        ]">
+                  <template v-slot:append>
+                    <TextFormatter :textProps="textFormat.department" textFor="department" />
+                  </template>
+                </q-input>
+
+
+                <!-- Section -->
+                <q-input :disable="!selected_employee_input" class="col" dense filled
+                         v-model="selected_employee_data.section" label="Section">
+                  <template v-slot:append>
+                    <TextFormatter :textProps="textFormat.section" textFor="section" />
+                  </template>
+                </q-input>
+
                 <div class="row">
                   <q-input :disable="!selected_employee_input" class="col" dense filled
                            v-model="selected_employee_data.lastName" label="Last Name" hint="" lazy-rules :rules="[
@@ -228,6 +248,8 @@ import TextFormatter from "components/TextFormatter.vue";
 import * as htmlToImage from "html-to-image";
 import { toPng, toJpeg, toBlob, toPixelData, toSvg } from "html-to-image";
 
+// const $q = useQuasar();
+
 defineOptions({
   name: "IndexPage",
   components: {
@@ -247,6 +269,7 @@ defineOptions({
       //   left: 2924, //-58,
       //   scale: 0.071, //1.5,
       // },
+      $q: useQuasar(),
       photoFormat: {
         top: 27,
         left: 117,
@@ -254,6 +277,18 @@ defineOptions({
       },
       textFormat: {
         position: {
+          font_size: 17,
+          bottom: 83,
+          left: 40,
+          line_height: 20,
+        },
+        department: {
+          font_size: 17,
+          bottom: 83,
+          left: 40,
+          line_height: 20,
+        },
+        section: {
           font_size: 17,
           bottom: 83,
           left: 40,
@@ -433,7 +468,8 @@ defineOptions({
           photoFormat: this.photoFormat,
         })
         .then(({ data }) => {
-          console.log("Save changes");
+          // console.log("Save changes");
+          this.saveNotify()
           this.getEmployeeData();
         });
     },
@@ -452,8 +488,16 @@ defineOptions({
             // font_size": 17, "bottom": 83, "left": 40, "line_height": 20
             this.textFormat.position.font_size = data.text_formatting.position.font_size;
             this.textFormat.position.bottom = data.text_formatting.position.bottom;
-            this.textFormat.position.line_height =
-              data.text_formatting.position.line_height;
+            this.textFormat.position.line_height = data.text_formatting.position.line_height;
+
+            this.textFormat.department.font_size = data.text_formatting.department.font_size;
+            this.textFormat.department.bottom = data.text_formatting.department.bottom;
+            this.textFormat.department.line_height = data.text_formatting.department.line_height;
+
+            this.textFormat.section.font_size = data.text_formatting.section.font_size;
+            this.textFormat.section.bottom = data.text_formatting.section.bottom;
+            this.textFormat.section.line_height = data.text_formatting.section.line_height;
+
             this.textFormat.lastName.font_size = data.text_formatting.lastName.font_size;
             this.textFormat.lastName.bottom = data.text_formatting.lastName.bottom;
             this.textFormat.firstName.font_size =
@@ -470,8 +514,14 @@ defineOptions({
         .catch((err) => {
           console.error(err);
         });
-      console.log("this.photoFormat:", this.photoFormat);
-
+      // console.log("this.getEmployeeData:", this.selected_employee_data);
+    },
+    saveNotify() {
+      this.$q.notify({
+        message: 'Saved changes!',
+        color: 'green',
+        icon: 'save'
+      })
     },
     filterFn(val, update) {
       if (val === "") {

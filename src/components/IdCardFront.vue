@@ -82,7 +82,38 @@
         left: ${textFormat.position.left * 2}px; line-height: ${textFormat.position.line_height * 2
         }px;`">
       {{ details.position }}
+      <div>
+        <hr style="width: 90%; height: 3px; background-color: black; border: none; margin: 0;">
+      </div>
+
     </div>
+
+    <!-- department -->
+    <div style="
+        width: 539px;
+        text-align: left;
+        font-stretch: ultra-expanded;
+        position: absolute;
+      " :style="`font-size:${textFormat.department.font_size * 2.05}px; bottom: ${textFormat.department.bottom * 2.23
+        }px;
+        left: ${textFormat.department.left * 2}px; line-height: ${textFormat.department.line_height * 2
+        }px;`">
+      {{ details.department }}
+    </div>
+
+    <!-- section -->
+    <div style="
+        width: 539px;
+        text-align: left;
+        font-stretch: ultra-expanded;
+        position: absolute;
+      " :style="`font-size:${textFormat.section.font_size * 2.05}px; bottom: ${textFormat.section.bottom * 2.23
+        }px;
+        left: ${textFormat.section.left * 2}px; line-height: ${textFormat.section.line_height * 2
+        }px;`">
+      {{ details.section }}
+    </div>
+
     <!-- <div
       style="
         margin-top: 0px !important;

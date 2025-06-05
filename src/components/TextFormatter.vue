@@ -1,10 +1,7 @@
 <template>
   <div style="position: relative" ref="clickBox">
     <q-btn round dense flat icon="format_shapes" @click="adjustLastName()" />
-    <div
-      class="q-pa-md"
-      :hidden="displayModal == false"
-      style="
+    <div class="q-pa-md" :hidden="displayModal == false" style="
         position: absolute;
         z-index: 999;
         background-color: white;
@@ -12,50 +9,20 @@
         box-shadow: 10px 10px 20px 10px;
         border-radius: 5px;
         right: 0px;
-      "
-    >
-      <q-btn
-        size="xs"
-        style="position: absolute; top: 10px; right: 10px"
-        @click="reset()"
-        >Reset</q-btn
-      >
-      <label for="" style="font-size: 12pt"
-        >Font-size: {{ text.font_size }}px</label
-      >
+      ">
+      <q-btn size="xs" style="position: absolute; top: 10px; right: 10px" @click="reset()">Reset</q-btn>
+      <label for="" style="font-size: 12pt">Font-size: {{ text.font_size }}px</label>
       <!-- <q-slider v-model="text.font_size" :min="8" :max="30" :step="1" /> -->
-      <q-input
-        type="number"
-        v-model="text.font_size"
-        :min="8"
-        :max="60"
-        :step="1"
-      ></q-input>
+      <q-input type="number" v-model="text.font_size" :min="8" :max="60" :step="1"></q-input>
 
-      <label for="" style="font-size: 12pt"
-        >Vertical Position: {{ text.bottom }}px</label
-      >
+      <label for="" style="font-size: 12pt">Vertical Position: {{ text.bottom }}px</label>
       <!-- <q-slider v-model="text.bottom" :min="0" :max="300" :step="1" /> -->
-      <q-input
-        type="number"
-        v-model="text.bottom"
-        :min="0"
-        :max="300"
-        :step="1"
-      ></q-input>
+      <q-input type="number" v-model="text.bottom" :min="0" :max="300" :step="1"></q-input>
 
-      <template v-if="textFor == 'position'">
-        <label for="" style="font-size: 12pt"
-          >Line Height: {{ text.line_height }}px</label
-        >
+      <template v-if="textFor == 'position' || textFor == 'department' || textFor == 'section'">
+        <label for="" style="font-size: 12pt">Line Height: {{ text.line_height }}px</label>
         <!-- <q-slider v-model="text.line_height" :min="0" :max="238" :step="1" /> -->
-        <q-input
-          type="number"
-          v-model="text.line_height"
-          :min="0"
-          :max="238"
-          :step="1"
-        ></q-input>
+        <q-input type="number" v-model="text.line_height" :min="0" :max="238" :step="1"></q-input>
       </template>
 
       <!-- <label for="" style="font-size: 12pt"
