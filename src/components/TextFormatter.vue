@@ -38,6 +38,17 @@
 </template>
 
 <script setup>
+
+const props = defineProps({
+  textProps: {
+    type: Object,
+    // required: true,
+  },
+  textFor: {
+    type: String,
+  },
+});
+
 defineOptions({
   name: "TextFormatter",
   data: function data() {
@@ -55,12 +66,15 @@ defineOptions({
   methods: {
     adjustLastName() {
       this.displayModal = !this.displayModal;
-      console.log(this.textProps);
+      // console.log(this.textProps);
     },
     reset() {
       this.text.font_size = this.textDefault.font_size;
       this.text.bottom = this.textDefault.bottom;
       this.text.left = this.textDefault.left;
+      if (this.text.line_height !== undefined) {
+        this.text.line_height = this.textDefault.line_height;
+      }
     },
   },
   mounted() {
@@ -72,13 +86,4 @@ defineOptions({
   },
 });
 
-const props = defineProps({
-  textProps: {
-    type: Object,
-    // required: true,
-  },
-  textFor: {
-    type: String,
-  },
-});
 </script>

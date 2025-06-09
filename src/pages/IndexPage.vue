@@ -95,7 +95,31 @@
                   </template>
                 </q-input>
 
+                <!-- Section -->
+                <!-- <OfficeInput input-label="Section" :suggestions="sectionOptions"
+                             :input-selected="selected_employee_data.section" /> -->
+                <OfficeInput :isDisabled="!selected_employee_input" input-label="Section"
+                             v-model="selected_employee_data.section" :suggestions="sectionOptions">
+                  <template #append>
+                    <TextFormatter :textProps="textFormat.section" textFor="section" />
+                  </template>
+                </OfficeInput>
+                <!-- 
+                <q-input :disable="!selected_employee_input" class="col" dense filled
+                         v-model="selected_employee_data.section" label="Section">
+                  <template v-slot:append>
+                    <TextFormatter :textProps="textFormat.section" textFor="section" />
+                  </template>
+                </q-input> -->
+
                 <!-- Department -->
+                <OfficeInput :isDisabled="!selected_employee_input" input-label="Department"
+                             v-model="selected_employee_data.department" :suggestions="departmentOptions">
+                  <template #append>
+                    <TextFormatter :textProps="textFormat.department" textFor="department" />
+                  </template>
+                </OfficeInput>
+                <!-- 
                 <q-input :disable="!selected_employee_input" class="col" dense filled
                          v-model="selected_employee_data.department" label="Department" hint="" lazy-rules :rules="[
                           (val) => (val && val.length > 0) || '* Department should not be empty!',
@@ -103,16 +127,7 @@
                   <template v-slot:append>
                     <TextFormatter :textProps="textFormat.department" textFor="department" />
                   </template>
-                </q-input>
-
-
-                <!-- Section -->
-                <q-input :disable="!selected_employee_input" class="col" dense filled
-                         v-model="selected_employee_data.section" label="Section">
-                  <template v-slot:append>
-                    <TextFormatter :textProps="textFormat.section" textFor="section" />
-                  </template>
-                </q-input>
+                </q-input> -->
 
 
                 <q-input :disable="!selected_employee_input" dense filled
@@ -233,6 +248,14 @@
         <IdCardBackV2 :details="selected_employee_data" @onPenDataSave="savePendata" />
       </div>
     </div>
+
+    <q-dialog v-model="showLoading" persistent>
+      <q-card class="q-pa-md flex flex-center" style="">
+        <q-spinner-dots size="50" color="green" />
+        <div class=" q-ml-lg"> Saving please wait...</div>
+      </q-card>
+    </q-dialog>
+
   </q-page>
 </template>
 
@@ -246,7 +269,9 @@ import IdCardBackV2 from "components/IdCardBackV2.vue";
 import PhotoGetter from "components/PhotoGetter.vue";
 import PhotoAdjuster from "components/PhotoAdjuster.vue";
 
+
 import TextFormatter from "components/TextFormatter.vue";
+import OfficeInput from "src/components/OfficeInput.vue";
 
 import * as htmlToImage from "html-to-image";
 import { toPng, toJpeg, toBlob, toPixelData, toSvg } from "html-to-image";
@@ -263,10 +288,14 @@ defineOptions({
     PhotoGetter,
     PhotoAdjuster,
     TextFormatter,
+    OfficeInput
   },
 
   data: function data() {
     return {
+      showLoading: false,
+      departmentOptions: [],
+      sectionOptions: [],
       // photoFormat: {
       //   top: 1897, //-14,
       //   left: 2924, //-58,
@@ -281,30 +310,31 @@ defineOptions({
       textFormat: {
         position: {
           font_size: 17,
-          bottom: 83,
+          bottom: 102,
+          left: 40,
+          line_height: 20,
+        },
+
+        section: {
+          font_size: 14,
+          bottom: 80,
           left: 40,
           line_height: 20,
         },
         department: {
-          font_size: 17,
-          bottom: 83,
+          font_size: 14,
+          bottom: 58,
           left: 40,
-          line_height: 20,
-        },
-        section: {
-          font_size: 17,
-          bottom: 83,
-          left: 40,
-          line_height: 20,
+          line_height: 15,
         },
         lastName: {
-          font_size: 43,
-          bottom: 119,
+          font_size: 40,
+          bottom: 140,
           left: 40,
         },
         firstName: {
-          font_size: 28,
-          bottom: 97,
+          font_size: 24,
+          bottom: 124,
           left: 40,
         },
       },
@@ -462,6 +492,7 @@ defineOptions({
     },
     async onSubmit() {
       await this.setImageData(); // set front and back id image data to selected_employee_data
+      this.showLoading = true;
       this.$api
         .post(import.meta.env.VITE_API_URL + "/id_card_backend.php", {
           saveEmployeeData: true,
@@ -474,7 +505,11 @@ defineOptions({
           // console.log("Save changes");
           this.saveNotify()
           this.getEmployeeData();
+          setTimeout(() => {
+            this.showLoading = false;
+          }, 1000);
         });
+
     },
     onReset() { },
     async getEmployeeData() {
@@ -541,6 +576,18 @@ defineOptions({
         );
       });
     },
+
+    async getOfficeNamesForAutocomplete() {
+      await this.$api
+        .post(import.meta.env.VITE_API_URL + "/id_card_backend.php", {
+          getOfficeNamesForAutocomplete: "true",
+        })
+        .then(({ data }) => {
+          // console.log("getOfficeNamesForAutocomplete:", data);
+          this.departmentOptions = data.departments
+          this.sectionOptions = data.sections
+        })
+    }
   },
 
   async created() {
@@ -554,10 +601,13 @@ defineOptions({
       .catch((err) => {
         console.error(err);
       });
+
+    await this.getOfficeNamesForAutocomplete();
   },
 
   mounted() {
     this.getEmployeeData();
+
     // const player = document.getElementById("player");
     // const canvas = document.getElementById("canvas");
     // const context = canvas.getContext("2d");
