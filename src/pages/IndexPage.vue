@@ -520,11 +520,10 @@ defineOptions({
     onReset() { },
     async getEmployeeData() {
       if (!this.selected_employee_input) return;
-      await this.$api
-        .post(import.meta.env.VITE_API_URL + "/id_card_backend.php", {
-          getEmployeeData: true,
-          employeeId: this.selected_employee_input.value,
-        })
+      await this.$api.post(import.meta.env.VITE_API_URL + "/id_card_backend.php", {
+        getEmployeeData: true,
+        employeeId: this.selected_employee_input.value,
+      })
         .then(({ data }) => {
           // console.log("getEmployeeData: ", data);
           this.selected_employee_data = data;

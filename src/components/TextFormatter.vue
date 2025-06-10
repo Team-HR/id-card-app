@@ -83,13 +83,17 @@ defineOptions({
         this.text.line_height = this.textDefault.line_height;
       }
     },
-  },
-  mounted() {
-    window.addEventListener("click", (e) => {
-      if (!this.$refs.clickBox.contains(e.target)) {
+    handleClickOutside(e) {
+      if (this.$refs.clickBox && !this.$refs.clickBox.contains(e.target)) {
         this.displayModal = false;
       }
-    });
+    }
+  },
+  mounted() {
+    window.addEventListener("click", this.handleClickOutside);
+  },
+  beforeUnmount() {
+    window.removeEventListener("click", this.handleClickOutside);
   },
 });
 

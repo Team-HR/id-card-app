@@ -94,7 +94,7 @@
       <!-- src="~/assets/images/get_sig.png" -->
       <!-- :hidden="details.name ? false : true" -->
       test
-      <img :hidden="!details.sig_src" id="signatureImageV2" class="signatureImage" style="
+      <img id="signatureImageV2" class="signatureImage" src="~/assets/images/get_sig.png" style="
           height: 227px;
           width: 359px;
           /* vertical-align: bottom; */
