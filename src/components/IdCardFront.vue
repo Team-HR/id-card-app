@@ -72,6 +72,7 @@
       {{ details.firstName }}
       {{ details.middleName ? details.middleName[0] + ". " : "" }}
     </div>
+    <!-- position -->
     <div style="
         width: 539px;
         text-align: left;
@@ -82,12 +83,13 @@
         left: ${textFormat.position.left * 2}px; line-height: ${textFormat.position.line_height * 2
         }px;`">
       {{ details.position }}
-      <div>
-        <hr style="width: 90%; height: 3px; background-color: black; border: none; margin: 0;">
-      </div>
-
     </div>
-
+    <!-- textFormat.horizontalLine -->
+    <div :hidden="!details.lastName" style="width: 539px;
+        text-align: left; font-stretch: ultra-expanded; position: absolute;"
+         :style="`bottom: ${textFormat.horizontalLine.bottom * 2.23}px; left: ${textFormat.horizontalLine.left * 2}px;`">
+      <hr style="width: 90%; height: 3px; background-color: black; border: none; margin: 0;">
+    </div>
     <!-- department -->
     <div style="
         width: 539px;

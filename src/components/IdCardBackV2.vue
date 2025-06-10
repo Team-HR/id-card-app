@@ -18,7 +18,7 @@
     /> -->
     <!-- QR end -->
 
-    <div class="detail" style="
+    <div :hidden="!details.address_res_barangay" class="detail" style="
         position: absolute;
         top: 170px;
         left: 35px;
@@ -30,7 +30,7 @@
         z-index: 9999;
       ">
       <!-- {{ details.address }} -->
-      {{ details.address_res_barangay ? details.address_res_barangay + ", " : "" }}
+      BRGY. {{ details.address_res_barangay ? details.address_res_barangay + ", " : "" }}
       {{ details.address_res_city }}, {{ details.address_res_zip_code }},
       {{ details.address_res_province }}, {{ details.address_res_country }}
     </div>
@@ -93,8 +93,8 @@
       " id="signatureDiv" @click="getSignatureDialog()">
       <!-- src="~/assets/images/get_sig.png" -->
       <!-- :hidden="details.name ? false : true" -->
-
-      <img id="signatureImageV2" class="signatureImage" src="~/assets/images/get_sig.png" style="
+      test
+      <img :hidden="!details.sig_src" id="signatureImageV2" class="signatureImage" style="
           height: 227px;
           width: 359px;
           /* vertical-align: bottom; */
@@ -105,6 +105,17 @@
           left: 151px;
           /* transform: scale(0.4); */
         " />
+      <!-- <img :hidden="details.sig_src" src="~/assets/images/get_sig.png" style="
+          height: 227px;
+          width: 359px;
+          /* vertical-align: bottom; */
+          position: absolute;
+          /* bottom: -146px;
+          left: -27px; */
+          bottom: -584px;
+          left: 151px;
+          /* transform: scale(0.4); */
+        " /> -->
     </div>
 
     <!-- signature container end -->
@@ -864,15 +875,15 @@ function generateImage() {
   var signatureImage = document.getElementById("signatureImageV2");
   var signatureCanvas = document.createElement("canvas");
   signatureCanvas.id = "signatureCanvas";
-  signatureCanvas.height = signatureImage.height; //227
-  signatureCanvas.width = signatureImage.width; //359
+  signatureCanvas.height = 227; //signatureImage.height; //227
+  signatureCanvas.width = 359; //signatureImage.width; //359
 
   var signatureCtx = signatureCanvas.getContext("2d");
+  signatureCtx.lineWidth = "2.5";
+  signatureCtx.strokeStyle = "black";
 
   clearCanvasOut(signatureCanvas, signatureCtx);
 
-  signatureCtx.lineWidth = "2.5";
-  signatureCtx.strokeStyle = "black";
   lastPoint = { x: 0, y: 0 };
   isDown = false;
   for (var i = 0; i < m_penData.length; i++) {

@@ -1,6 +1,6 @@
 <template>
   <div style="position: relative" ref="clickBox">
-    <q-btn round dense flat icon="format_shapes" @click="adjustLastName()" />
+    <q-btn round dense flat :icon="customIcon" @click="adjustLastName()" />
     <div class="q-pa-md" :hidden="displayModal == false" style="
         position: absolute;
         z-index: 999;
@@ -14,9 +14,12 @@
              icon="restart_alt"></q-btn>
       <q-btn round size="sm" style="position: absolute; top: 10px; right: 10px" @click="displayModal = !displayModal"
              icon="close"></q-btn>
-      <label for="" style="font-size: 12pt">Font-size: {{ text.font_size }}px</label>
-      <!-- <q-slider v-model="text.font_size" :min="8" :max="30" :step="1" /> -->
-      <q-input type="number" v-model="text.font_size" :min="8" :max="60" :step="1"></q-input>
+      <div class="q-mb-md"></div>
+      <template v-if="textFor != 'horizontalLine'">
+        <label for="" style="font-size: 12pt">Font-size: {{ text.font_size }}px</label>
+        <!-- <q-slider v-model="text.font_size" :min="8" :max="30" :step="1" /> -->
+        <q-input type="number" v-model="text.font_size" :min="8" :max="60" :step="1"></q-input>
+      </template>
 
       <label for="" style="font-size: 12pt">Vertical Position: {{ text.bottom }}px</label>
       <!-- <q-slider v-model="text.bottom" :min="0" :max="300" :step="1" /> -->
@@ -47,6 +50,10 @@ const props = defineProps({
   textFor: {
     type: String,
   },
+  customIcon: {
+    type: String,
+    default: 'format_shapes'
+  }
 });
 
 defineOptions({

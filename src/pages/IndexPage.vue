@@ -86,12 +86,15 @@
                 </div>
 
                 <!-- Position -->
+                <!-- :disable="!selected_employee_input" -->
                 <q-input :disable="!selected_employee_input" class="col" dense filled
                          v-model="selected_employee_data.position" label="Position" hint="" lazy-rules :rules="[
                           (val) => (val && val.length > 0) || '* Position should not be empty!',
                         ]">
                   <template v-slot:append>
                     <TextFormatter :textProps="textFormat.position" textFor="position" />
+                    <TextFormatter :textProps="textFormat.horizontalLine" textFor="horizontalLine"
+                                   customIcon="vertical_align_center" />
                   </template>
                 </q-input>
 
@@ -314,7 +317,10 @@ defineOptions({
           left: 40,
           line_height: 20,
         },
-
+        horizontalLine: {
+          bottom: 100,
+          left: 40,
+        },
         section: {
           font_size: 14,
           bottom: 80,
@@ -527,6 +533,8 @@ defineOptions({
             this.textFormat.position.font_size = data.text_formatting.position.font_size;
             this.textFormat.position.bottom = data.text_formatting.position.bottom;
             this.textFormat.position.line_height = data.text_formatting.position.line_height;
+
+            this.textFormat.horizontalLine.bottom = data.text_formatting.horizontalLine.bottom;
 
             this.textFormat.department.font_size = data.text_formatting.department.font_size;
             this.textFormat.department.bottom = data.text_formatting.department.bottom;
