@@ -86,14 +86,25 @@ defineOptions({
       this.photoFormat.left = this.photoFormatDefault.left;
       this.photoFormat.scale = this.photoFormatDefault.scale;
     },
-  },
-  mounted() {
-    window.addEventListener("click", (e) => {
-      if (!this.$refs.clickBox.contains(e.target)) {
+    handleClickOutside(e) {
+      if (this.$refs.clickBox && !this.$refs.clickBox.contains(e.target)) {
         this.displayModal = false;
       }
-    });
+    }
   },
+  mounted() {
+    window.addEventListener("click", this.handleClickOutside);
+    // window.addEventListener("click", (e) => {
+    //   if (!this.$refs.clickBox.contains(e.target)) {
+    //     this.displayModal = false;
+    //   }
+    // });
+  },
+
+  beforeUnmount() {
+    window.removeEventListener("click", this.handleClickOutside);
+  },
+
 });
 
 const props = defineProps({

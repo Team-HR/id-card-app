@@ -530,31 +530,33 @@ defineOptions({
           this.selected_employee_data = data;
           if (data.text_formatting) {
             // font_size": 17, "bottom": 83, "left": 40, "line_height": 20
-            this.textFormat.position.font_size = data.text_formatting.position.font_size;
-            this.textFormat.position.bottom = data.text_formatting.position.bottom;
-            this.textFormat.position.line_height = data.text_formatting.position.line_height;
+            this.textFormat.position.font_size = data?.text_formatting?.position?.font_size ?? this.textFormat.position.font_size;
+            this.textFormat.position.bottom = data?.text_formatting?.position?.bottom ?? this.textFormat.position.bottom;
+            this.textFormat.position.line_height = data?.text_formatting?.position?.line_height ?? this.textFormat.position.line_height;
 
-            this.textFormat.horizontalLine.bottom = data.text_formatting.horizontalLine.bottom;
+            this.textFormat.horizontalLine.bottom = data?.text_formatting?.horizontalLine?.bottom ?? this.textFormat.horizontalLine.bottom;
 
-            this.textFormat.department.font_size = data.text_formatting.department.font_size;
-            this.textFormat.department.bottom = data.text_formatting.department.bottom;
-            this.textFormat.department.line_height = data.text_formatting.department.line_height;
+            this.textFormat.department.font_size = data?.text_formatting?.department?.font_size ?? this.textFormat.department.font_size;
+            this.textFormat.department.bottom = data?.text_formatting?.department?.bottom ?? this.textFormat.department.bottom;
+            this.textFormat.department.line_height = data?.text_formatting?.department?.line_height ?? this.textFormat.department.line_height;
 
-            this.textFormat.section.font_size = data.text_formatting.section.font_size;
-            this.textFormat.section.bottom = data.text_formatting.section.bottom;
-            this.textFormat.section.line_height = data.text_formatting.section.line_height;
+            this.textFormat.section.font_size = data?.text_formatting?.section?.font_size ?? this.textFormat.section.font_size;
+            this.textFormat.section.bottom = data?.text_formatting?.section?.bottom ?? this.textFormat.section.bottom;
+            this.textFormat.section.line_height = data?.text_formatting?.section?.line_height ?? this.textFormat.section.line_height;
 
-            this.textFormat.lastName.font_size = data.text_formatting.lastName.font_size;
-            this.textFormat.lastName.bottom = data.text_formatting.lastName.bottom;
-            this.textFormat.firstName.font_size =
-              data.text_formatting.firstName.font_size;
-            this.textFormat.firstName.bottom = data.text_formatting.firstName.bottom;
+            this.textFormat.lastName.font_size = data?.text_formatting?.lastName?.font_size ?? this.textFormat.lastName.font_size;
+            this.textFormat.lastName.bottom = data?.text_formatting?.lastName?.bottom ?? this.textFormat.lastName.bottom;
+
+            this.textFormat.firstName.font_size = data?.text_formatting?.firstName?.font_size ?? this.textFormat.firstName.font_size;
+            this.textFormat.firstName.bottom = data?.text_formatting?.firstName?.bottom ?? this.textFormat.firstName.bottom;
+
           }
 
           if (data.photo_formatting) {
-            this.photoFormat.top = data.photo_formatting.top;
-            this.photoFormat.left = data.photo_formatting.left;
-            this.photoFormat.scale = data.photo_formatting.scale;
+            this.photoFormat.top = data?.photo_formatting?.top ?? this.photoFormat.top;
+            this.photoFormat.left = data?.photo_formatting?.left ?? this.photoFormat.left;
+            this.photoFormat.scale = data?.photo_formatting?.scale ?? this.photoFormat.scale;
+
           }
         })
         .catch((err) => {

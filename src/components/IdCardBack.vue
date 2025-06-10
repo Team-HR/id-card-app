@@ -315,7 +315,7 @@ function checkForSigCaptX() {
     if (retry < MAXRETRIES) {
       setTimeout(checkForSigCaptX, TIMEOUT_LONG);
     } else {
-      alert("Unable to establish connection to SigCaptX");
+      console.log("Unable to establish connection to SigCaptX");
     }
   }
 }
