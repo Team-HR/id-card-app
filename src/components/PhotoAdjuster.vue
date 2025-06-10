@@ -12,9 +12,6 @@
          padding-right: 20px;
       ">
       <q-btn size="xs" style="position: absolute; top: 10px; right: 10px" @click="reset()">Reset</q-btn>
-      <label style="font-size: 12pt">Vertical: {{ photoFormat.top }}px</label>
-      <!-- <q-slider v-model="photoFormat.top" :min="-6500" :max="3000" :step="1" /> -->
-      <q-input type="number" dense v-model="photoFormat.top"></q-input>
 
       <label style="font-size: 12pt">Horizontal: {{ photoFormat.left }}px</label>
       <!-- <q-slider v-model="photoFormat.left" :min="-6000" :max="440" :step="1" /> -->
@@ -40,6 +37,9 @@
           />
         </template> -->
       </q-input>
+      <label style="font-size: 12pt">Vertical: {{ photoFormat.top }}px</label>
+      <!-- <q-slider v-model="photoFormat.top" :min="-6500" :max="3000" :step="1" /> -->
+      <q-input type="number" dense v-model="photoFormat.top"></q-input>
 
       <label style="font-size: 12pt">Scale: {{ photoFormat.scale }}px</label>
       <q-input type="number" dense v-model="photoFormat.scale" :min="0" :max="1000" :step="1"></q-input>
