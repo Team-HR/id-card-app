@@ -99,14 +99,14 @@
                 </q-input>
 
                 <!-- Section -->
-                <!-- <OfficeInput input-label="Section" :suggestions="sectionOptions"
+                <!-- <AutocompleteInput input-label="Section" :suggestions="sectionOptions"
                              :input-selected="selected_employee_data.section" /> -->
-                <OfficeInput :isDisabled="!selected_employee_input" input-label="Section"
-                             v-model="selected_employee_data.section" :suggestions="sectionOptions">
+                <AutocompleteInput :isDisabled="!selected_employee_input" input-label="Section"
+                                   v-model="selected_employee_data.section" :suggestions="sectionOptions">
                   <template #append>
                     <TextFormatter :textProps="textFormat.section" textFor="section" />
                   </template>
-                </OfficeInput>
+                </AutocompleteInput>
                 <!-- 
                 <q-input :disable="!selected_employee_input" class="col" dense filled
                          v-model="selected_employee_data.section" label="Section">
@@ -116,12 +116,12 @@
                 </q-input> -->
 
                 <!-- Department -->
-                <OfficeInput :isDisabled="!selected_employee_input" input-label="Department"
-                             v-model="selected_employee_data.department" :suggestions="departmentOptions">
+                <AutocompleteInput :isDisabled="!selected_employee_input" input-label="Department"
+                                   v-model="selected_employee_data.department" :suggestions="departmentOptions">
                   <template #append>
                     <TextFormatter :textProps="textFormat.department" textFor="department" />
                   </template>
-                </OfficeInput>
+                </AutocompleteInput>
                 <!-- 
                 <q-input :disable="!selected_employee_input" class="col" dense filled
                          v-model="selected_employee_data.department" label="Department" hint="" lazy-rules :rules="[
@@ -133,30 +133,50 @@
                 </q-input> -->
 
 
-                <q-input :disable="!selected_employee_input" dense filled
+                <!-- <q-input :disable="!selected_employee_input" dense filled
                          v-model="selected_employee_data.address_res_barangay" label="Barangay" hint="" lazy-rules
                          :rules="[
                           (val) => (val && val.length > 0) || '* Field should not be empty!',
-                        ]" />
+                        ]" /> -->
+
+                <AutocompleteInput :isDisabled="!selected_employee_input" input-label="Barangay"
+                                   v-model="selected_employee_data.address_res_barangay"
+                                   :suggestions="addressOptions.res_barangays" />
 
                 <div class="row">
-                  <q-input class="col q-mr-sm" :disable="!selected_employee_input" dense filled
+                  <!-- <q-input class="col q-mr-sm" :disable="!selected_employee_input" dense filled
                            v-model="selected_employee_data.address_res_city" label="City/Municipality" hint=""
                            lazy-rules :rules="[
                             (val) => (val && val.length > 0) || '* Field should not be empty!',
-                          ]" />
-                  <q-input class="col" :disable="!selected_employee_input" dense filled
+                          ]" /> -->
+
+                  <AutocompleteInput class="col q-mr-sm" :isDisabled="!selected_employee_input"
+                                     input-label="City/Municipality" v-model="selected_employee_data.address_res_city"
+                                     :suggestions="addressOptions.res_citys" />
+
+
+                  <!-- <q-input class="col" :disable="!selected_employee_input" dense filled
                            v-model="selected_employee_data.address_res_zip_code" label="Zipcode" hint="" lazy-rules
                            :rules="[
                             (val) => (val && val.length > 0) || '* Field should not be empty!',
-                          ]" />
+                          ]" /> -->
+
+                  <AutocompleteInput class="col q-mr-sm" :isDisabled="!selected_employee_input" input-label="Zipcode"
+                                     v-model="selected_employee_data.address_res_zip_code"
+                                     :suggestions="addressOptions.res_zip_codes" />
+
                 </div>
 
-                <q-input :disable="!selected_employee_input" dense filled
+                <!-- <q-input :disable="!selected_employee_input" dense filled
                          v-model="selected_employee_data.address_res_province" label="Province" hint="" lazy-rules
                          :rules="[
                           (val) => (val && val.length > 0) || '* Field should not be empty!',
-                        ]" />
+                        ]" /> -->
+
+
+                <AutocompleteInput class="col q-mr-sm" :isDisabled="!selected_employee_input" input-label="Province"
+                                   v-model="selected_employee_data.address_res_province"
+                                   :suggestions="addressOptions.res_provinces" />
 
                 <div class="row">
                   <q-select :disable="!selected_employee_input" class="col" dense outlined
@@ -274,7 +294,7 @@ import PhotoAdjuster from "components/PhotoAdjuster.vue";
 
 
 import TextFormatter from "components/TextFormatter.vue";
-import OfficeInput from "src/components/OfficeInput.vue";
+import AutocompleteInput from "src/components/AutocompleteInput.vue";
 
 import * as htmlToImage from "html-to-image";
 import { toPng, toJpeg, toBlob, toPixelData, toSvg } from "html-to-image";
@@ -291,7 +311,7 @@ defineOptions({
     PhotoGetter,
     PhotoAdjuster,
     TextFormatter,
-    OfficeInput
+    AutocompleteInput
   },
 
   data: function data() {
@@ -299,6 +319,7 @@ defineOptions({
       showLoading: false,
       departmentOptions: [],
       sectionOptions: [],
+      addressOptions: [],
       // photoFormat: {
       //   top: 1897, //-14,
       //   left: 2924, //-58,
@@ -596,7 +617,20 @@ defineOptions({
           this.departmentOptions = data.departments
           this.sectionOptions = data.sections
         })
+    },
+
+    async getAddressesForAutocomplete() {
+      await this.$api
+        .post(import.meta.env.VITE_API_URL + "/id_card_backend.php", {
+          getAddressesForAutocomplete: "true",
+        })
+        .then(({ data }) => {
+          console.log("getAddressesForAutocomplete:", data);
+          this.addressOptions = data;
+        })
     }
+
+
   },
 
   async created() {
@@ -612,6 +646,7 @@ defineOptions({
       });
 
     await this.getOfficeNamesForAutocomplete();
+    await this.getAddressesForAutocomplete();
   },
 
   mounted() {
