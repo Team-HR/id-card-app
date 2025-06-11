@@ -359,7 +359,7 @@ defineOptions({
           font_size: 18,
           bottom: 58,
           left: 40,
-          line_height: 15,
+          line_height: 66,
         },
         lastName: {
           font_size: 40,
