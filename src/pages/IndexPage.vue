@@ -27,25 +27,32 @@
             </template>
           </q-select>
 
-          <q-btn label="Dashboard" to="dashboard"></q-btn>
+          <div class="flex justify-left; q-mb-md">
+            <q-btn label="Dashboard" to="dashboard"></q-btn>
+            <div class="q-px-md">
+              <PhotoGetter @imageCaptured="saveImageCaptured" :selected_employee_data="selected_employee_data">
+                <template v-slot:buttons>
+                  <PhotoAdjuster :photoProps="photoFormat" :selected_employee_data="selected_employee_data" />
+                </template>
+              </PhotoGetter>
+            </div>
+          </div>
+
           <!-- <q-btn class="q-mb-md" @click="getEmployeeData()" type="button"
           >Get</q-btn
         > -->
 
-          <div class="row">
-            <div class="col">
+          <div class="row justify-end">
+            <!-- <div class="col">
               <div style="margin-left: 30px">
-                <!-- PhotoGetter Component Start -->
                 <PhotoGetter @imageCaptured="saveImageCaptured" :selected_employee_data="selected_employee_data">
                   <template v-slot:buttons>
                     <PhotoAdjuster :photoProps="photoFormat" :selected_employee_data="selected_employee_data" />
                   </template>
                 </PhotoGetter>
-
-                <!-- PhotoGetter Component End -->
               </div>
-            </div>
-            <div class="col-7">
+            </div> -->
+            <div class="col-10">
               <q-form @submit.prevent="onSubmit" @reset="onReset" class="q-gutter-sm_">
                 <q-input :disable="!selected_employee_input" dense filled v-model="selected_employee_data.empno"
                          label="ID Number *" hint="" lazy-rules :rules="[

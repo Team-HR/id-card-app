@@ -1,48 +1,10 @@
 <template>
-  <div id="photoGetterContainer">
-    <!-- <img id="capturePhotoImg" src="~/assets/images/default-img.jpg" /> -->
-    <div
-      id="uploadedPhotoEditor"
-      style="
-        width: 250px;
-        height: 188px;
-        overflow: hidden;
-        display: relative;
-        text-align: center;
-      "
-    >
-      <!-- :hidden="imageIsLoading"
-        @load="imageLoaded()" -->
-      <img
-        :hidden="imageIsLoading == 'loading'"
-        @load="imageLoaded()"
-        id="uploadedPhoto"
-        ref="uploadedPhotoRef"
-        style="transform: scale(1); width: 250px !important"
-      />
-      <!-- <span :hidden="imageIsLoading == 'loaded'" style="padding-top: 100px"
-        >Loading Photo...</span
-      > -->
-
-      <q-skeleton
-        style="width: 250px; height: 188px"
-        :hidden="imageIsLoading == 'loaded'"
-      ></q-skeleton>
-    </div>
-
-    <canvas hidden id="canvasCapture" width="250px" height="188px"></canvas>
-  </div>
 
   <!-- <q-btn unelevated class="" label="Upload" icon="file_upload" /> -->
 
   <div class="q-mt-sm">
-    <q-btn
-      unelevated
-      icon="file_upload"
-      @click="uploadDialog = !uploadDialog"
-      :disable="!selected_employee_data.employees_id"
-      >Upload</q-btn
-    >
+    <q-btn unelevated icon="file_upload" @click="uploadDialog = !uploadDialog"
+           :disable="!selected_employee_data.employees_id">Upload Photo</q-btn>
 
     <!-- <input
       id="uploadPhotoInput"
@@ -107,6 +69,7 @@
   background-color: aliceblue;
   /* cursor: pointer; */
 }
+
 #capturePhotoImg {
   /* margin-top: 20px; */
   width: 250px;
@@ -363,7 +326,7 @@ defineOptions({
     },
   },
 
-  created() {},
+  created() { },
 });
 
 const props = defineProps({

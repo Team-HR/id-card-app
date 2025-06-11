@@ -41,7 +41,7 @@
            style="position: relative" :style="`bottom:${photoFormat.top * 2}mm; right: ${photoFormat.left * 2
             }mm; width: ${photoFormat.scale * 2.06}mm;`" />
 
-      <q-skeleton style="width: 250px; height: 188px" :hidden="imageIsLoading == 'loaded'"></q-skeleton>
+      <q-skeleton style="width: 550px; height: 588px" :hidden="imageIsLoading == 'loaded'"></q-skeleton>
     </div>
 
     <div style="
