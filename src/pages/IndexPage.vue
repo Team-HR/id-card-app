@@ -322,13 +322,13 @@ defineOptions({
           left: 40,
         },
         section: {
-          font_size: 14,
+          font_size: 18,
           bottom: 80,
           left: 40,
           line_height: 20,
         },
         department: {
-          font_size: 14,
+          font_size: 18,
           bottom: 58,
           left: 40,
           line_height: 15,
