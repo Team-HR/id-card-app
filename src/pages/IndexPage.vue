@@ -97,7 +97,7 @@
                 <q-input :disable="!selected_employee_input" class="col" dense filled
                          v-model="selected_employee_data.position" label="Position" hint="" lazy-rules :rules="[
                           (val) => (val && val.length > 0) || '* Position should not be empty!',
-                        ]">
+                        ]" type="textarea" autogrow @keyup.enter.prevent>
                   <template v-slot:append>
                     <TextFormatter :textProps="textFormat.position" textFor="position" />
                     <TextFormatter :textProps="textFormat.horizontalLine" textFor="horizontalLine"
