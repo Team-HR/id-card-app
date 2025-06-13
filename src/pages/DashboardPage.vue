@@ -85,7 +85,7 @@ td {
       <q-fab v-if="countSelected > 0" v-model="fab1" :label="`Selected: ${countSelected}`" label-position="left"
              color="purple" icon="keyboard_arrow_right" direction="right">
         <q-fab-action color="primary" @click="unselectAll" icon="cancel" label="Unselect All" />
-        <q-fab-action color="secondary" @click="printSelected" icon="print" label="Print Selected" />
+        <q-fab-action color="secondary" @click="printSelected" icon="download" label="Download Selected" />
       </q-fab>
     </q-page-sticky>
   </q-page>
