@@ -654,41 +654,12 @@ defineOptions({
   //     // this.$router.push({ path: `/${newId}` });
   //     if (this.id) {
   //       console.log('getEmployeeData');
+
   //     } else {
   //       console.log('change none');
   //     }
   //   },
   // },
-
-  // watch: {
-  //   '$route.params.id'(newId) {
-  //     this.id = newId;
-  //     // Optional: handle changes here
-  //     // console.log(this.id);
-  //     // this.$router.push({ path: `/${newId}` });
-  //     if (this.id) {
-  //       console.log('getEmployeeData');
-  //     } else {
-  //       console.log('change none');
-  //     }
-  //   },
-  // },
-
-
-  watch: {
-    '$route.params.id'(newId) {
-      this.id = newId;
-      // Optional: handle changes here
-      // console.log(this.id);
-      // this.$router.push({ path: `/${newId}` });
-      if (this.id) {
-        console.log('getEmployeeData');
-
-      } else {
-        console.log('change none');
-      }
-    },
-  },
   async created() {
     this.id = this.$route.params.id;
     this.id = this.$route.params.id;
