@@ -334,9 +334,9 @@ defineOptions({
       // },
       $q: useQuasar(),
       photoFormat: {
-        top: 5,
-        left: 0,
-        scale: 50, //will be the scale
+        top: 3,
+        left: 17,
+        scale: 84, //will be the scale
       },
       textFormat: {
         position: {
