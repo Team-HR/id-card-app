@@ -55,6 +55,15 @@ td {
                 <q-icon name="no_photography" color="grey" />
               </div>
             </template>
+            <template v-slot:body-cell-full_name="props">
+              <q-td :props="props">
+                <!-- Customize the display here -->
+                <a :href="`http://localhost:9090/#/` + props.row.employees_id" target="_blank"
+                   class="text-bold text-primary">{{
+                    props.row.full_name }}</a>
+              </q-td>
+            </template>
+
           </q-table>
         </div>
       </template>

@@ -623,7 +623,6 @@ defineOptions({
           getOfficeNamesForAutocomplete: "true",
         })
         .then(({ data }) => {
-          // console.log("getOfficeNamesForAutocomplete:", data);
           this.departmentOptions = data.departments
           this.sectionOptions = data.sections
         })
@@ -635,7 +634,6 @@ defineOptions({
           getAddressesForAutocomplete: "true",
         })
         .then(({ data }) => {
-          console.log("getAddressesForAutocomplete:", data);
           this.addressOptions = data;
         })
     }
@@ -643,21 +641,20 @@ defineOptions({
 
   },
 
+  // watch: {
+  //   '$route.params.id'(newId) {
+  //     this.id = newId;
+  //     // Optional: handle changes here
+  //     // console.log(this.id);
+  //     // this.$router.push({ path: `/${newId}` });
+  //     if (this.id) {
+  //       console.log('getEmployeeData');
+  //     } else {
+  //       console.log('change none');
+  //     }
+  //   },
+  // },
 
-  watch: {
-    '$route.params.id'(newId) {
-      this.id = newId;
-      // Optional: handle changes here
-      // console.log(this.id);
-      // this.$router.push({ path: `/${newId}` });
-      if (this.id) {
-        console.log('getEmployeeData');
-
-      } else {
-        console.log('change none');
-      }
-    },
-  },
   async created() {
     this.id = this.$route.params.id;
     await this.$api
@@ -666,6 +663,13 @@ defineOptions({
       })
       .then(({ data }) => {
         this.employees = data;
+        // if employee id in route params exists
+        // editor is prepopulated for that employee
+        if (this.id) {
+          const itemByValue = this.employees.find(item => item.value == this.id);
+          this.selected_employee_input = itemByValue
+          this.getEmployeeData();
+        }
       })
       .catch((err) => {
         console.error(err);
@@ -676,6 +680,7 @@ defineOptions({
   },
 
   mounted() {
+
     this.getEmployeeData();
 
     // const player = document.getElementById("player");
