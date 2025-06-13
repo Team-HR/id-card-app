@@ -314,7 +314,7 @@ function checkForSigCaptX() {
   }
 }
 
-setTimeout(checkForSigCaptX, TIMEOUT_SHORT);
+// setTimeout(checkForSigCaptX, TIMEOUT_SHORT);
 
 function onDCAtimeout() {
   // Device Control App has timed-out and shut down
