@@ -20,6 +20,8 @@
           <q-select clearable class="q-mb-md" filled v-model="selected_employee_input" use-input input-debounce="0"
                     label="Select Employee" :options="selections" option-value="value" option-label="label"
                     @filter="filterFn" @clear="onClearForm()" @update:model-value="getEmployeeData()" behavior="menu">
+            label="Select Employee" :options="selections" option-value="value" option-label="label"
+            @filter="filterFn" @clear="onClearForm()" @update:model-value="getEmployeeData()" behavior="menu">
             <template v-slot:no-option>
               <q-item>
                 <q-item-section class="text-grey"> No results </q-item-section>
@@ -324,6 +326,7 @@ defineOptions({
   data: function data() {
     return {
       id: null,
+      id: null,
       showLoading: false,
       departmentOptions: [],
       sectionOptions: [],
@@ -550,6 +553,8 @@ defineOptions({
     async getEmployeeData() {
       // alert(JSON.stringify(this.selected_employee_input))
       // return false;
+      // alert(JSON.stringify(this.selected_employee_input))
+      // return false;
       if (!this.selected_employee_input) return;
       await this.$api.post(import.meta.env.VITE_API_URL + "/id_card_backend.php", {
         getEmployeeData: true,
@@ -655,7 +660,37 @@ defineOptions({
   //   },
   // },
 
+  // watch: {
+  //   '$route.params.id'(newId) {
+  //     this.id = newId;
+  //     // Optional: handle changes here
+  //     // console.log(this.id);
+  //     // this.$router.push({ path: `/${newId}` });
+  //     if (this.id) {
+  //       console.log('getEmployeeData');
+  //     } else {
+  //       console.log('change none');
+  //     }
+  //   },
+  // },
+
+
+  watch: {
+    '$route.params.id'(newId) {
+      this.id = newId;
+      // Optional: handle changes here
+      // console.log(this.id);
+      // this.$router.push({ path: `/${newId}` });
+      if (this.id) {
+        console.log('getEmployeeData');
+
+      } else {
+        console.log('change none');
+      }
+    },
+  },
   async created() {
+    this.id = this.$route.params.id;
     this.id = this.$route.params.id;
     await this.$api
       .post(import.meta.env.VITE_API_URL + "/id_card_backend.php", {
