@@ -58,7 +58,7 @@ td {
             <template v-slot:body-cell-full_name="props">
               <q-td :props="props">
                 <!-- Customize the display here -->
-                <a :href="`http://localhost:9090/#/` + props.row.employees_id" target="_blank"
+                <a :href="`http://192.168.50.50:9099/#/` + props.row.employees_id" target="_blank"
                    class="text-bold text-primary">{{
                     props.row.full_name }}</a>
               </q-td>
