@@ -519,7 +519,9 @@ defineOptions({
         });
     },
     onClearForm() {
-      window.location.reload();
+      this.$router.push({ path: `/` }).then(() => {
+        window.location.reload()
+      })
       // console.log("clear");
       // this.selected_employee_data = {};
       // vue-avatar-editor-improved
@@ -644,20 +646,24 @@ defineOptions({
 
   },
 
-  // watch: {
-  //   '$route.params.id'(newId) {
-  //     this.id = newId;
-  //     // Optional: handle changes here
-  //     // console.log(this.id);
-  //     // this.$router.push({ path: `/${newId}` });
-  //     if (this.id) {
-  //       console.log('getEmployeeData');
-
-  //     } else {
-  //       console.log('change none');
-  //     }
-  //   },
-  // },
+  watch: {
+    // '$route.params.id'(newId) {
+    //   this.id = newId;
+    //   // Optional: handle changes here
+    //   // console.log(this.id);
+    //   if (this.id) {
+    //     this.$router.push({ path: `/${newId}` });
+    //     const itemByValue = this.employees.find(item => item.value == this.id);
+    //     this.selected_employee_input = itemByValue
+    //     this.getEmployeeData();
+    //   } else {
+    //     console.log('change none');
+    //   }
+    // },
+    selected_employee_input(newId) {
+      this.$router.push({ path: `/${newId.value}` })
+    }
+  },
   async created() {
     this.id = this.$route.params.id;
     this.id = this.$route.params.id;
@@ -684,9 +690,7 @@ defineOptions({
   },
 
   mounted() {
-
     this.getEmployeeData();
-
     // const player = document.getElementById("player");
     // const canvas = document.getElementById("canvas");
     // const context = canvas.getContext("2d");
