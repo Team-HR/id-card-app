@@ -58,9 +58,9 @@ td {
             <template v-slot:body-cell-full_name="props">
               <q-td :props="props">
                 <!-- Customize the display here -->
-                <a :href="`http://192.168.50.50:9099/#/` + props.row.employees_id" target="_blank"
-                   class="text-bold text-primary">{{
-                    props.row.full_name }}</a>
+                <a :href="`/#/` + props.row.employees_id" target="_blank" class="text-bold text-primary">{{
+                  props.row.full_name }}</a>
+                <!-- <q-btn flat @click="redirectToEditor(props.row.employees_id)">{{ props.row.full_name }}</q-btn> -->
               </q-td>
             </template>
 
@@ -198,6 +198,12 @@ defineOptions({
     };
   },
   methods: {
+
+    redirectToEditor(id) {
+      const url = this.$router.resolve('/' + id).href;
+      window.open(url, '_blank');
+    },
+
     isRowSelectable(row) {
       return row.hasIdCard && row.completionRating >= 100;
     },
