@@ -20,8 +20,6 @@
           <q-select clearable class="q-mb-md" filled v-model="selected_employee_input" use-input input-debounce="0"
                     label="Select Employee" :options="selections" option-value="value" option-label="label"
                     @filter="filterFn" @clear="onClearForm()" @update:model-value="getEmployeeData()" behavior="menu">
-            label="Select Employee" :options="selections" option-value="value" option-label="label"
-            @filter="filterFn" @clear="onClearForm()" @update:model-value="getEmployeeData()" behavior="menu">
             <template v-slot:no-option>
               <q-item>
                 <q-item-section class="text-grey"> No results </q-item-section>
