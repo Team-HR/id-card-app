@@ -23,6 +23,10 @@ const routes = [
         path: "test",
         component: () => import("pages/Test.vue"),
       },
+      {
+        path: "form",
+        component: () => import("pages/FormPage.vue"),
+      },
     ],
   },
 
