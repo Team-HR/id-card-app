@@ -369,8 +369,8 @@ defineOptions({
           left: 40,
         },
         firstName: {
-          font_size: 24,
-          bottom: 124,
+          font_size: 27,
+          bottom: 121,
           left: 40,
         },
       },
