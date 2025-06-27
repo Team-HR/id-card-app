@@ -24,6 +24,19 @@
       ">
       {{ details.employmentStatus ? `${details.employmentStatus} EMPLOYEE` : "" }}
     </div>
+    <div v-else-if="details.employmentStatus && details.employmentStatus == 'ELECTIVE'" style="
+        writing-mode: vertical-rl;
+        text-orientation: upright;
+        position: absolute;
+        top: 175px;
+        left: 6px;
+        font-size: 26.05pt;
+        color: white;
+        font-weight: 500;
+        text-shadow: 0px 2px 2px black;
+      ">
+      {{ details.employmentStatus ? `${details.employmentStatus} OFFICIAL` : "" }}
+    </div>
     <div v-else style="
         writing-mode: vertical-rl;
         text-orientation: upright;
