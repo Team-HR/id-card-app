@@ -25,7 +25,8 @@
       <!-- <q-slider v-model="text.bottom" :min="0" :max="300" :step="1" /> -->
       <q-input type="number" v-model="text.bottom" :min="0" :max="300" :step="1"></q-input>
 
-      <template v-if="textFor == 'position' || textFor == 'department' || textFor == 'section'">
+      <template
+                v-if="textFor == 'position' || textFor == 'department' || textFor == 'section' || textFor == 'firstName'">
         <label for="" style="font-size: 12pt">Line Height: {{ text.line_height }}px</label>
         <!-- <q-slider v-model="text.line_height" :min="0" :max="238" :step="1" /> -->
         <q-input type="number" v-model="text.line_height" :min="0" :max="238" :step="1"></q-input>

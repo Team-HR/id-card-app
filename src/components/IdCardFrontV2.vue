@@ -93,7 +93,8 @@
     </div>
     <div style="width: 100%; text-align: left; font-weight: 700; position: absolute" :style="`font-size:${textFormat.firstName.font_size * 2.05}px; bottom: ${textFormat.firstName.bottom * 2.15
       }px;
-        left: ${textFormat.firstName.left * 2}px; `">
+        left: ${textFormat.firstName.left * 2}px; line-height: ${textFormat.firstName.line_height * 2
+      }px;`">
       {{ details.firstName }}
       {{ details.middleName ? details.middleName[0] + ". " : "" }}
     </div>

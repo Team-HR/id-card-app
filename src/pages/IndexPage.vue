@@ -372,6 +372,7 @@ defineOptions({
           font_size: 27,
           bottom: 121,
           left: 40,
+          line_height: 66
         },
       },
       selected_employee_input: null, //{ label: "VALENCIAS, FRANZ JOSHUA ALCAZAR", value: "9" },
