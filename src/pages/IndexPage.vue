@@ -370,7 +370,7 @@ defineOptions({
         },
         firstName: {
           font_size: 27,
-          bottom: 121,
+          bottom: 109,
           left: 40,
           line_height: 66
         },
